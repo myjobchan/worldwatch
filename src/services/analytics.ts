@@ -55,6 +55,9 @@ export type {
 } from '../../shared/checkout-attribution';
 
 const UMAMI_SCRIPT_SRC = 'https://abacus.worldmonitor.app/script.js';
+// worldwatch fork: the tracker belongs to worldmonitor.app, so this fork never
+// loads it. track()/identify calls stay safe no-ops (bounded queue).
+const UMAMI_ENABLED = false;
 const UMAMI_COLLECTOR_ENDPOINT = new URL('/api/send', UMAMI_SCRIPT_SRC).href;
 const UMAMI_WEBSITE_ID = 'e8800335-c853-46a8-8497-c993ed2f58bc';
 // data-domains is temporarily reduced to the worldmonitor.app hosts + happy
@@ -672,7 +675,7 @@ function flushPendingUmamiCalls(): void {
 }
 
 function loadUmamiScript(): void {
-  if (umamiLoadStarted || typeof document === 'undefined') return;
+  if (!UMAMI_ENABLED || umamiLoadStarted || typeof document === 'undefined') return;
   installCollectorFetchGate();
   const existing = document.querySelector<HTMLScriptElement>(`script[src="${UMAMI_SCRIPT_SRC}"]`);
   if (existing) {
@@ -750,7 +753,7 @@ export function trackContentHandoff(): void {
 }
 
 export function initAnalytics(): void {
-  if (umamiLoadScheduled || typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (!UMAMI_ENABLED || umamiLoadScheduled || typeof window === 'undefined' || typeof document === 'undefined') return;
   umamiLoadScheduled = true;
   scheduleAfterFirstPaint(loadUmamiScript, 3000);
 }

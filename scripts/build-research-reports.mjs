@@ -16,11 +16,8 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 // The website ID must match UMAMI_WEBSITE_ID in src/services/analytics.ts.
-export const UMAMI_SCRIPT_TAG =
-  '<script async defer src="https://abacus.worldmonitor.app/script.js" '
-  + 'data-website-id="e8800335-c853-46a8-8497-c993ed2f58bc" '
-  + 'data-domains="worldmonitor.app,www.worldmonitor.app,tech.worldmonitor.app,finance.worldmonitor.app,commodity.worldmonitor.app,happy.worldmonitor.app" '
-  + 'nonce="wm-static-bootstrap"></script>';
+// worldwatch fork: no third-party analytics on generated research pages.
+export const UMAMI_SCRIPT_TAG = '';
 
 const DATASET_LICENSE = {
   '@type': 'CreativeWork',

@@ -1381,7 +1381,8 @@ const SHARE_SCRIPT = `<script>
 // auth'd route the query carries the sole reader credential (`?t=`, see
 // api/brief/[userId]/[issueDate].ts). Without the attribute the tracker
 // stores that credential with every pageview.
-const UMAMI_LOADER = '<script async src="https://abacus.worldmonitor.app/script.js" data-website-id="e8800335-c853-46a8-8497-c993ed2f58bc" data-exclude-search="true" data-domains="worldmonitor.app,tech.worldmonitor.app,finance.worldmonitor.app,commodity.worldmonitor.app,happy.worldmonitor.app"></script>';
+// worldwatch fork: no third-party analytics on brief pages.
+const UMAMI_LOADER = '';
 
 /**
  * U11 telemetry: emit a `brief-thread-open` event whenever a story
