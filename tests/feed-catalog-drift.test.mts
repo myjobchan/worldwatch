@@ -172,6 +172,12 @@ const STRATEGIC_DEFAULTS = [
   'MIIT (China)',
   'MOFCOM (China)',
   'Bangkok Post',
+  // worldwatch fork: Thailand & ASEAN panel (publisher RSS, strategic so the free cap keeps them).
+  'Khaosod English',
+  'Prachatai English',
+  'Prachatai',
+  'CNA Asia',
+  'TMD Earthquakes',
   'VnExpress',
   'Yonhap News',
   'leFaso.net',

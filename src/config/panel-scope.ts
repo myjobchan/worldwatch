@@ -36,6 +36,7 @@ export const PANEL_SCOPE_BEHAVIOUR: Readonly<Record<string, PanelScopeBehaviour>
   africa: 'filters', // Africa
   latam: 'filters', // Latin America
   asia: 'filters', // Asia-Pacific
+  thailand: 'filters', // Thailand & ASEAN (worldwatch fork)
   'ucdp-events': 'filters', // UCDP Conflict Events
   'security-advisories': 'filters', // Security Advisories
   // Global by nature.
