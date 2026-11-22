@@ -6,6 +6,8 @@
 
 The World Monitor name and wordmark identify the official site at [www.worldmonitor.app](https://www.worldmonitor.app), so please don't present a fork as the official site.
 
+This repository tracks [koala73/worldmonitor](https://github.com/koala73/worldmonitor) (`main`, AGPL-3.0). The `/api/mcp` Edge Function is removed so the app can deploy on Vercel's Hobby plan: that bundle is about 1.02 MB, and Hobby's Edge Function limit is 1 MB. `/api/ask` and `/api/a2a` are unchanged. No API keys are required for the site to build and run.
+
 [![GitHub stars](https://img.shields.io/github/stars/koala73/worldmonitor?style=social)](https://github.com/koala73/worldmonitor/stargazers)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
