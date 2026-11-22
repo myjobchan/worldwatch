@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { __testing__, buildPublicTool } from '../api/mcp.ts';
+import { __testing__, buildPublicTool } from '../api/_mcp.ts';
 import { readToolsReference } from './helpers/mcp-tools-reference-docs.mjs';
 
 const DOC = readToolsReference('en');

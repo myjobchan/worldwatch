@@ -15,9 +15,9 @@ import {
   readBoundedResponseBody,
   RequestBodyTooLargeError,
   ResponseBodyTooLargeError,
-} from './mcp/bounded-body.js';
-import { MAX_JSON_RPC_BODY_BYTES, MAX_MCP_PROXY_RESPONSE_BYTES } from './mcp/body-limits.js';
-import { McpProxyJsonDepthError, parseMcpProxyJson } from './mcp/bounded-json.js';
+} from './_mcp/bounded-body.js';
+import { MAX_JSON_RPC_BODY_BYTES, MAX_MCP_PROXY_RESPONSE_BYTES } from './_mcp/body-limits.js';
+import { McpProxyJsonDepthError, parseMcpProxyJson } from './_mcp/bounded-json.js';
 import { ENDPOINT_RATE_POLICIES, checkScopedRateLimit, checkIpScopedEdgeProof, getClientIp, rateLimitKeyForIp } from '../server/_shared/rate-limit.js';
 import { captureSilentError } from './_sentry-node.js';
 import {
@@ -71,7 +71,7 @@ if (!RATE_LIMIT_POLICY) {
 }
 const RATE_LIMIT_MAX = RATE_LIMIT_POLICY.limit;
 const RATE_LIMIT_WINDOW = RATE_LIMIT_POLICY.window;
-const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/mcp.ts
+const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/_mcp.ts
 
 function logProxyCall(entry: {
   ip: string;
@@ -1073,7 +1073,7 @@ export async function handler(req, ctx) {
       duration_ms: Date.now() - started,
     });
     emitProxyUsage(req, 429, Date.now() - startedAt, ctx, callerIdentity);
-    // JSON-RPC -32029 mirrors api/mcp.ts; HTTP 429 + Retry-After follows the
+    // JSON-RPC -32029 mirrors api/_mcp.ts; HTTP 429 + Retry-After follows the
     // shared rate-limit response shape.
     return new Response(
       JSON.stringify({
@@ -1129,8 +1129,8 @@ export async function handler(req, ctx) {
     // an attacker-controlled tag value would shred Sentry's tag cardinality.
     if (failure.report) {
       captureSilentError(new Error(failure.isTimeout ? 'MCP server timed out' : msg), {
-        tags: { route: 'api/mcp-proxy', step: 'proxy-dispatch' },
-        fingerprint: ['api/mcp-proxy', 'proxy-dispatch', failure.errorClass],
+        tags: { route: 'api/_mcp-proxy', step: 'proxy-dispatch' },
+        fingerprint: ['api/_mcp-proxy', 'proxy-dispatch', failure.errorClass],
         extra: { target_host: meta.targetHost, target_path: meta.targetPath, method: req.method },
         level: failure.level,
         ctx,

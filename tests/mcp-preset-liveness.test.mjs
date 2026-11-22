@@ -47,7 +47,7 @@ describe('MCP preset catalog and probes', () => {
     }
   });
 
-  // The monitor's pass/fail must not be stricter than what api/mcp-proxy.ts can
+  // The monitor's pass/fail must not be stricter than what api/_mcp-proxy.ts can
   // actually serve: it follows one method-preserving hop, so a vendor moving
   // behind a stable front door is drift, not an outage. 301/302/303 stay
   // failures because they permit a rewrite to GET, which kills the JSON-RPC

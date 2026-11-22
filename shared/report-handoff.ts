@@ -4,14 +4,14 @@
  *
  * Only chosen countries go: a neighbour is context on the dashboard, not a
  * place the trip visits. The travel risk assessment takes at most six
- * countries (api/mcp/registry/travel-risk-tool.ts), a focus up to twelve, so
+ * countries (api/_mcp/registry/travel-risk-tool.ts), a focus up to twelve, so
  * the rest are returned as `omitted` for the caller to say so. Nothing is
  * dropped silently.
  */
 
 import type { TabScope } from './tab-scope';
 
-/** Mirrors MAX_TRIP_COUNTRIES in api/mcp/registry/travel-risk-tool.ts. */
+/** Mirrors MAX_TRIP_COUNTRIES in api/_mcp/registry/travel-risk-tool.ts. */
 export const REPORT_MAX_COUNTRIES = 6;
 
 /** What the trip assessment dialog adds for one country. */

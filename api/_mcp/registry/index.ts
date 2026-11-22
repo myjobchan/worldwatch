@@ -120,16 +120,16 @@ export const SUMMARY_SCHEMA = {
 for (const tool of TOOL_REGISTRY) {
   const props = tool.inputSchema.properties;
   if (props && 'jmespath' in props) {
-    throw new Error(`api/mcp/registry/index.ts: tool "${tool.name}" declares its own 'jmespath' property — collides with universal JMESPATH_SCHEMA injection. Remove the per-tool declaration.`);
+    throw new Error(`api/_mcp/registry/index.ts: tool "${tool.name}" declares its own 'jmespath' property — collides with universal JMESPATH_SCHEMA injection. Remove the per-tool declaration.`);
   }
   if (tool._execute === undefined && props && 'summary' in props) {
-    throw new Error(`api/mcp/registry/index.ts: cache tool "${tool.name}" declares its own 'summary' property — collides with universal SUMMARY_SCHEMA injection. Remove the per-tool declaration.`);
+    throw new Error(`api/_mcp/registry/index.ts: cache tool "${tool.name}" declares its own 'summary' property — collides with universal SUMMARY_SCHEMA injection. Remove the per-tool declaration.`);
   }
   if (props && 'response_mode' in props) {
-    throw new Error(`api/mcp/registry/index.ts: tool "${tool.name}" declares its own 'response_mode' property — collides with the RESPONSE_MODE_SCHEMA injection for tools with a _spoken narrator. Remove the per-tool declaration.`);
+    throw new Error(`api/_mcp/registry/index.ts: tool "${tool.name}" declares its own 'response_mode' property — collides with the RESPONSE_MODE_SCHEMA injection for tools with a _spoken narrator. Remove the per-tool declaration.`);
   }
   if (props && 'spoken_language' in props) {
-    throw new Error(`api/mcp/registry/index.ts: tool "${tool.name}" declares its own 'spoken_language' property — collides with the SPOKEN_LANGUAGE_SCHEMA injection for tools with a _spoken narrator. Remove the per-tool declaration.`);
+    throw new Error(`api/_mcp/registry/index.ts: tool "${tool.name}" declares its own 'spoken_language' property — collides with the SPOKEN_LANGUAGE_SCHEMA injection for tools with a _spoken narrator. Remove the per-tool declaration.`);
   }
 }
 
@@ -211,7 +211,7 @@ export function buildPublicTool(
     // returned object must not corrupt the module-level outputSchema literal.
     // Advertised as `anyOf [documented shape, projection / soft-envelope
     // shapes]` so the `structuredContent` every call returns validates in a
-    // strict client whatever the response kind (api/mcp/structured-content.ts).
+    // strict client whatever the response kind (api/_mcp/structured-content.ts).
     outputSchema: advertisedOutputSchema(structuredClone(tool.outputSchema), {
       permitDeprecation: TOOL_ALIASES.targetNames().has(tool.name),
       permitSpoken: tool._spoken !== undefined,

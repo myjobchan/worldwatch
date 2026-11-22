@@ -28,11 +28,11 @@
 //     Server-side delta audited against its changelog: tool names (SEP-986),
 //     2020-12 schemas, the Origin 403, Client ID Metadata Documents and single
 //     `mcp` scope were already compliant; input validation failures are now
-//     `isError` tool results on 2025-11-25+ (SEP-1303, api/mcp/dispatch.ts).
+//     `isError` tool results on 2025-11-25+ (SEP-1303, api/_mcp/dispatch.ts).
 //     Everything else in it (icons, tasks, URL elicitation, sampling tools) is
 //     optional. `MCP_PROTOCOL_2025_11_25=off` drops it again.
 //   - 2026-07-28 is the handshake-free "modern" era, served per request
-//     (api/mcp/modern.ts) only while `MCP_PROTOCOL_2026_07_28=on`. It never
+//     (api/_mcp/modern.ts) only while `MCP_PROTOCOL_2026_07_28=on`. It never
 //     joins the initialize-negotiated set below. With the flag off (the
 //     default) the server must never answer with its -32022
 //     UnsupportedProtocolVersionError: that error marks a server as modern and
@@ -42,7 +42,7 @@
 // thin shim under different `process.env` snapshots — see
 // tests/mcp-protocol-version.test.mjs — observe the active value rather
 // than the value frozen at first module load. The shim
-// (api/mcp.ts) re-declares the snapshot constants locally so its own
+// (api/_mcp.ts) re-declares the snapshot constants locally so its own
 // `mod.MCP_SUPPORTED_PROTOCOL_VERSIONS` / `mod.MCP_PROTOCOL_VERSION`
 // exports also reflect the per-import env state.
 import { MCP_UPGRADE_URL } from './upgrade';
@@ -155,7 +155,7 @@ export const MCP_LOG_LEVELS: ReadonlySet<string> = new Set([
 export const JMESPATH_MAX_EXPR_BYTES = 1024;
 export const JMESPATH_MAX_OUTPUT_BYTES = 256 * 1024;
 
-// Re-export so existing `api/mcp.ts` / test imports keep working. Definition
+// Re-export so existing `api/_mcp.ts` / test imports keep working. Definition
 // lives in `./body-limits` so Edge facades can import the cap without the
 // MCP upgrade/attribution module graph. Imported (not just re-exported) because
 // a bare `export ... from` creates no local binding for SERVER_INSTRUCTIONS.

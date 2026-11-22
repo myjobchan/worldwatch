@@ -92,7 +92,7 @@ export const FEEDBACK_TOOLS: ToolDef[] = [
     // Free tier (Decision 1 of the threat model): the agents we most want to
     // hear from have no key. This is the one free-tier tool that reaches a
     // credentialed downstream, a shared-secret Convex write. The exception is
-    // stated in api/mcp/types.ts and pinned by tests/mcp-free-tier-subset.
+    // stated in api/_mcp/types.ts and pinned by tests/mcp-free-tier-subset.
     _freeTier: true,
     description:
       'Stores one report for the WorldMonitor maintainers about a bug, a missing capability, wrong or stale data, or a security concern, and returns its reportId and status. ' +

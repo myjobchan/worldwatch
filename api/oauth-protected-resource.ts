@@ -33,10 +33,10 @@ export const config = { runtime: 'edge' };
 // The rewrite carries `?resource=mcp` because a rewritten request may not
 // expose the original path; the path check covers direct invocation and tests.
 // Both transport paths are real: `/mcp` is the canonical URL and `/api/mcp` is
-// the deployed route (api/mcp.ts) that docs/usage-quickstart.mdx publishes. The
+// the deployed route (api/_mcp.ts) that docs/usage-quickstart.mdx publishes. The
 // MCP SDK accepts an advertised resource only when the requested path starts
 // with it, so each path needs its own document — `/api/mcp` is not under `/mcp`.
-const RESOURCE_PATHS = new Set(['mcp', 'api/mcp', 'api']);
+const RESOURCE_PATHS = new Set(['mcp', 'api/_mcp', 'api']);
 
 function resolveResourcePath(req: Request): string | null {
   const url = new URL(req.url);

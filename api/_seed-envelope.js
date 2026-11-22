@@ -2,7 +2,7 @@
 // Parity is enforced by scripts/verify-seed-envelope-parity.mjs.
 //
 // AGENTS.md:80 forbids `api/*.js` from importing `../server/` — this file exists
-// so edge handlers (api/bootstrap.js, api/health.js, api/mcp.ts, ...) have a
+// so edge handlers (api/bootstrap.js, api/health.js, api/_mcp.ts, ...) have a
 // same-directory envelope helper.
 
 export function unwrapEnvelope(raw) {

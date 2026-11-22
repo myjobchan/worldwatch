@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { HMAC_SECRET, makeProDeps, proReq, callBody } from './helpers/mcp-pro-deps.mjs';
-import { admitNewsPanel, authorizePanelRead } from '../api/mcp/panel-requests.ts';
+import { admitNewsPanel, authorizePanelRead } from '../api/_mcp/panel-requests.ts';
 import { dailyCounterKey } from '../server/_shared/pro-mcp-token.ts';
 import { __resetHighUsageAlarmForTests, __setHighUsageReporterForTests, HIGH_USAGE_ALARM_FRACTION } from '../server/_shared/high-usage-alarm.ts';
 
@@ -36,7 +36,7 @@ describe('World Brief closed paid admission', () => {
       if (advance !== null) { now = advance; advance = null; }
       return Response.json({ data: { insights: JSON.stringify(seed) }, missing: [] }, { status });
     };
-    handler = (await import('../api/mcp.ts')).mcpHandler;
+    handler = (await import('../api/_mcp.ts')).mcpHandler;
   });
   afterEach(() => {
     globalThis.fetch = originalFetch; globalThis.Date = OriginalDate;

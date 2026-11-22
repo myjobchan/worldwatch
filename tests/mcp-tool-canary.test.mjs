@@ -336,7 +336,7 @@ describe('fixture coverage against the in-repo tool registry', () => {
   let tools;
   before(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = 'wm_test_key_canary';
-    const mod = await import('../api/mcp.ts');
+    const mod = await import('../api/_mcp.ts');
     tools = mod.TOOL_LIST_RESPONSE;
     assert.ok(Array.isArray(tools) && tools.length > 0, 'TOOL_LIST_RESPONSE must list tools');
   });

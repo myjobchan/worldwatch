@@ -11,7 +11,7 @@ import { createTimeoutSignal } from '@/services/timeout-signal';
  *     atomically. Calling the public Convex mutation directly from the
  *     browser would skip the cache-invalidation step.
  *   - `fetchMcpQuota()` — GETs `/api/user/mcp-quota` to display the daily
- *     usage counter. Reads the same Redis key as api/mcp.ts (single source
+ *     usage counter. Reads the same Redis key as api/_mcp.ts (single source
  *     of truth — no client-side enforcement, just display).
  */
 

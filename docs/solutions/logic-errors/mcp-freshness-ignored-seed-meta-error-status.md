@@ -20,7 +20,7 @@ tags: [mcp, freshness, seed-meta, health-parity, seed-error, social-velocity, ev
 
 ## Problem
 
-The MCP freshness envelope and `/api/health` read the same seed-meta record and disagreed about it. `evaluateFreshness` in `api/mcp/freshness.ts:24` sets each tool response's `stale` flag. Before PR #9336 it compared `fetchedAt` age with `check.maxStaleMin` (`api/mcp/freshness.ts:54`), plus the optional `minRecordCount`, `honorContentAge` and `requireContentFreshness` dimensions. It never read `meta.status`.
+The MCP freshness envelope and `/api/health` read the same seed-meta record and disagreed about it. `evaluateFreshness` in `api/_mcp/freshness.ts:24` sets each tool response's `stale` flag. Before PR #9336 it compared `fetchedAt` age with `check.maxStaleMin` (`api/_mcp/freshness.ts:54`), plus the optional `minRecordCount`, `honorContentAge` and `requireContentFreshness` dimensions. It never read `meta.status`.
 
 Health does read it. `readSeedMeta` returns `seedStale: true, seedError: true` when `meta?.status === 'error'` (`api/health.js:2980-2985`), and `classifyKey` turns `seedError` into the `SEED_ERROR` fault (`api/health.js:3391`).
 
@@ -31,7 +31,7 @@ Producers write failure meta with a fresh `fetchedAt` and `status: 'error'` whil
 - `get_social_velocity` could return `stale: false` while `/api/health` reported `socialVelocity` as SEED_ERROR for the same key.
 - The bug was latent while the tool used `maxStaleMin: 30`. Error meta aged past 30 minutes quickly, so the false-fresh window was short.
 - The 30-minute budget caused the opposite symptom. The relay runs every 3 hours (`SOCIAL_VELOCITY_INTERVAL_MS` in `scripts/ais-relay.cjs`), so healthy data read `stale: true` for most of each cycle while health called it fresh.
-- PR #9336 corrected the budget to 540 in `api/mcp/registry/cache-tools.ts`, matching `SEED_META.socialVelocity` in `api/health.js`. That widened the false-fresh window after a failed refresh from 30 minutes to 9 hours. CodeRabbit flagged it in an outside-diff review comment on the PR.
+- PR #9336 corrected the budget to 540 in `api/_mcp/registry/cache-tools.ts`, matching `SEED_META.socialVelocity` in `api/health.js`. That widened the false-fresh window after a failed refresh from 30 minutes to 9 hours. CodeRabbit flagged it in an outside-diff review comment on the PR.
 
 ## What Didn't Work
 
@@ -41,7 +41,7 @@ The two failure modes cost different amounts. A budget tighter than the producer
 
 ## Solution
 
-One line in `evaluateFreshness`, directly after the age check (`api/mcp/freshness.ts:54-58`):
+One line in `evaluateFreshness`, directly after the age check (`api/_mcp/freshness.ts:54-58`):
 
 ```ts
     stale ||= (now - fetchedAt) / 60_000 > check.maxStaleMin;

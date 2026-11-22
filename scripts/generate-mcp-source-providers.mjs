@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const source = new URL('../shared/source-attribution-manifest.json', import.meta.url);
-const output = new URL('../api/mcp/registry/_source-providers.generated.json', import.meta.url);
+const output = new URL('../api/_mcp/registry/_source-providers.generated.json', import.meta.url);
 const fields = ['host', 'provider', 'kind', 'status', 'license'];
 const { entries } = JSON.parse(readFileSync(source, 'utf8'));
 // MCP exposes only active provider rows and the excluded population's count.

@@ -17,7 +17,7 @@ import {
   readDailyAllowance,
   reserveQuota,
   resolveAccountMcpBudget,
-} from '../api/mcp/quota.ts';
+} from '../api/_mcp/quota.ts';
 import { quotaHandler } from '../api/user/mcp-quota.ts';
 import { apiKeyDailyKey, apiKeyMemberDailyKey, checkBurst } from '../server/_shared/api-key-rate-limit.ts';
 import {
@@ -121,7 +121,7 @@ before(async () => {
     },
   });
   globalThis.fetch = async () => Response.json({ result: JSON.stringify({ ok: 1 }) });
-  mcpHandler = (await import('../api/mcp.ts')).mcpHandler;
+  mcpHandler = (await import('../api/_mcp.ts')).mcpHandler;
 });
 
 beforeEach(() => {

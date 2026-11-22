@@ -3,16 +3,16 @@ import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
 
-import { SERVER_VERSION, TOOL_DESCRIPTION_MAX_BYTES, TOOL_DESCRIPTIONS_TOTAL_MAX_BYTES } from '../api/mcp/constants.ts';
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
-import { TOOL_CATEGORY_BY_NAME } from '../api/mcp/domains.ts';
+import { SERVER_VERSION, TOOL_DESCRIPTION_MAX_BYTES, TOOL_DESCRIPTIONS_TOTAL_MAX_BYTES } from '../api/_mcp/constants.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
+import { TOOL_CATEGORY_BY_NAME } from '../api/_mcp/domains.ts';
 
 const originalEnv = { ...process.env };
 
 const VALID_KEY = 'wm_test_key_123';
 
 async function freshMod() {
-  return import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+  return import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
 }
 
 // tools/list shipped first-sentence descriptions (≤120 B) from v1.5.0 to
@@ -23,7 +23,7 @@ async function freshMod() {
 // guarantee, and full description coverage of every input-schema property
 // (nested oneOf branches included), which is what tool-definition graders
 // and agents actually read.
-describe('api/mcp.ts — tools/list description budget (v1.34.0)', () => {
+describe('api/_mcp.ts — tools/list description budget (v1.34.0)', () => {
   let mod;
 
   beforeEach(async () => {
@@ -203,7 +203,7 @@ describe('api/mcp.ts — tools/list description budget (v1.34.0)', () => {
     });
 
     it('R5: mutating result.inputSchema.properties.asset_class.items.enum does NOT mutate registry', async () => {
-      // get_market_data.asset_class has items.enum (api/mcp.ts:655).
+      // get_market_data.asset_class has items.enum (api/_mcp.ts:655).
       const tools1 = await getRegistry();
       const a1 = tools1.find(t => t.name === 'get_market_data');
       assert.ok(Array.isArray(a1.inputSchema.properties.asset_class?.items?.enum),
@@ -219,7 +219,7 @@ describe('api/mcp.ts — tools/list description budget (v1.34.0)', () => {
     });
 
     it('R5: mutating result.inputSchema.properties.<x>.enum does NOT mutate registry (direct-enum case)', async () => {
-      // get_news_intelligence.topic has direct enum (api/mcp.ts:810).
+      // get_news_intelligence.topic has direct enum (api/_mcp.ts:810).
       const tools1 = await getRegistry();
       const a1 = tools1.find(t => t.name === 'get_news_intelligence');
       assert.ok(Array.isArray(a1.inputSchema.properties.topic?.enum),
@@ -688,7 +688,7 @@ describe('api/mcp.ts — tools/list description budget (v1.34.0)', () => {
 
       // tools[] must be a name+description projection of the live registry,
       // plus the same access marker and MCP Apps link tools/list emits and the
-      // card-only category from api/mcp/domains.ts, in the same order.
+      // card-only category from api/_mcp/domains.ts, in the same order.
       const expected = TOOL_REGISTRY.map((t) => ({
         name: t.name,
         description: t.description,
@@ -701,7 +701,7 @@ describe('api/mcp.ts — tools/list description budget (v1.34.0)', () => {
       assert.deepEqual(
         card.tools,
         expected,
-        'server-card tools[] drifted from api/mcp/registry — regenerate the tools array in ' +
+        'server-card tools[] drifted from api/_mcp/registry — regenerate the tools array in ' +
           'public/.well-known/mcp/server-card.json from TOOL_REGISTRY (see comment above this test)',
       );
     });

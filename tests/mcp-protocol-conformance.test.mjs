@@ -45,7 +45,7 @@ const QUOTA_LIMIT = 50;
 // per-call in mcp-quota-concurrent.test.mjs).
 const PRESEED_BELOW_CAP = QUOTA_LIMIT - 1;
 
-describe('api/mcp.ts — protocol conformance lifecycle (in-process)', () => {
+describe('api/_mcp.ts — protocol conformance lifecycle (in-process)', () => {
   let mcpHandler;
 
   beforeEach(async () => {
@@ -83,7 +83,7 @@ describe('api/mcp.ts — protocol conformance lifecycle (in-process)', () => {
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

@@ -259,8 +259,8 @@ export async function startUpgradeCheckout(
       return rpcError(id, -32602, 'This plan is not available for checkout.', corsHeaders, { plans: MCP_CHECKOUT_PLANS });
     case 'unavailable':
       captureSilentError(new Error(`start_upgrade checkout unavailable: ${outcome.cause}`), {
-        tags: { route: 'api/mcp', step: 'start-upgrade', tool: START_UPGRADE_TOOL },
-        fingerprint: ['api/mcp', 'start-upgrade', outcome.cause],
+        tags: { route: 'api/_mcp', step: 'start-upgrade', tool: START_UPGRADE_TOOL },
+        fingerprint: ['api/_mcp', 'start-upgrade', outcome.cause],
         ctx,
       });
       return rpcError(

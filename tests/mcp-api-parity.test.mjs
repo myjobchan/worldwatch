@@ -19,7 +19,7 @@ import { readdirSync, readFileSync, mkdtempSync, writeFileSync, rmSync } from 'n
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
-import { __testing__ as mcpTesting } from '../api/mcp.ts';
+import { __testing__ as mcpTesting } from '../api/_mcp.ts';
 
 const { TOOL_REGISTRY } = mcpTesting;
 

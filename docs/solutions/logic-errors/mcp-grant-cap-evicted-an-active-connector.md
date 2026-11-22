@@ -29,7 +29,7 @@ Each account holds at most five active MCP OAuth grants (`MAX_TOKENS_PER_USER` i
 
 ## What Didn't Work
 
-- **Blaming the connect-time challenge.** An anonymous `initialize` gets a 401 challenge, and that rule has been unchanged since at least 2026-10-01 (`api/mcp/handler.ts`, `challengeAnonymous`). It explains why Glama needs a token, not why the token disappeared.
+- **Blaming the connect-time challenge.** An anonymous `initialize` gets a 401 challenge, and that rule has been unchanged since at least 2026-10-01 (`api/_mcp/handler.ts`, `challengeAnonymous`). It explains why Glama needs a token, not why the token disappeared.
 - **Blaming that day's MCP deploy.** #10293 changed only the `api.worldmonitor.app` alias. Glama checks `https://worldmonitor.app/mcp`.
 - **Looking for a refresh failure in logs.** The token endpoint emits usage rows only for rate limits (`emitOAuthTokenUsage` in `api/oauth/token.ts`), and Vercel runtime logs carry no line for a successful refresh or an `invalid_grant`. Neither source can show a refresh being rejected.
 

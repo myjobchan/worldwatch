@@ -10,7 +10,7 @@ dependencies: []
 
 ## Problem Statement
 
-PR #2940 ships `shared/geography.js` with `REGIONS` and `forecastLabel` fields. PR #2942 ships `ForecastPanel.ts:10-19` with a hardcoded `FORECAST_REGIONS` constant duplicating the same labels. Plus `api/mcp.ts:556` enumerates DIFFERENT region examples ("Asia Pacific" not "East Asia"), breaking agent-native parity. Plus `scripts/seed-forecasts.mjs` writes `f.region` strings via `MACRO_REGION_MAP` that are a fourth implicit source.
+PR #2940 ships `shared/geography.js` with `REGIONS` and `forecastLabel` fields. PR #2942 ships `ForecastPanel.ts:10-19` with a hardcoded `FORECAST_REGIONS` constant duplicating the same labels. Plus `api/_mcp.ts:556` enumerates DIFFERENT region examples ("Asia Pacific" not "East Asia"), breaking agent-native parity. Plus `scripts/seed-forecasts.mjs` writes `f.region` strings via `MACRO_REGION_MAP` that are a fourth implicit source.
 
 Adding a region requires editing 3-4 files. They will drift.
 
@@ -18,14 +18,14 @@ Adding a region requires editing 3-4 files. They will drift.
 
 - `src/components/ForecastPanel.ts:10-19` — hardcoded `FORECAST_REGIONS` constant.
 - `shared/geography.js:46-124` — canonical `REGIONS` with `forecastLabel` field.
-- `api/mcp.ts:556-577` — generate_forecasts tool description enumerates "Asia Pacific" etc. (different from geography).
+- `api/_mcp.ts:556-577` — generate_forecasts tool description enumerates "Asia Pacific" etc. (different from geography).
 - `scripts/seed-forecasts.mjs` — `MACRO_REGION_MAP` as implicit fourth source.
 
 ## Proposed Solutions
 
 ### Option 1: ForecastPanel.ts imports REGIONS from shared/geography
 
-Derive `FORECAST_REGIONS` via `REGIONS.map(r => ({ id: r.id, label: r.forecastLabel }))`. Update `api/mcp.ts` to enumerate the same labels (also via import from geography).
+Derive `FORECAST_REGIONS` via `REGIONS.map(r => ({ id: r.id, label: r.forecastLabel }))`. Update `api/_mcp.ts` to enumerate the same labels (also via import from geography).
 
 **Pros:** Zero new files; uses the module already designated as canonical; straight deletion of duplicates.
 **Cons:** Minor — TS consumers need to deal with a `.js` import, but that's already a pattern elsewhere.
@@ -54,7 +54,7 @@ The `scripts/seed-forecasts.mjs` `MACRO_REGION_MAP` is a fourth source but its j
 ## Acceptance Criteria
 
 - [ ] `ForecastPanel.ts` imports `REGIONS` from `shared/geography.js`.
-- [ ] `api/mcp.ts` `generate_forecasts` tool description enumerates exactly the same labels.
+- [ ] `api/_mcp.ts` `generate_forecasts` tool description enumerates exactly the same labels.
 - [ ] Adding a region in `geography.js` automatically updates UI pills and MCP description.
 - [ ] `MACRO_REGION_MAP` in `seed-forecasts.mjs` references `REGIONS` for the region IDs.
 

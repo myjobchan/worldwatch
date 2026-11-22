@@ -2,7 +2,7 @@ import { describe, it, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { __testing__ } from '../api/mcp.ts';
+import { __testing__ } from '../api/_mcp.ts';
 
 const originalFetch = globalThis.fetch;
 

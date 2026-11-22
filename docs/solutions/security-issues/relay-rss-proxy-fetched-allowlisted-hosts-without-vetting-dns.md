@@ -65,5 +65,5 @@ The five source-guard tests fail against `main`'s relay file.
 ## Related
 
 - `server/_shared/ip-address-classification.ts`, `api/_notification-webhook-ssrf.ts` and `scripts/lib/notification-webhook-ssrf.cjs` are the three mirrored classifiers with a parity corpus. New prefixes go into all three.
-- `api/mcp-proxy.ts` is the Edge pattern for the same problem: DNS-over-HTTPS pre-check and re-check, because Edge cannot pin a socket.
+- `api/_mcp-proxy.ts` is the Edge pattern for the same problem: DNS-over-HTTPS pre-check and re-check, because Edge cannot pin a socket.
 - `docs/solutions/security-issues/push-notification-click-navigated-the-open-tab-off-origin.md` for the other relay-side validation gap found by review.

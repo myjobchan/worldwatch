@@ -199,6 +199,42 @@ it('recovers Vercel history when its checkout has no origin remote', () => withD
   }
 }));
 
+it('keeps the committed manifest when a shallow checkout is built on Vercel', () => withDateFixture((root) => {
+  generate(root);
+  const committed = readFileSync(join(root, OUTPUT), 'utf8');
+  const shallow = mkdtempSync(join(tmpdir(), 'wm-docs-dates-vercel-keep-'));
+  try {
+    execFileSync('git', ['add', OUTPUT], { cwd: root, env: isolatedGitEnv() });
+    execFileSync('git', ['commit', '--quiet', '-m', 'docs: commit dates'], { cwd: root, env: isolatedGitEnv() });
+    execFileSync('git', ['clone', '--quiet', '--depth=1', pathToFileURL(root).href, shallow], { env: isolatedGitEnv() });
+    const before = readFileSync(join(shallow, OUTPUT), 'utf8');
+    assert.equal(before, committed);
+    const output = generate(shallow, ['--fetch-history'], { VERCEL: '1' }).toString();
+    assert.match(output, /keeping committed/);
+    assert.equal(readFileSync(join(shallow, OUTPUT), 'utf8'), before);
+  } finally {
+    rmSync(shallow, { recursive: true, force: true });
+  }
+}));
+
+it('keeps the committed manifest when unshallow fetch fails', () => withDateFixture((root) => {
+  generate(root);
+  const shallow = mkdtempSync(join(tmpdir(), 'wm-docs-dates-fetch-fail-'));
+  try {
+    execFileSync('git', ['add', OUTPUT], { cwd: root, env: isolatedGitEnv() });
+    execFileSync('git', ['commit', '--quiet', '-m', 'docs: commit dates'], { cwd: root, env: isolatedGitEnv() });
+    execFileSync('git', ['clone', '--quiet', '--depth=1', pathToFileURL(root).href, shallow], { env: isolatedGitEnv() });
+    const before = readFileSync(join(shallow, OUTPUT), 'utf8');
+    execFileSync('git', ['remote', 'set-url', 'origin', join(shallow, 'missing-origin')], { cwd: shallow, env: isolatedGitEnv() });
+    const output = generate(shallow, ['--fetch-history']).toString();
+    assert.match(output, /git fetch failed/);
+    assert.match(output, /keeping committed/);
+    assert.equal(readFileSync(join(shallow, OUTPUT), 'utf8'), before);
+  } finally {
+    rmSync(shallow, { recursive: true, force: true });
+  }
+}));
+
 it('generates dates before every web build and checks generated output in CI', () => {
   const { scripts } = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8'));
   for (const build of ['build', 'build:full', 'build:tech', 'build:finance', 'build:happy', 'build:commodity', 'build:energy']) {

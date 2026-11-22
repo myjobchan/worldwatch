@@ -5,7 +5,7 @@
  * scripts/generate-public-product-facts.mjs renders the categories, tags, and
  * per-tool category onto the server card and splices MCP_DOMAIN_SUMMARY into
  * the generated spans of the markdown and JSON discovery files. At runtime the
- * handler reads only TOOL_CATEGORY_BY_NAME, through api/mcp/server-card-tools.ts,
+ * handler reads only TOOL_CATEGORY_BY_NAME, through api/_mcp/server-card-tools.ts,
  * to rebuild the served card. The live `tools/list` wire shape does not read
  * this module. tests/mcp-domains.test.mjs fails when a registry tool has no
  * category here.

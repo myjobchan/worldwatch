@@ -168,7 +168,7 @@ export async function resolveBearerToContext(token) {
  * contract for `{userId, mcpTokenId}` and would mis-handle a Pro bearer).
  *
  * U7's MCP edge will call `resolveBearerToContext` directly. Until then,
- * the only caller (`api/mcp.ts`) keeps the env-key-only contract — Pro
+ * the only caller (`api/_mcp.ts`) keeps the env-key-only contract — Pro
  * bearers correctly resolve to "no API key" and 401 at that layer, which
  * is a safe interim posture (Pro flow can't reach the MCP server until
  * U7 ships the union-aware path).

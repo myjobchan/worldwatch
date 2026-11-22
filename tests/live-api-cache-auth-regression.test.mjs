@@ -575,8 +575,8 @@ describe(`live API cache/auth regression sweep (${LIVE ? 'ENABLED' : 'SKIPPED - 
       const content = readBody.result?.contents?.[0];
       // Same per-URI rule as the in-process sibling check in
       // tests/mcp-resources.test.mjs: `ui://` app shells are
-      // `text/html;profile=mcp-app` (api/mcp/ui/shell.ts), the static agent
-      // guide is `text/markdown` (api/mcp/resources/index.ts), and every
+      // `text/html;profile=mcp-app` (api/_mcp/ui/shell.ts), the static agent
+      // guide is `text/markdown` (api/_mcp/resources/index.ts), and every
       // other resource is JSON data. Exact match, so a resource declaring
       // another resource's type still fails.
       const isUiShell = resource.uri.startsWith('ui://');

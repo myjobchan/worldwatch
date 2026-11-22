@@ -9,10 +9,10 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
 import jmespath from 'jmespath';
 
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
-import { TOOL_CATEGORY_BY_NAME } from '../api/mcp/domains.ts';
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
-import { utf8ByteLength } from '../api/mcp/utils.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
+import { TOOL_CATEGORY_BY_NAME } from '../api/_mcp/domains.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
+import { utf8ByteLength } from '../api/_mcp/utils.ts';
 import { NO2_ACTIVITY_KEY, NO2_REGIONS } from '../scripts/shared/no2-activity.mjs';
 import { REST_ATTRIBUTION_EXPRESSIONS } from '../shared/attribution-rider.ts';
 import { getNo2Activity } from '../server/worldmonitor/economic/v1/get-no2-activity.ts';

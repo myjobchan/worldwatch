@@ -22,7 +22,7 @@ tags: [sentry, mcp-proxy, upstream-outcome, json-rpc, canary, double-report, exp
 
 ## Problem
 
-`api/mcp-proxy.ts` relays a caller-chosen remote MCP server. Two of that server's outcomes reached Sentry as if the proxy had failed: a JSON-RPC `error` object answered on HTTP 200, and the proxy's own 504 relaying the remote's timeout. Both are the remote server's verdict on the caller's request, not a WorldMonitor defect, and together they produced the two noisiest edge issues of the 2026-10-14 triage. Fixed in #9140. The 504 half only took effect with #9453, because a third CORS layer hid the marker header (see "Third regrowth" below).
+`api/_mcp-proxy.ts` relays a caller-chosen remote MCP server. Two of that server's outcomes reached Sentry as if the proxy had failed: a JSON-RPC `error` object answered on HTTP 200, and the proxy's own 504 relaying the remote's timeout. Both are the remote server's verdict on the caller's request, not a WorldMonitor defect, and together they produced the two noisiest edge issues of the 2026-10-14 triage. Fixed in #9140. The 504 half only took effect with #9453, because a third CORS layer hid the marker header (see "Third regrowth" below).
 
 ## Symptoms
 
@@ -38,12 +38,12 @@ tags: [sentry, mcp-proxy, upstream-outcome, json-rpc, canary, double-report, exp
 
 ## Solution
 
-1. **Carry the remote's JSON-RPC verdict on the error and stop reporting it.** `McpProxyUpstreamError` accepts `upstreamRpcError`, sets `upstreamRpcRejected` and a bounded integer `upstreamRpcCode` (`api/mcp-proxy.ts:260`). All eight `rejected request` throw sites go through one `upstreamRpcRejection(step, error)` helper. `proxyFailureFor().report` is false for a JSON-RPC rejection, in the same clause as the 401/403 exclusion (`api/mcp-proxy.ts:306-307`). The caller's 422 body is unchanged.
+1. **Carry the remote's JSON-RPC verdict on the error and stop reporting it.** `McpProxyUpstreamError` accepts `upstreamRpcError`, sets `upstreamRpcRejected` and a bounded integer `upstreamRpcCode` (`api/_mcp-proxy.ts:260`). All eight `rejected request` throw sites go through one `upstreamRpcRejection(step, error)` helper. `proxyFailureFor().report` is false for a JSON-RPC rejection, in the same clause as the 401/403 exclusion (`api/_mcp-proxy.ts:306-307`). The caller's 422 body is unchanged.
 2. **Keep the signal in the audit log instead.** `logProxyCall` gains `upstream_rpc_code`, so a proxy-wide regression (every remote answering `-32602` to our `initialize`) is still visible in Axiom even though it no longer pages.
-3. **Mark the relayed timeout so the browser does not re-report it.** The proxy's timeout 504 carries `X-Wm-Upstream-Timeout: 1` (`api/mcp-proxy.ts:1118`); the header is exposed in every CORS layer: `api/_cors.js`, `server/cors.ts` and, since #9453, the `api-cors-preflight` Worker (`workers/api-cors-preflight/src/index.js:58`); `reportServerError` returns early on it (`src/services/premium-fetch.ts:87`), next to the existing `X-Wm-Session-Degraded` and `X-RateLimit-Mode: degraded` skips. An unmarked 504 on the same path is still reported, pinned by test.
+3. **Mark the relayed timeout so the browser does not re-report it.** The proxy's timeout 504 carries `X-Wm-Upstream-Timeout: 1` (`api/_mcp-proxy.ts:1118`); the header is exposed in every CORS layer: `api/_cors.js`, `server/cors.ts` and, since #9453, the `api-cors-preflight` Worker (`workers/api-cors-preflight/src/index.js:58`); `reportServerError` returns early on it (`src/services/premium-fetch.ts:87`), next to the existing `X-Wm-Session-Degraded` and `X-RateLimit-Mode: degraded` skips. An unmarked 504 on the same path is still reported, pinned by test.
 
 ```ts
-// api/mcp-proxy.ts — the remote answered; its JSON-RPC error is its verdict, not ours
+// api/_mcp-proxy.ts — the remote answered; its JSON-RPC error is its verdict, not ours
 report: !(error instanceof McpProxyUpstreamError
   && (UPSTREAM_CALLER_REJECTIONS.has(error.upstreamStatus) || error.upstreamRpcRejected)),
 ```
@@ -63,7 +63,7 @@ The exclusion above still missed a shape. Two days after #9140 deployed, WORLDMO
 WORLDMONITOR-17A kept firing after #9140 deployed: 7 more `API 504: /api/mcp-proxy` events from 2026-10-14 to 2026-10-20. The proxy was doing its part:
 
 - **The events came from builds that had the skip.** `git merge-base --is-ancestor <#9140 commit> <event release>` was true for every event after 2026-10-14. The browser-side check in `premium-fetch` was deployed and still did not fire.
-- **The server set the marker.** Each Sentry event matched an Axiom `wm_api_usage` row for `/api/mcp-proxy` with status 504, to the second. Each took 3.5 to 21 s, which is the proxy's own timeout path. That path is the only 504 the handler mints, and it always sets `X-Wm-Upstream-Timeout: 1` (`api/mcp-proxy.ts:1117-1118`).
+- **The server set the marker.** Each Sentry event matched an Axiom `wm_api_usage` row for `/api/mcp-proxy` with status 504, to the second. Each took 3.5 to 21 s, which is the proxy's own timeout path. That path is the only 504 the handler mints, and it always sets `X-Wm-Upstream-Timeout: 1` (`api/_mcp-proxy.ts:1117-1118`).
 - **The browser could not read it.** A live `POST https://api.worldmonitor.app/api/mcp-proxy` with `Origin: https://finance.worldmonitor.app` returned an `Access-Control-Expose-Headers` value that did not contain `X-Wm-Upstream-Timeout`. Without that, `res.headers.get('X-Wm-Upstream-Timeout')` returns `null` cross-origin, so `reportServerError` reported every relayed timeout.
 
 The served list came from neither CORS helper. It came from the Cloudflare Worker `workers/api-cors-preflight/src/index.js`, which is bound to `api.worldmonitor.app/*`. The Worker keeps its own hardcoded `EXPOSE_HEADERS` and replaces the function's header on every non-public `/api/` response. #9140 updated `api/_cors.js` and `server/cors.ts` but not the Worker. Nothing in CI caught it, for two reasons:

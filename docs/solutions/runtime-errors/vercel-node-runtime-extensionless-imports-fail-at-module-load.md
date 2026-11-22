@@ -2,7 +2,7 @@
 title: "Vercel Node-runtime routes fail at module load on extensionless relative imports"
 date: 2026-10-08
 category: runtime-errors
-module: api/mcp-proxy.ts
+module: api/_mcp-proxy.ts
 problem_type: runtime_error
 component: tooling
 severity: high
@@ -20,7 +20,7 @@ tags: [vercel-node-runtime, native-esm, err-module-not-found, import-specifiers,
 
 ## Problem
 
-Moving `api/mcp-proxy.ts` from the Edge runtime to the Node runtime (needed to pin upstream sockets for GHSA-887j) took the route down in production twice. PR #4749 was reverted by #4754, and PR #7578 was reverted by #7605. The second failure stayed undiagnosed for a month, because nothing outside the built artifact shows it.
+Moving `api/_mcp-proxy.ts` from the Edge runtime to the Node runtime (needed to pin upstream sockets for GHSA-887j) took the route down in production twice. PR #4749 was reverted by #4754, and PR #7578 was reverted by #7605. The second failure stayed undiagnosed for a month, because nothing outside the built artifact shows it.
 
 ## Symptoms
 
@@ -41,7 +41,7 @@ Reproduce with Vercel's own builder, then make the import graph loadable as nati
 **Reproduction.** Extract the reverted commit into a scratch project and build it:
 
 1. Run `git archive caf42e6287` for `api`, `server`, `shared`, `src/shared`, `src/generated`, `src/config`, `package.json` and `tsconfig.json`.
-2. Keep only `api/mcp-proxy.ts`, the `_*` helpers and `api/mcp/`.
+2. Keep only `api/_mcp-proxy.ts`, the `_*` helpers and `api/_mcp/`.
 3. Strip `scripts` from `package.json`, because the repo `postinstall` needs files the scratch copy lacks.
 4. Add a stub `.vercel/project.json` with `"buildCommand": "true"` and `"outputDirectory": "public"`.
 5. Run `vercel build --yes` and import the emitted function:
@@ -50,7 +50,7 @@ Reproduce with Vercel's own builder, then make the import graph loadable as nati
 .vercel/output/functions/api/mcp-proxy.func/api/mcp-proxy.js
   import { isCallerPremium } from '../server/_shared/premium-check';
 
-node -e "import('./api/mcp-proxy.js')"
+node -e "import('./api/_mcp-proxy.js')"
   ERR_MODULE_NOT_FOUND Cannot find module '.../mcp-proxy.func/server/_shared/premium-check'
 ```
 

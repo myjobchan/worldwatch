@@ -2,7 +2,7 @@
 title: "MCP quota scoped by credential class, not plan family, let API-tier subscribers mint pro-tier allowance"
 date: 2026-07-26
 category: security-issues
-module: api/mcp/quota.ts
+module: api/_mcp/quota.ts
 problem_type: security_issue
 component: payments
 severity: high
@@ -10,7 +10,7 @@ symptoms:
   - "api_starter/api_business subscribers satisfy the pro OAuth token mint gate (tier>=1 + mcpAccess in api/oauth/authorize-pro.ts) and, once minted, receive the 1000/day MCP catalog allowance instead of their entitled 50/day"
   - "user_key and pro-OAuth credential classes belonging to the same user increment the same per-user Redis daily quota counter even though the two contexts resolve to different daily limits"
   - "a user_key request rejected at the hardcoded 50/day cap clamps the shared Redis counter down to 50 (F4 counter-clamp-on-rejection), refunding quota already consumed under the higher-limit pro-OAuth context"
-  - "the Settings page MCP quota display (api/user/mcp-quota.ts) and the enforcement path (api/mcp/auth.ts checkMcpEntitlementGate) could disagree because each independently resolved the daily limit from plan key"
+  - "the Settings page MCP quota display (api/user/mcp-quota.ts) and the enforcement path (api/_mcp/auth.ts checkMcpEntitlementGate) could disagree because each independently resolved the daily limit from plan key"
 root_cause: scope_issue
 resolution_type: code_fix
 related_components: [assistant, testing_framework]
@@ -34,12 +34,12 @@ check. The pro pre-check read the allowance straight off the entitlement and pas
 metering layer, with no filter on which plan it came from:
 
 ```ts
-// api/mcp/auth.ts — before (checkMcpEntitlementGate)
+// api/_mcp/auth.ts — before (checkMcpEntitlementGate)
 const passed = (): McpPreCheckResult => ({ ok: true, mcpDailyLimit: ent?.features?.planLimits?.mcpCallsPerDay });
 ```
 
-`checkMcpEntitlementGate` is shared by both identity-resolved contexts (`api/mcp/auth.ts:438`), and
-`runUserKeyPreChecks` drops the limit on the way out (`api/mcp/auth.ts:485-499`), so a `user_key`
+`checkMcpEntitlementGate` is shared by both identity-resolved contexts (`api/_mcp/auth.ts:438`), and
+`runUserKeyPreChecks` drops the limit on the way out (`api/_mcp/auth.ts:485-499`), so a `user_key`
 caller really did stay at 50. The gap is on the other side: **API-tier subscribers can mint a pro
 OAuth token too.** The mint gate in `api/oauth/authorize-pro.ts:362-367` rejects only on
 `tier < 1 || mcpAccess !== true || validUntil < now` — and `api_starter` is `tier: 2` with
@@ -52,9 +52,9 @@ presented as a `wm_…` user key, stayed capped at 50 — the exact allowance ra
 future decision, granted by accident through the other credential.
 
 A second failure rides on the first. Both credential classes INCR the **same** per-user Redis daily
-counter, `dailyCounterKey(userId)` (`api/mcp/quota.ts:84`, `api/mcp/dispatch.ts:157` covering both
+counter, `dailyCounterKey(userId)` (`api/_mcp/quota.ts:84`, `api/_mcp/dispatch.ts:157` covering both
 `pro` and `user_key`). The F4 counter-clamp on the rejection path deliberately clamps toward the
-*rejecting context's resolved limit* rather than the plan default (`api/mcp/quota.ts:146-172`, and
+*rejecting context's resolved limit* rather than the plan default (`api/_mcp/quota.ts:146-172`, and
 the comment at `:130-133` explains why: clamping a 250/day caller down to 50 would hand them 200 free
 calls). With two different limits resolvable against one counter, a `user_key` rejection at 50 could
 clamp a counter that a 1000/day pro context had legitimately driven past it — a refund of
@@ -98,12 +98,12 @@ matches the stated rule "API tiers keep 50" and nothing else.
 dissolve the clamp interaction directly, but it changes what the meter means: one user could then
 consume 50 through the key *and* 250 through OAuth. The counter is per-user on purpose (the principal
 is the key owner — the same reasoning already applied to the shared 60/min limiter,
-`api/mcp/auth.ts:525-530`).
+`api/_mcp/auth.ts:525-530`).
 
 ## Solution
 
-A shared helper in `api/mcp/quota.ts:68-74` gates the plan allowance on plan family, backed by an
-explicit deny-list at `api/mcp/quota.ts:51-56`:
+A shared helper in `api/_mcp/quota.ts:68-74` gates the plan allowance on plan family, backed by an
+explicit deny-list at `api/_mcp/quota.ts:51-56`:
 
 ```ts
 const API_TIER_MCP_CAPPED_PLAN_KEYS = new Set([
@@ -122,13 +122,13 @@ export function resolvePlanDrivenMcpAllowance(
 }
 ```
 
-Returning `undefined` hands the value to `resolveDailyLimit` (`api/mcp/quota.ts:34-40`), which maps
+Returning `undefined` hands the value to `resolveDailyLimit` (`api/_mcp/quota.ts:34-40`), which maps
 anything unreadable — `undefined`, a legacy row with no `planLimits`, NaN, a negative — to
 `PRO_DAILY_QUOTA_LIMIT` (50, `server/_shared/pro-mcp-token.ts:483`). `null` still passes through as
 unlimited and `0` is still honoured verbatim.
 
 Both consumers call it. Enforcement, in the `passed()` closure of `checkMcpEntitlementGate`
-(`api/mcp/auth.ts:461-464`):
+(`api/_mcp/auth.ts:461-464`):
 
 ```ts
 const passed = (): McpPreCheckResult => ({
@@ -142,7 +142,7 @@ And the Settings display endpoint, at `api/user/mcp-quota.ts:130`, feeding the s
 than by a second copy of the normalisation.
 
 Note that `api_business_annual` is in the deny-list but is not a plan key in the catalog today (grep
-finds it only at `api/mcp/quota.ts:55`) — a deliberate forward entry so an annual API-Business SKU
+finds it only at `api/_mcp/quota.ts:55`) — a deliberate forward entry so an annual API-Business SKU
 cannot ship the leak back in.
 
 The fix landed in the review-fix commit of PR #5635 (`feat/pro-business-tier`), open and unmerged as
@@ -158,7 +158,7 @@ says it is deliberate, so a Pro seat cannot mint a `wm_…` key). So the only pl
 `user_key` at all are the API family, and those now resolve to the same 50 on both paths. No user can
 present two differing limits against one counter. Enterprise is the one plan holding both credentials
 with a plan-driven value, and its value is `null` — the unlimited path skips the rejection branch
-entirely (`api/mcp/quota.ts:122`), so it never clamps.
+entirely (`api/_mcp/quota.ts:122`), so it never clamps.
 
 The deny-list direction is what preserves the rest of the surface: every plan not named keeps its
 allowance verbatim, which is why pro's 50, pro_business's 250, enterprise's `null` and free's `0` all
@@ -181,8 +181,8 @@ against every writer of the counter it governs, not just the caller being change
 
 **Route both the enforcement and the display of a limit through one exported function.** The Settings
 endpoint exists specifically to show users the cap the meter applies; a second copy of the
-normalisation would be exactly the drift it exists to prevent (`api/mcp/quota.ts:30-32`). There is a
-test pinning the reuse — `tests/mcp-quota.test.mjs:390`, "reuses api/mcp/quota.ts resolveDailyLimit —
+normalisation would be exactly the drift it exists to prevent (`api/_mcp/quota.ts:30-32`). There is a
+test pinning the reuse — `tests/mcp-quota.test.mjs:390`, "reuses api/_mcp/quota.ts resolveDailyLimit —
 no second copy of the normalisation".
 
 **Mutation-test a security fix before claiming coverage** (standing rule, *auto memory [claude]*).

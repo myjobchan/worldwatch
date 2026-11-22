@@ -2,12 +2,12 @@
 title: "get_keyword_spikes advertised a 48-hour baseline while its capped fetch sampled ~2 hours"
 date: 2026-07-28
 category: logic-errors
-module: api/mcp/registry/nlp-tools.ts
+module: api/_mcp/registry/nlp-tools.ts
 problem_type: logic_error
 component: assistant
 severity: high
 symptoms:
-  - "get_keyword_spikes (api/mcp/registry/nlp-tools.ts, extracted from rpc-tools.ts) divided per-keyword story counts by a hardcoded KEYWORD_SPIKE_BASELINE_MS (48h) while the ZRANGE feeding it was capped at LIMIT 0 800 over digest:accumulator:v1:full:en"
+  - "get_keyword_spikes (api/_mcp/registry/nlp-tools.ts, extracted from rpc-tools.ts) divided per-keyword story counts by a hardcoded KEYWORD_SPIKE_BASELINE_MS (48h) while the ZRANGE feeding it was capped at LIMIT 0 800 over digest:accumulator:v1:full:en"
   - "At real production volume (~350-440 stories/hour per scripts/lib/story-track-batch-reader.mjs) the newest 800 entries span only ~2 hours, so almost every term's baseline count computed to ~0 and the spike decision fell through to the cold-start rule"
   - "Multipliers inflated by roughly the ratio of the assumed 48h span to the ~2h actually sampled (~23x), while the tool response's baseline_hours field still reported a flat 48"
   - "Nothing failed loudly: the cap (KEYWORD_SPIKE_MAX_STORIES) and the window constant (KEYWORD_SPIKE_BASELINE_MS) each looked correct read in isolation, and the mismatch only surfaced by joining the cap against the accumulator's real fill rate"
@@ -22,7 +22,7 @@ tags: [mcp, keyword-spikes, baseline-window, capped-fetch, redis-zrange, digest-
 
 ## Problem
 
-`get_keyword_spikes` — the MCP tool added in [PR #5734](https://github.com/koala73/worldmonitor/pull/5734) for issue #5697 — reports trending keyword, CVE, and APT/FIN spikes by comparing a recent-window story count against a per-window baseline rate. It reads the story corpus out of the 48-hour digest accumulator with a single capped, newest-first range query (`api/mcp/registry/nlp-tools.ts:443-447` — the tool was later extracted from `rpc-tools.ts` into its own registry module, so line references here point at that module):
+`get_keyword_spikes` — the MCP tool added in [PR #5734](https://github.com/koala73/worldmonitor/pull/5734) for issue #5697 — reports trending keyword, CVE, and APT/FIN spikes by comparing a recent-window story count against a per-window baseline rate. It reads the story corpus out of the 48-hour digest accumulator with a single capped, newest-first range query (`api/_mcp/registry/nlp-tools.ts:443-447` — the tool was later extracted from `rpc-tools.ts` into its own registry module, so line references here point at that module):
 
 ```ts
 const zres = await redisPipeline([[
@@ -32,7 +32,7 @@ const zres = await redisPipeline([[
 ]]) as Array<{ result?: unknown }> | null;
 ```
 
-`KEYWORD_SPIKE_MAX_STORIES` is 800 (`api/mcp/registry/nlp-tools.ts:42`) and `KEYWORD_SPIKE_BASELINE_MS` is 48h, annotated `// digest:accumulator retention` (`api/mcp/registry/nlp-tools.ts:40`). As originally written — in the commit that first added the tool, before the review fix later in the same PR — that 48h constant was handed to the spike math as the baseline span and echoed back to the caller as the tool's `baseline_hours`:
+`KEYWORD_SPIKE_MAX_STORIES` is 800 (`api/_mcp/registry/nlp-tools.ts:42`) and `KEYWORD_SPIKE_BASELINE_MS` is 48h, annotated `// digest:accumulator retention` (`api/_mcp/registry/nlp-tools.ts:40`). As originally written — in the commit that first added the tool, before the review fix later in the same PR — that 48h constant was handed to the spike math as the baseline span and echoed back to the caller as the tool's `baseline_hours`:
 
 ```ts
 const spikes = computeKeywordSpikesFromStories(stories, {
@@ -201,5 +201,5 @@ Two corollaries worth generalizing:
 - [`docs/solutions/best-practices/gate-rollouts-on-traffic-weighted-data-not-a-hand-picked-cohort.md`](../best-practices/gate-rollouts-on-traffic-weighted-data-not-a-hand-picked-cohort.md) — closest existing analogue: a derived statistic (p95) misled because its real sample differed from the assumed frame, fixed by reporting the actual sample size instead of trusting it. Different subsystem, same abstract move.
 - [`docs/solutions/logic-errors/locale-specific-china-news-coverage-projection.md`](locale-specific-china-news-coverage-projection.md) — a published contract claimed coverage its computed inputs never verified. Same "advertised a frame it did not sample" shape.
 - [`docs/solutions/logic-errors/bootstrap-key-health-missing-payload.md`](bootstrap-key-health-missing-payload.md) — adjacent freshness/coverage precedent: a green signal that disagreed with what was actually produced.
-- [`docs/solutions/security-issues/mcp-quota-credential-class-vs-plan-family-scoping-bypass.md`](../security-issues/mcp-quota-credential-class-vs-plan-family-scoping-bypass.md) — another `api/mcp/*` correctness bug surfaced by the same multi-reviewer adversarial process, not by tests.
+- [`docs/solutions/security-issues/mcp-quota-credential-class-vs-plan-family-scoping-bypass.md`](../security-issues/mcp-quota-credential-class-vs-plan-family-scoping-bypass.md) — another `api/_mcp/*` correctness bug surfaced by the same multi-reviewer adversarial process, not by tests.
 - Issue [#5723](https://github.com/koala73/worldmonitor/issues/5723) — `e2e/keyword-spike-flow.spec.ts` fails on `main` independently of this fix; noted here only so the two are not conflated.

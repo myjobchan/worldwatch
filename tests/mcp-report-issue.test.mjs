@@ -62,7 +62,7 @@ before(async () => {
       return { success, limit: tokens, remaining: success ? tokens - 1 : 0, reset: Date.now() + 60_000, pending: Promise.resolve() };
     },
   });
-  ({ dispatchToolsCall } = await import('../api/mcp/dispatch.ts'));
+  ({ dispatchToolsCall } = await import('../api/_mcp/dispatch.ts'));
   ({ FEEDBACK_MAX_BODY_BYTES } = await import('../server/_shared/agent-feedback.ts'));
 });
 
@@ -232,7 +232,7 @@ describe('report_issue — refusals', () => {
   });
 
   it('holds the cap on the real anonymous path through mcpHandler', async () => {
-    const { mcpHandler } = await import('../api/mcp/handler.ts');
+    const { mcpHandler } = await import('../api/_mcp/handler.ts');
     const res = await mcpHandler(new Request('https://worldmonitor.app/mcp', {
       method: 'POST',
       headers: {
@@ -287,7 +287,7 @@ describe('error guidance', () => {
   });
 
   it('points an unexpected tool failure at report_issue', async () => {
-    const { TOOL_REGISTRY } = await import('../api/mcp/registry/index.ts');
+    const { TOOL_REGISTRY } = await import('../api/_mcp/registry/index.ts');
     const tool = TOOL_REGISTRY.find((t) => t.name === 'get_sources');
     const original = tool._execute;
     tool._execute = async () => { throw new Error('synthetic failure'); };
@@ -302,8 +302,8 @@ describe('error guidance', () => {
 
   it('does not point an upstream rate limit or outage at report_issue', async () => {
     // Expected states: a report would spend the caller's allowance on noise.
-    const { TOOL_REGISTRY } = await import('../api/mcp/registry/index.ts');
-    const { ToolFetchError, BothSourcesFailedError } = await import('../api/mcp/downstream.ts');
+    const { TOOL_REGISTRY } = await import('../api/_mcp/registry/index.ts');
+    const { ToolFetchError, BothSourcesFailedError } = await import('../api/_mcp/downstream.ts');
     const tool = TOOL_REGISTRY.find((t) => t.name === 'get_sources');
     const original = tool._execute;
     const failures = [
@@ -314,7 +314,7 @@ describe('error guidance', () => {
     ];
     // Tools such as get_country_coverage fail through assertToolFetchOk, so
     // capture the error it really throws for each outage status.
-    const { assertToolFetchOk } = await import('../api/mcp/billing-denial.ts');
+    const { assertToolFetchOk } = await import('../api/_mcp/billing-denial.ts');
     for (const status of [429, 502, 503, 504]) {
       const err = await assertToolFetchOk({ ok: false, status, headers: new Headers() }, 'get-country-coverage').catch((e) => e);
       assert.equal(err.message, `get-country-coverage HTTP ${status}`, 'the message contract is unchanged');
@@ -355,7 +355,7 @@ describe('report_issue output status', () => {
   // a schema-checking client rejects a valid retry result.
   it('advertises every status the feedback table can store', async () => {
     const { agentFeedbackStatusValidator } = await import('../convex/lib/agentFeedbackValidators.ts');
-    const { FEEDBACK_TOOLS } = await import('../api/mcp/registry/feedback-tools.ts');
+    const { FEEDBACK_TOOLS } = await import('../api/_mcp/registry/feedback-tools.ts');
     const stored = agentFeedbackStatusValidator.members.map((member) => member.value).sort();
     const advertised = [...FEEDBACK_TOOLS[0].outputSchema.properties.status.enum].sort();
     assert.deepEqual(advertised, stored);

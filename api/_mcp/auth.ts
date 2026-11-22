@@ -568,8 +568,8 @@ export async function runProPreChecks(
   // U10 deploy gate; matches the runtime check in `buildAuthHeaders`.
   if (!process.env.MCP_INTERNAL_HMAC_SECRET) {
     captureSilentError(new Error('MCP_INTERNAL_HMAC_SECRET unset'), {
-      tags: { route: 'api/mcp', step: 'pro-secret-preflight' },
-      fingerprint: ['api/mcp', 'pro-secret-preflight', 'Error'],
+      tags: { route: 'api/_mcp', step: 'pro-secret-preflight' },
+      fingerprint: ['api/_mcp', 'pro-secret-preflight', 'Error'],
       ctx,
     });
     return { ok: false, response: new Response(
@@ -610,12 +610,12 @@ export async function validateProMcpAuthorization(
     validation = await deps.validateProMcpToken(context.mcpTokenId);
   } catch (err) {
     // Explicit fingerprint: this capture shares the minified edge bundle's
-    // anonymous frames with every other `api/mcp` capture, so Sentry's default
+    // anonymous frames with every other `api/_mcp` capture, so Sentry's default
     // stack grouping merges it into the WORLDMONITOR-T8 catch-all. `threw`
     // keeps the defect arm in its own group, separable from the fail-soft
-    // `transient` arm below — see api/mcp/error-fingerprint.ts.
+    // `transient` arm below — see api/_mcp/error-fingerprint.ts.
     captureSilentError(err, {
-      tags: { route: 'api/mcp', step: 'pro-token-validate' },
+      tags: { route: 'api/_mcp', step: 'pro-token-validate' },
       fingerprint: mcpErrorFingerprint('pro-token-validate', 'threw', err),
       ctx,
     });
@@ -652,7 +652,7 @@ export async function validateProMcpAuthorization(
     // still firing into T8.
     const transientError = new Error('Pro MCP token validation temporarily unavailable');
     captureSilentError(transientError, {
-      tags: { route: 'api/mcp', step: 'pro-token-validate' },
+      tags: { route: 'api/_mcp', step: 'pro-token-validate' },
       fingerprint: mcpErrorFingerprint('pro-token-validate', 'transient', transientError),
       level: 'warning',
       ctx,
@@ -760,7 +760,7 @@ async function checkMcpEntitlementGate(
       ? await deps.getEntitlements(userId, { requireTravelRiskShape: true })
       : await deps.getEntitlements(userId);
   } catch (err) {
-    captureSilentError(err, { tags: { route: 'api/mcp', step: sentryStep }, fingerprint: ['api/mcp', sentryStep, err instanceof Error ? err.name : 'Error'], ctx });
+    captureSilentError(err, { tags: { route: 'api/_mcp', step: sentryStep }, fingerprint: ['api/_mcp', sentryStep, err instanceof Error ? err.name : 'Error'], ctx });
     // #6716 F21: a THROWN entitlement lookup is the backend being unreachable.
     // Reporting it as 'no-account' told an already-authenticated caller — a
     // paying subscriber, possibly — to "sign in and subscribe", and buried a
@@ -884,8 +884,8 @@ export async function runUserKeyPreChecks(
   // rather than reserve a slot and then throw mid-dispatch.
   if (!process.env.MCP_INTERNAL_HMAC_SECRET) {
     captureSilentError(new Error('MCP_INTERNAL_HMAC_SECRET unset'), {
-      tags: { route: 'api/mcp', step: 'user-key-secret-preflight' },
-      fingerprint: ['api/mcp', 'user-key-secret-preflight', 'Error'],
+      tags: { route: 'api/_mcp', step: 'user-key-secret-preflight' },
+      fingerprint: ['api/_mcp', 'user-key-secret-preflight', 'Error'],
       ctx,
     });
     return { ok: false, response: new Response(

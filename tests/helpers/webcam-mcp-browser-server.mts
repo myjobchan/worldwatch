@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
-import { mcpHandler } from '../../api/mcp/handler.ts';
+import { mcpHandler } from '../../api/_mcp/handler.ts';
 import { createWebcamServiceRoutes } from '../../src/generated/server/worldmonitor/webcam/v1/service_server.ts';
 import { listWebcams } from '../../server/worldmonitor/webcam/v1/list-webcams.ts';
 import { getWebcamImage } from '../../server/worldmonitor/webcam/v1/get-webcam-image.ts';

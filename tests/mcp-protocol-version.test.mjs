@@ -44,7 +44,7 @@ function makeInitReq(protocolVersion) {
   });
 }
 
-describe('api/mcp.ts — protocol-version floor', () => {
+describe('api/_mcp.ts — protocol-version floor', () => {
   before(() => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     delete process.env.UPSTASH_REDIS_REST_URL;
@@ -63,7 +63,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('env on + client requests 2025-06-18 → server returns 2025-06-18 verbatim (a supported version)', async () => {
     process.env.MCP_PROTOCOL_FLOOR_2025_06_18 = 'on';
     try {
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}_on_new`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}_on_new`);
       const res = await mod.default(makeInitReq('2025-06-18'));
       assert.equal(res.status, 200);
       const body = await res.json();
@@ -76,7 +76,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('env on + client requests 2025-03-26 → server negotiates down to 2025-03-26 (the rollout-safety guarantee)', async () => {
     process.env.MCP_PROTOCOL_FLOOR_2025_06_18 = 'on';
     try {
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}_on_down`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}_on_down`);
       const res = await mod.default(makeInitReq('2025-03-26'));
       assert.equal(res.status, 200);
       const body = await res.json();
@@ -92,7 +92,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('env on + client requests an unsupported version → server returns the latest supported (fallback)', async () => {
     process.env.MCP_PROTOCOL_FLOOR_2025_06_18 = 'on';
     try {
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}_on_unknown`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}_on_unknown`);
       const res = await mod.default(makeInitReq('1999-01-01'));
       assert.equal(res.status, 200);
       const body = await res.json();
@@ -104,7 +104,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
 
   it('env unset (default) + client requests 2025-06-18 → server returns 2025-06-18 (default-on)', async () => {
     delete process.env.MCP_PROTOCOL_FLOOR_2025_06_18;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}_default`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}_default`);
     const res = await mod.default(makeInitReq('2025-06-18'));
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -118,7 +118,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('env unset (default) + client requests 2025-11-25 → server returns 2025-11-25 (the card version)', async () => {
     delete process.env.MCP_PROTOCOL_FLOOR_2025_06_18;
     delete process.env.MCP_PROTOCOL_2025_11_25;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}_default_2025_11_25`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}_default_2025_11_25`);
     const res = await mod.default(makeInitReq('2025-11-25'));
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -130,7 +130,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('MCP_PROTOCOL_2025_11_25=off + client requests 2025-11-25 → server negotiates down to 2025-06-18', async () => {
     process.env.MCP_PROTOCOL_2025_11_25 = 'off';
     try {
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}_off_2025_11_25`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}_off_2025_11_25`);
       const res = await mod.default(makeInitReq('2025-11-25'));
       assert.equal(res.status, 200);
       const body = await res.json();
@@ -143,7 +143,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   it('env off (kill-switch) + client requests 2025-06-18 → server returns 2025-03-26 (legacy floor)', async () => {
     process.env.MCP_PROTOCOL_FLOOR_2025_06_18 = 'off';
     try {
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}_killswitch`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}_killswitch`);
       const res = await mod.default(makeInitReq('2025-06-18'));
       assert.equal(res.status, 200);
       const body = await res.json();
@@ -159,7 +159,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
     // Default (env unset): three versions supported, latest = 2025-11-25.
     delete process.env.MCP_PROTOCOL_FLOOR_2025_06_18;
     delete process.env.MCP_PROTOCOL_2025_11_25;
-    const modDefault = await import(`../api/mcp.ts?t=${Date.now()}_supported_default`);
+    const modDefault = await import(`../api/_mcp.ts?t=${Date.now()}_supported_default`);
     assert.deepEqual([...modDefault.MCP_SUPPORTED_PROTOCOL_VERSIONS], ['2025-03-26', '2025-06-18', '2025-11-25']);
     // Latest-supported convention: MCP_PROTOCOL_VERSION is the last entry.
     assert.equal(
@@ -168,7 +168,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
     );
     process.env.MCP_PROTOCOL_2025_11_25 = 'off';
     try {
-      const modNoNewest = await import(`../api/mcp.ts?t=${Date.now()}_supported_no_2025_11_25`);
+      const modNoNewest = await import(`../api/_mcp.ts?t=${Date.now()}_supported_no_2025_11_25`);
       assert.deepEqual([...modNoNewest.MCP_SUPPORTED_PROTOCOL_VERSIONS], ['2025-03-26', '2025-06-18']);
       assert.equal(modNoNewest.MCP_PROTOCOL_VERSION, '2025-06-18');
     } finally {
@@ -177,7 +177,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
     // Kill-switch (=off): legacy floor only.
     process.env.MCP_PROTOCOL_FLOOR_2025_06_18 = 'off';
     try {
-      const modOff = await import(`../api/mcp.ts?t=${Date.now()}_supported_off`);
+      const modOff = await import(`../api/_mcp.ts?t=${Date.now()}_supported_off`);
       assert.deepEqual([...modOff.MCP_SUPPORTED_PROTOCOL_VERSIONS], ['2025-03-26']);
       assert.equal(modOff.MCP_PROTOCOL_VERSION, '2025-03-26');
     } finally {
@@ -196,7 +196,7 @@ describe('api/mcp.ts — protocol-version floor', () => {
   });
 
   it('MCP_SUPPORTED_CLIENT_MATRIX lists each canonical client with a non-empty minimum', async () => {
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}_matrix`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}_matrix`);
     const matrix = mod.MCP_SUPPORTED_CLIENT_MATRIX;
     assert.ok(matrix && typeof matrix === 'object', 'MCP_SUPPORTED_CLIENT_MATRIX must be exported');
     for (const client of ['Claude Desktop', 'Claude Code', 'MCP Inspector', 'Cursor']) {

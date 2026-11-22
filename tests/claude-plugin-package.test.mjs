@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PLUGIN = join(ROOT, 'claude-plugin');

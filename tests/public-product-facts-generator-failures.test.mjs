@@ -13,7 +13,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 describe('public product facts generator failure modes', () => {
   it('derives the natural-disasters discovery note from the advertised registry URI', () => {
     const result = spawnSync(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', `
-      import { TOOL_REGISTRY } from './api/mcp/registry/index.ts';
+      import { TOOL_REGISTRY } from './api/_mcp/registry/index.ts';
       const natural = TOOL_REGISTRY.find((tool) => tool.name === 'get_natural_disasters');
       const currentVersion = Number(natural._uiResourceUri.match(/-v([0-9]+)[.]html$/)[1]);
       natural._uiResourceUri = 'ui://worldmonitor/natural-disasters-v' + (currentVersion + 1) + '.html';
@@ -71,7 +71,7 @@ describe('public product facts generator failure modes', () => {
 
   it('fails discovery generation when the natural-disasters tool is absent', () => {
     const result = spawnSync(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', `
-      import { TOOL_REGISTRY } from './api/mcp/registry/index.ts';
+      import { TOOL_REGISTRY } from './api/_mcp/registry/index.ts';
       TOOL_REGISTRY.splice(TOOL_REGISTRY.findIndex((tool) => tool.name === 'get_natural_disasters'), 1);
       process.argv.push('--check');
       await import('./scripts/generate-public-product-facts.mjs');
@@ -82,7 +82,7 @@ describe('public product facts generator failure modes', () => {
 
   it('fails discovery generation for an unrelated natural-disasters resource URI', () => {
     const result = spawnSync(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', `
-      import { TOOL_REGISTRY } from './api/mcp/registry/index.ts';
+      import { TOOL_REGISTRY } from './api/_mcp/registry/index.ts';
       TOOL_REGISTRY.find((tool) => tool.name === 'get_natural_disasters')._uiResourceUri = 'ui://unrelated/natural-disasters-v3.html';
       process.argv.push('--check');
       await import('./scripts/generate-public-product-facts.mjs');

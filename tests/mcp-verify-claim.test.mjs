@@ -90,7 +90,7 @@ describe('verify_claim MCP tool', () => {
       if (new URL(url).hostname === 'factchecktools.googleapis.com') return factChecks();
       throw new Error(`unexpected fetch: ${url}`);
     };
-    const mod = await import(`../api/mcp.ts?verify=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?verify=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

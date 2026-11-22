@@ -295,8 +295,8 @@ describe('consumers of the canonical key that do not read the CII aggregates', (
   });
 
   it('MCP get_conflict_events drops them, so they cannot crowd events out of the output budget', async (t) => {
-    const { executeTool } = await import('../api/mcp/dispatch.ts');
-    const { CACHE_TOOLS } = await import('../api/mcp/registry/cache-tools.ts');
+    const { executeTool } = await import('../api/_mcp/dispatch.ts');
+    const { CACHE_TOOLS } = await import('../api/_mcp/registry/cache-tools.ts');
     const tool = CACHE_TOOLS.find((x) => x.name === 'get_conflict_events');
     const originalEnv = process.env;
     process.env = { ...originalEnv, UPSTASH_REDIS_REST_URL: 'https://conflict-redis.test', UPSTASH_REDIS_REST_TOKEN: 'test-token' };

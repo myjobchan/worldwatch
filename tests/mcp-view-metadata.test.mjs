@@ -1,8 +1,8 @@
 // ChatGPT app-submission metadata on ui:// views and the tools that render them.
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { TOOL_LIST_RESPONSE } from '../api/mcp/registry/index.ts';
-import { UI_RESOURCE_LIST_RESPONSE } from '../api/mcp/ui/registry.ts';
+import { TOOL_LIST_RESPONSE } from '../api/_mcp/registry/index.ts';
+import { UI_RESOURCE_LIST_RESPONSE } from '../api/_mcp/ui/registry.ts';
 
 describe('MCP view metadata', () => {
   it('every ui:// view declares the same exact HTTPS origin as _meta.ui.domain', () => {

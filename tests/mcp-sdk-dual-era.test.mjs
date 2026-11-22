@@ -92,14 +92,14 @@ function newClient(versionNegotiation) {
   );
 }
 
-describe('api/mcp.ts — official SDK v2 client in both protocol eras', () => {
+describe('api/_mcp.ts — official SDK v2 client in both protocol eras', () => {
   let server;
   let client;
 
   async function boot(flag) {
     if (flag === undefined) delete process.env.MCP_PROTOCOL_2026_07_28;
     else process.env.MCP_PROTOCOL_2026_07_28 = flag;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     server = await startMcpServer(mod.mcpHandler, makeProDeps().deps);
   }
 

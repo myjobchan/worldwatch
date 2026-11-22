@@ -108,7 +108,7 @@ it('market documentation and tool description acknowledge modeled CME holidays',
   const docs = readFileSync(new URL('../docs/mcp-tools/markets.mdx', import.meta.url), 'utf8');
   assert.doesNotMatch(docs, /holidays[^.]*not model(?:l)?ed/i);
   assert.match(docs, /CME energy holiday sessions for 2026–2027/);
-  const source = readFileSync(new URL('../api/mcp/registry/cache-tools.ts', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../api/_mcp/registry/cache-tools.ts', import.meta.url), 'utf8');
   assert.match(source, /futures NYMEX breaks and CME energy holidays \(2026–2027\) plus 30m restart grace/);
 });
 

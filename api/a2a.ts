@@ -14,10 +14,10 @@
 // stay false and tasks/* methods answer TaskNotFound.
 
 import { suggestTools } from './_agent-tool-suggest';
-import { PUBLIC_RESOURCE_REGISTRY } from './mcp/resources/index';
-import { readBoundedRequestBody, RequestBodyTooLargeError } from './mcp/bounded-body';
-import { MAX_JSON_RPC_BODY_BYTES } from './mcp/body-limits';
-import { safeJsonRpcId } from './mcp/utils';
+import { PUBLIC_RESOURCE_REGISTRY } from './_mcp/resources/index';
+import { readBoundedRequestBody, RequestBodyTooLargeError } from './_mcp/bounded-body';
+import { MAX_JSON_RPC_BODY_BYTES } from './_mcp/body-limits';
+import { safeJsonRpcId } from './_mcp/utils';
 import { ENDPOINT_RATE_POLICIES, checkScopedRateLimit, checkIpScopedEdgeProof, getClientIp, rateLimitKeyForIp } from '../server/_shared/rate-limit';
 
 // Re-exported so existing consumers (tests, api/ask.ts historically) keep a
@@ -38,7 +38,7 @@ if (!RATE_LIMIT_POLICY) {
 }
 const RATE_LIMIT_MAX = RATE_LIMIT_POLICY.limit;
 const RATE_LIMIT_WINDOW = RATE_LIMIT_POLICY.window;
-const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/mcp.ts
+const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/_mcp.ts
 
 // A2A-spec error codes (v0.3.0 §8) used by this server.
 const A2A_TASK_NOT_FOUND = -32001;

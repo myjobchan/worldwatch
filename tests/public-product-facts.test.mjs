@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { PRODUCT_CATALOG } from '../convex/config/productCatalog.ts';
 import {
   ACQUISITION_CLAIM_ROOTS,

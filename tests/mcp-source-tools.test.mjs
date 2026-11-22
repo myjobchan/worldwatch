@@ -12,9 +12,9 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { SOURCE_TOOLS, outletRecord } from '../api/mcp/registry/source-tools.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
-import { dispatchToolsCall } from '../api/mcp/dispatch.ts';
+import { SOURCE_TOOLS, outletRecord } from '../api/_mcp/registry/source-tools.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
+import { dispatchToolsCall } from '../api/_mcp/dispatch.ts';
 import { validate } from './helpers/json-schema-mini.mjs';
 
 const tool = SOURCE_TOOLS.find((t) => t.name === 'get_sources');
@@ -34,7 +34,7 @@ it('ships exactly the provider fields consumed from the canonical attribution ma
   const providers = active.map((entry) => Object.fromEntries(
     fields.filter((field) => Object.hasOwn(entry, field)).map((field) => [field, entry[field]]),
   ));
-  const generated = read('../api/mcp/registry/_source-providers.generated.json');
+  const generated = read('../api/_mcp/registry/_source-providers.generated.json');
   assert.deepEqual(generated.providers, providers);
   assert.equal(generated.excludedProviderCount, manifest.entries.filter((entry) => entry.status === 'excluded').length);
 });

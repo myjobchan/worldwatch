@@ -14,7 +14,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { BASE_URL, HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
-import { TOOL_REGISTRY, toolWeight } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY, toolWeight } from '../api/_mcp/registry/index.ts';
 
 const USER_KEY = `wm_${'cd34'.repeat(10)}`;
 const API_ENTITLEMENT = { planKey: 'api_starter', features: { tier: 2, mcpAccess: true, apiAccess: true, planLimits: { apiCallsPerDay: 1000, mcpCallsPerDay: 'shared-api-budget' } }, validUntil: Date.now() + 86_400_000 };
@@ -55,7 +55,7 @@ function fixture(t) {
 }
 
 async function call(deps, name, args, headers) {
-  const { mcpHandler } = await import('../api/mcp.ts');
+  const { mcpHandler } = await import('../api/_mcp.ts');
   const req = headers === undefined ? proReq('POST', callBody(name, args)) : new Request(BASE_URL, {
     method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(callBody(name, args)),
   });

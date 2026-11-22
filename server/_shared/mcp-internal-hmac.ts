@@ -6,7 +6,7 @@
  *
  * Why this module exists
  * ----------------------
- * When `api/mcp.ts` dispatches a tool _execute fetch on behalf of a Pro
+ * When `api/_mcp.ts` dispatches a tool _execute fetch on behalf of a Pro
  * user, the downstream gateway has no `wm_*` API key to validate against
  * (the OAuth bearer carries a `mcpProTokens` row id, not a key). Instead,
  * the MCP edge signs an HMAC of the *outbound* request shape and the
@@ -222,7 +222,7 @@ export async function hmacSha256Base64Url(secret: string, payload: string): Prom
 }
 
 // ---------------------------------------------------------------------------
-// Public sign API — used by U7 (api/mcp.ts) and importable by U8's tests
+// Public sign API — used by U7 (api/_mcp.ts) and importable by U8's tests
 // to construct fixture headers without re-implementing the algorithm.
 // ---------------------------------------------------------------------------
 
@@ -521,7 +521,7 @@ export async function verifyInternalMcpRequestDetailed(
   // route file (api/<domain>/v1/[rpc].ts) and injects the matched segment into
   // the function's request URL as a query parameter (?rpc=<segment>) — see
   // "named parameters are automatically passed through in the query string"
-  // in Vercel's routing docs. The signer (api/mcp/auth.ts buildAuthHeaders)
+  // in Vercel's routing docs. The signer (api/_mcp/auth.ts buildAuthHeaders)
   // signs the OUTBOUND url, which never carries that param, so hashing the
   // inbound query verbatim 401s EVERY legitimate Pro tool fetch
   // (WORLDMONITOR-R1 / WORLDMONITOR-T8 — deterministic since U7 shipped,

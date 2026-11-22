@@ -2,7 +2,7 @@
 //
 // An agent serving Arabic-speaking users passes the country the user named,
 // in Arabic: "السعودية", "الإمارات", "مصر". Every MCP country argument resolves
-// through requireCountryCode / resolveCountryFilter (api/mcp/_country-args.ts)
+// through requireCountryCode / resolveCountryFilter (api/_mcp/_country-args.ts)
 // or resolveCountryArg directly, so these cases pin that one boundary: CLDR
 // Arabic names and common short and official forms resolve for every country
 // the English resolver supports, spelling variants normalize, ambiguous or
@@ -17,14 +17,14 @@ import {
   requireCountryCode,
   resolveCountryArg,
   resolveCountryFilter,
-} from '../api/mcp/_country-args.ts';
+} from '../api/_mcp/_country-args.ts';
 import { isAssignedCountryCode, resolveCountryCode } from '../shared/country-code-resolve.ts';
 import { normalizeArabicCountryToken, resolveArabicCountryName } from '../shared/country-code-resolve-arabic.ts';
 import ARABIC_NAMES from '../shared/country-names-ar.json' with { type: 'json' };
 import LOCALIZED_NAMES from '../shared/country-names-localized.json' with { type: 'json' };
 import { buildArabicCountryNames } from '../scripts/build-country-names-ar.mjs';
-import { mcpHandler } from '../api/mcp.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { mcpHandler } from '../api/_mcp.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { normalizeCountryDirectRead } from '../shared/country-brief-host.ts';
 import { buildArticlePrompts } from '../server/worldmonitor/news/v1/_shared.ts';
 import { HMAC_SECRET, callBody, makePipelineMock } from './helpers/mcp-pro-deps.mjs';

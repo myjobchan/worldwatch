@@ -2,7 +2,7 @@
 title: Meter each embedded panel as one bounded user request
 date: 2026-10-02
 category: performance-issues
-module: api/mcp
+module: api/_mcp
 problem_type: performance_issue
 component: service_object
 severity: high

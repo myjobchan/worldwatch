@@ -30,13 +30,13 @@ import {
   MODERN_SERVER_INSTRUCTIONS,
   SERVER_INSTRUCTIONS,
   SERVER_INSTRUCTIONS_MAX_BYTES,
-} from '../api/mcp/constants.ts';
-import handler from '../api/mcp.ts';
-import { MCP_UPGRADE_URL } from '../api/mcp/upgrade.ts';
+} from '../api/_mcp/constants.ts';
+import handler from '../api/_mcp.ts';
+import { MCP_UPGRADE_URL } from '../api/_mcp/upgrade.ts';
 import {
   FREE_ACCOUNT_CALLS_PER_DAY,
   FREE_ACCOUNT_REQUESTS_PER_DAY,
-} from '../api/mcp/upgrade-constants.ts';
+} from '../api/_mcp/upgrade-constants.ts';
 
 // SERVER_INSTRUCTIONS is already the joined wire string; split it back into
 // stanzas so a per-stanza assertion can name which one it is about.

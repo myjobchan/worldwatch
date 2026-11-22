@@ -63,7 +63,7 @@ describe('entitlement crosswalk classifier', () => {
   });
 
   it('maps the identity-preserving MCP proxy gate to MCP access', () => {
-    const v = classify(site('api/mcp-proxy.ts', 'resolvePremiumCallerIdentity'));
+    const v = classify(site('api/_mcp-proxy.ts', 'resolvePremiumCallerIdentity'));
     assert.equal(v?.cap, 'mcp.access');
   });
 

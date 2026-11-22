@@ -2,8 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import ts from 'typescript';
-import { COUNTRY_RISK_APP_HTML } from '../api/mcp/ui/country-risk-app';
-import { buildPluginShell } from '../api/mcp/ui/_plugin-loader';
+import { COUNTRY_RISK_APP_HTML } from '../api/_mcp/ui/country-risk-app';
+import { buildPluginShell } from '../api/_mcp/ui/_plugin-loader';
 import { evidenceScreenshot } from './evidence-screenshot';
 
 // The news view's entry chunk (plugin-<hash>.js), not shared chunks such as plugin-display-mode-<hash>.js.

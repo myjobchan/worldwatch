@@ -10,7 +10,7 @@
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { __testing__, mcpHandler } from '../api/mcp.ts';
+import { __testing__, mcpHandler } from '../api/_mcp.ts';
 import { HMAC_SECRET, callBody, makePipelineMock } from './helpers/mcp-pro-deps.mjs';
 import { getSourceProvenanceState, SOURCE_PROPAGANDA_RISK } from '../shared/source-provenance.ts';
 import { withOutletProfile } from '../server/_shared/outlet-profile.ts';

@@ -43,7 +43,7 @@ const QUOTA_LIMIT = 50;
 const CONCURRENT_FIRES = 80;
 const EXPECTED_REJECTIONS = CONCURRENT_FIRES - QUOTA_LIMIT;
 
-describe('api/mcp.ts — concurrent quota reservation (strict clamp)', () => {
+describe('api/_mcp.ts — concurrent quota reservation (strict clamp)', () => {
   let mcpHandler;
 
   beforeEach(async () => {
@@ -61,7 +61,7 @@ describe('api/mcp.ts — concurrent quota reservation (strict clamp)', () => {
       JSON.stringify({ result: JSON.stringify({ ok: 1 }) }),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

@@ -50,7 +50,7 @@ The generated router serializes it as `400 {"violations":[{field, description}]}
 
 ## Why This Works
 
-MCP tools fetch the HTTP route and pass non-OK responses to `assertToolFetchOk` (`api/mcp/billing-denial.ts`). For a 400 it only reads `violations` from the body; when it finds safe ones it throws `RpcValidationError`, which dispatch maps to -32602. A body with only `message` falls through to a plain `Error`, and dispatch's catch-all returns -32603 (`api/mcp/dispatch.ts`). Violation fields must match `/^[A-Za-z_][A-Za-z0-9_.]{0,63}$/`, so snake_case argument names pass.
+MCP tools fetch the HTTP route and pass non-OK responses to `assertToolFetchOk` (`api/_mcp/billing-denial.ts`). For a 400 it only reads `violations` from the body; when it finds safe ones it throws `RpcValidationError`, which dispatch maps to -32602. A body with only `message` falls through to a plain `Error`, and dispatch's catch-all returns -32603 (`api/_mcp/dispatch.ts`). Violation fields must match `/^[A-Za-z_][A-Za-z0-9_.]{0,63}$/`, so snake_case argument names pass.
 
 ## Prevention
 

@@ -2,8 +2,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DEFAULT_ROLLING_WINDOW_DAYS } from '../scripts/_forecast-scorecard.mjs';
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
-import { forecastReliability, forecastScorecardDescription } from '../api/mcp/registry/cache-tools.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
+import { forecastReliability, forecastScorecardDescription } from '../api/_mcp/registry/cache-tools.ts';
 import { FORECAST_ACCURACY_AUDIT_OVERRIDE, forecastAccuracyAudit } from '../shared/forecast-accuracy-audit.js';
 import { compactForecastDashboardPayload } from '../scripts/_forecast-dashboard.mjs';
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
@@ -186,7 +186,7 @@ describe('bounded forecast list and original case transport', () => {
       assert.ok(['forecast:predictions:v2', 'seed-meta:forecast:predictions', 'seed-meta:forecast:probability-trail'].includes(key), key);
       return Response.json({ result: JSON.stringify(key === 'forecast:predictions:v2' ? source : { fetchedAt: Date.now() }) });
     };
-    const { mcpHandler } = await import('../api/mcp.ts');
+    const { mcpHandler } = await import('../api/_mcp.ts');
     const { deps, pipe } = makeProDeps();
     const invoke = async args => {
       const response = await mcpHandler(proReq('POST', callBody('get_forecast_predictions', args)), deps);
@@ -326,7 +326,7 @@ describe('published forecast reliability under the accuracy audit (#8990)', () =
     assert.equal(lifted.underAudit, undefined);
   });
   it('leads the scorecard tool description with the override notice or the underAudit rule, inside the tools/list description budget', async () => {
-    const { compressDescription, TOOL_DESCRIPTION_MAX_BYTES } = await import('../api/mcp.ts');
+    const { compressDescription, TOOL_DESCRIPTION_MAX_BYTES } = await import('../api/_mcp.ts');
     // tools/list ships the whole description (the cap is a backstop that must
     // not bite), so the lead sentence is what a host that truncates sees.
     const listed = (override) => compressDescription(forecastScorecardDescription(override), TOOL_DESCRIPTION_MAX_BYTES);

@@ -764,7 +764,7 @@ describe('reportServerError', () => {
     assert.equal(calls.length, 0, 'rate-limit degradation must not be captured again by every browser');
   });
 
-  // api/mcp-proxy answers an upstream MCP server timeout with its own 504 and
+  // api/_mcp-proxy answers an upstream MCP server timeout with its own 504 and
   // has already captured it server-side at warning. Reporting it again here
   // filed it as an origin `API 504: /api/mcp-proxy` error (WORLDMONITOR-17A).
   it('skips the mcp-proxy 504 that relays an upstream MCP server timeout', () => {

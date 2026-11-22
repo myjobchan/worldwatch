@@ -14,7 +14,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { __testing__ as healthTesting } from '../api/health.js';
-import { __testing__ as mcpTesting } from '../api/mcp.ts';
+import { __testing__ as mcpTesting } from '../api/_mcp.ts';
 
 const { BOOTSTRAP_KEYS, STANDALONE_KEYS } = healthTesting;
 const { TOOL_REGISTRY } = mcpTesting;
@@ -159,7 +159,7 @@ const EXCLUDED_FROM_MCP = new Map([
   ['usni-fleet:sebuf:stale:v1',
     'cascade-mirror: stale USNI fleet — deferred to a future military-fleet tool.'],
   ['displacement:summary:v1:' + (new Date().getUTCFullYear() - 1),
-    'cascade-mirror: previous-year displacement snapshot used by the dashboard year-over-year diff. Current-year key is exposed via get_displacement_data; the executeTool label-walk would collide on both years (matches api/health.js:482 + api/mcp.ts:346-350 rationale).'],
+    'cascade-mirror: previous-year displacement snapshot used by the dashboard year-over-year diff. Current-year key is exposed via get_displacement_data; the executeTool label-walk would collide on both years (matches api/health.js:482 + api/_mcp.ts:346-350 rationale).'],
   ['positive-events:geo:v1',
     'cascade-mirror: live counterpart of positive_events:geo-bootstrap:v1 (covered by get_positive_events).'],
   ['research:tech-events:v1',

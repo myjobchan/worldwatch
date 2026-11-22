@@ -8,8 +8,8 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { budgetCounterKey, resolveMcpBudget, SHARED_API_BUDGET } from '../api/mcp/quota.ts';
-import { TOOL_REGISTRY, toolWeight } from '../api/mcp/registry/index.ts';
+import { budgetCounterKey, resolveMcpBudget, SHARED_API_BUDGET } from '../api/_mcp/quota.ts';
+import { TOOL_REGISTRY, toolWeight } from '../api/_mcp/registry/index.ts';
 import { mergeEntitlementFeatures } from '../convex/lib/entitlements.ts';
 import { PRODUCT_CATALOG } from '../convex/config/productCatalog.ts';
 import { apiKeyDailyKey } from '../server/_shared/api-key-rate-limit.ts';
@@ -239,7 +239,7 @@ describe('reserveQuota charges the tool weight only against an api allowance', (
   let reserveQuota;
 
   beforeEach(async () => {
-    ({ reserveQuota } = await import(`../api/mcp/quota.ts?t=${Date.now()}-${Math.random()}`));
+    ({ reserveQuota } = await import(`../api/_mcp/quota.ts?t=${Date.now()}-${Math.random()}`));
   });
 
   const byName = (name) => {
@@ -344,7 +344,7 @@ describe('mcpHandler charges a weight-3 tool three units of an API-tier budget',
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
     process.env.MCP_TELEMETRY = 'false';
     delete process.env.API_RATE_LIMIT_ENFORCE;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 
@@ -439,7 +439,7 @@ describe('the daily-cap -32029 carries structured data, not just prose', () => {
     process.env.UPSTASH_REDIS_REST_TOKEN = 'stub';
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
     process.env.MCP_TELEMETRY = 'false';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

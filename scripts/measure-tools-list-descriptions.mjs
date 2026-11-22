@@ -18,14 +18,14 @@
 import {
   TOOL_DESCRIPTION_MAX_BYTES,
   TOOL_DESCRIPTIONS_TOTAL_MAX_BYTES,
-} from '../api/mcp/constants.ts';
-import { utf8ByteLength } from '../api/mcp/utils.ts';
+} from '../api/_mcp/constants.ts';
+import { utf8ByteLength } from '../api/_mcp/utils.ts';
 
 process.env.WORLDMONITOR_VALID_KEYS = 'wm_measure_key';
 delete process.env.UPSTASH_REDIS_REST_URL;
 delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
-const mcpMod = await import('../api/mcp.ts');
+const mcpMod = await import('../api/_mcp.ts');
 
 const res = await mcpMod.default(new Request('https://worldmonitor.app/mcp', {
   method: 'POST',

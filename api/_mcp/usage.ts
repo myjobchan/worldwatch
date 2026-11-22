@@ -120,7 +120,7 @@ export interface McpUsage {
   toolOutcome: McpToolOutcome | null;
   /** MCP-Protocol-Version the client sent: a known revision, 'other', or null when absent. */
   protocolVersion: string | null;
-  /** 'modern' once a request takes the 2026-07-28 per-request path (api/mcp/modern.ts). */
+  /** 'modern' once a request takes the 2026-07-28 per-request path (api/_mcp/modern.ts). */
   era: McpEra;
   /** clientInfo.name the request declares, bounded by declaredClientName; null when it names none. */
   clientName: string | null;

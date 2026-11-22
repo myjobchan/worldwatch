@@ -33,7 +33,7 @@ function stubCacheFetch(keyMap) {
   };
 }
 
-describe('api/mcp.ts — Pro daily quota is NOT refunded after execution (GHSA-hcq5)', () => {
+describe('api/_mcp.ts — Pro daily quota is NOT refunded after execution (GHSA-hcq5)', () => {
   let mcpHandler;
 
   beforeEach(async () => {
@@ -42,7 +42,7 @@ describe('api/mcp.ts — Pro daily quota is NOT refunded after execution (GHSA-h
     process.env.UPSTASH_REDIS_REST_TOKEN = 'stub';
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
     process.env.MCP_TELEMETRY = 'false';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

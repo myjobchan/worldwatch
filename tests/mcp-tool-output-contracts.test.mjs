@@ -3,10 +3,10 @@ import { strict as assert } from 'node:assert';
 
 import Ajv2020 from 'ajv/dist/2020.js';
 
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { assembleRawSignals, failedRawSignal, RAW_SIGNAL_FAMILIES } from '../shared/country-raw-signals.ts';
-import { buildTravelRiskResult, TRAVEL_RISK_FEEDS } from '../api/mcp/registry/_travel-risk-document.ts';
-import { parseTravelRiskArgs } from '../api/mcp/registry/travel-risk-tool.ts';
+import { buildTravelRiskResult, TRAVEL_RISK_FEEDS } from '../api/_mcp/registry/_travel-risk-document.ts';
+import { parseTravelRiskArgs } from '../api/_mcp/registry/travel-risk-tool.ts';
 import { validate } from './helpers/json-schema-mini.mjs';
 import {
   HMAC_SECRET,
@@ -143,7 +143,7 @@ function advertisedValidator(publicTool) {
   return advertisedValidators.get(publicTool.name);
 }
 
-describe('api/mcp.ts — per-tool output contract (envelope-shape, all registry tools)', () => {
+describe('api/_mcp.ts — per-tool output contract (envelope-shape, all registry tools)', () => {
   let mod;
   let mcpHandler;
   let originalExecutes;
@@ -167,7 +167,7 @@ describe('api/mcp.ts — per-tool output contract (envelope-shape, all registry 
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
 
-    mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
     originalExecutes = new Map();
   });

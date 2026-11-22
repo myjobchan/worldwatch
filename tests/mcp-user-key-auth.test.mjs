@@ -47,7 +47,7 @@ function userKeyReq(body, headers = {}) {
   });
 }
 
-describe('api/mcp — user API keys on /mcp (#4859) + pre-check hardening (#4860)', () => {
+describe('api/_mcp — user API keys on /mcp (#4859) + pre-check hardening (#4860)', () => {
   let mcpHandler;
 
   beforeEach(async () => {
@@ -56,7 +56,7 @@ describe('api/mcp — user API keys on /mcp (#4859) + pre-check hardening (#4860
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
     process.env.MCP_TELEMETRY = 'false';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     mcpHandler = mod.mcpHandler;
   });
 

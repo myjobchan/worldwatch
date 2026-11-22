@@ -21,7 +21,7 @@
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { mcpHandler } from '../api/mcp.ts';
+import { mcpHandler } from '../api/_mcp.ts';
 import { HMAC_SECRET, callBody, makePipelineMock } from './helpers/mcp-pro-deps.mjs';
 
 const ENV_KEY = 'operator_test_key_world_brief_stale_lkg';

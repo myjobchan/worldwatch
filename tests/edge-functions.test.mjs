@@ -149,7 +149,7 @@ describe('Node-runtime routes load as native ESM', () => {
     .filter((file) => !/export\s+const\s+config\s*=\s*\{[^}]*\bruntime\s*:\s*['"]edge['"]/.test(readFileSync(join(root, file), 'utf-8')));
 
   it('finds the Node-runtime routes, so the guard cannot pass vacuously', () => {
-    assert.ok(nodeRuntimeRoutes.includes('api/mcp-proxy.ts'), `found: ${nodeRuntimeRoutes.join(', ')}`);
+    assert.ok(nodeRuntimeRoutes.includes('api/_mcp-proxy.ts'), `found: ${nodeRuntimeRoutes.join(', ')}`);
   });
 
   for (const route of nodeRuntimeRoutes) {

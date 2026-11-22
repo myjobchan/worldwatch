@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 
-import { CACHE_TOOLS } from '../api/mcp/registry/cache-tools.ts';
+import { CACHE_TOOLS } from '../api/_mcp/registry/cache-tools.ts';
 
 const tool = CACHE_TOOLS.find(entry => entry.name === 'get_news_intelligence');
 const serverCard = JSON.parse(
@@ -33,7 +33,7 @@ describe('get_news_intelligence credibility discovery (#6597)', () => {
     assert.match(tool.description, new RegExp(`With no story filter, topStories is the ${selected} the dashboard selects worldwide`));
     assert.match(tool.description, /search every scored story of the latest run/);
     assert.match(tool.inputSchema.properties.country.description, new RegExp(`not only the top ${selected}`));
-    const { AGENT_GUIDE } = await import('../api/mcp/constants.ts');
+    const { AGENT_GUIDE } = await import('../api/_mcp/constants.ts');
     assert.match(AGENT_GUIDE, /get_news_intelligence story filters \(country, query, category\) search every scored story of the latest run/);
   });
 

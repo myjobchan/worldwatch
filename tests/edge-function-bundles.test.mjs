@@ -69,7 +69,7 @@ function makeRepo({ withEntries = true } = {}) {
   write(root, 'api/paired.js', validHandler);
   write(root, 'api/paired.ts', validHandler);
   write(root, 'api/space route.js', validHandler);
-  write(root, 'api/mcp.ts', validHandler);
+  write(root, 'api/_mcp.ts', validHandler);
   write(root, 'api/_helper.js', 'export const helper = true;\n');
   write(root, 'api/domain/v1/[rpc].ts', validHandler);
   write(root, 'api/domain/v1/[rpc].js', 'import "node:crypto";\n');
@@ -87,7 +87,7 @@ describe('edge function candidate discovery', () => {
     const root = makeRepo();
     assert.deepEqual(listEdgeFunctionEntries(root), [
       'api/health.js',
-      'api/mcp.ts',
+      'api/_mcp.ts',
       'api/normal.js',
       'api/paired.js',
       'api/paired.ts',
@@ -101,7 +101,7 @@ describe('edge function candidate discovery', () => {
     rmSync(join(root, 'api/health.js'));
 
     assert.deepEqual(listEdgeFunctionEntries(root, { caller: 'prepush' }), [
-      'api/mcp.ts',
+      'api/_mcp.ts',
       'api/normal.js',
       'api/paired.js',
       'api/paired.ts',
@@ -114,7 +114,7 @@ describe('edge function candidate discovery', () => {
     const root = makeRepo();
     assert.deepEqual(listEdgeFunctionEntries(root, { caller: 'ci' }), [
       'api/health.js',
-      'api/mcp.ts',
+      'api/_mcp.ts',
       'api/normal.js',
       'api/paired.js',
       'api/space route.js',
@@ -208,7 +208,7 @@ describe('edge function checker CLI contract', () => {
     assert.equal(status, 0);
     assert.deepEqual(JSON.parse(stdout), [
       'api/health.js',
-      'api/mcp.ts',
+      'api/_mcp.ts',
       'api/normal.js',
       'api/paired.js',
       'api/space route.js',

@@ -5,8 +5,8 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { mcpHandler } from '../api/mcp/handler.ts';
-import { attachRequestIdToErrors } from '../api/mcp/request-id.ts';
+import { mcpHandler } from '../api/_mcp/handler.ts';
+import { attachRequestIdToErrors } from '../api/_mcp/request-id.ts';
 import { HMAC_SECRET, PRO_BEARER, makeProDeps } from './helpers/mcp-pro-deps.mjs';
 
 const originalEnv = { ...process.env };

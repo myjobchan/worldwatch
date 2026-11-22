@@ -44,7 +44,7 @@ function captureAxiom() {
   return events;
 }
 
-describe('api/mcp — usage telemetry (#4866)', () => {
+describe('api/_mcp — usage telemetry (#4866)', () => {
   let mcpHandler;
 
   beforeEach(async () => {
@@ -55,7 +55,7 @@ describe('api/mcp — usage telemetry (#4866)', () => {
     process.env.MCP_TELEMETRY = 'false';
     process.env.USAGE_TELEMETRY = '1';
     process.env.AXIOM_API_TOKEN = 'stub-token';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     mcpHandler = mod.mcpHandler;
   });
 
@@ -174,7 +174,7 @@ describe('api/mcp — usage telemetry (#4866)', () => {
     const run = async (flag, cases) => {
       if (flag === null) delete process.env.MCP_PROTOCOL_2026_07_28;
       else process.env.MCP_PROTOCOL_2026_07_28 = flag;
-      const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+      const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
       const { deps } = makeProDeps();
       const events = captureAxiom();
       const { ctx, settle } = makeCtx();
@@ -514,7 +514,7 @@ describe('api/mcp — usage telemetry (#4866)', () => {
   });
 
   it('response without Content-Length does not record res_bytes: 0 (#8403)', async () => {
-    const { emitMcpRequestEvent, createMcpUsage } = await import('../api/mcp/usage.ts');
+    const { emitMcpRequestEvent, createMcpUsage } = await import('../api/_mcp/usage.ts');
     const events = [];
     globalThis.fetch = async (url, init) => {
       if (String(url).includes('axiom.co')) {
@@ -549,7 +549,7 @@ describe('api/mcp — usage telemetry (#4866)', () => {
   });
 
   it('Content-Length when present is recorded as res_bytes (#8403)', async () => {
-    const { emitMcpRequestEvent, createMcpUsage } = await import('../api/mcp/usage.ts');
+    const { emitMcpRequestEvent, createMcpUsage } = await import('../api/_mcp/usage.ts');
     const events = [];
     globalThis.fetch = async (url, init) => {
       if (String(url).includes('axiom.co')) {
@@ -605,7 +605,7 @@ describe('api/mcp — usage telemetry (#4866)', () => {
 
 // #9431 — demand for tools we do not serve, and the outcome of tools that ran,
 // land on the same wm_api_usage row as rpc_method/tool_name.
-describe('api/mcp — requested_tool and tool outcome on wm_api_usage (#9431)', () => {
+describe('api/_mcp — requested_tool and tool outcome on wm_api_usage (#9431)', () => {
   let mcpHandler;
   let toolcallLines;
   let origLog;
@@ -626,7 +626,7 @@ describe('api/mcp — requested_tool and tool outcome on wm_api_usage (#9431)', 
     process.env.MCP_TELEMETRY = 'true';
     process.env.USAGE_TELEMETRY = '1';
     process.env.AXIOM_API_TOKEN = 'stub-token';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     mcpHandler = mod.mcpHandler;
     toolcallLines = [];
     origLog = console.log;

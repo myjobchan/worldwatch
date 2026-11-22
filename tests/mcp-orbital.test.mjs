@@ -1,10 +1,10 @@
 import { afterEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
-import { TOOL_DESCRIPTION_MAX_BYTES } from '../api/mcp/constants.ts';
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
-import { ORBITAL_TOOLS } from '../api/mcp/registry/_orbital.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
+import { TOOL_DESCRIPTION_MAX_BYTES } from '../api/_mcp/constants.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
+import { ORBITAL_TOOLS } from '../api/_mcp/registry/_orbital.ts';
 
 const tool = (name) => ORBITAL_TOOLS.find((t) => t.name === name);
 const POINT = 'get_point_satellite_passes';

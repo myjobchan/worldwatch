@@ -4,7 +4,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { hashKeySync } from '../server/_shared/usage-identity.ts';
 import { HMAC_SECRET, PRO_USER_ID, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
 import { dailyCounterKey } from '../server/_shared/pro-mcp-token.ts';
-import { admitConflictPanel, admitCountryPanel, admitMarketPanel, admitNewsPanel, admitPredictionPanel, authorizePanelRead } from '../api/mcp/panel-requests.ts';
+import { admitConflictPanel, admitCountryPanel, admitMarketPanel, admitNewsPanel, admitPredictionPanel, authorizePanelRead } from '../api/_mcp/panel-requests.ts';
 
 const originalEnv = { ...process.env };
 const originalFetch = globalThis.fetch;
@@ -33,7 +33,7 @@ before(async () => {
     if (String(url).startsWith('https://stub.upstash.invalid/get/')) return Response.json({ result: JSON.stringify({ earthquakes: [], fireDetections: [], events: [], seededAt: new Date().toISOString() }) });
     return Response.json({ countryCode: 'US', available: true });
   };
-  handler = (await import('../api/mcp.ts')).mcpHandler;
+  handler = (await import('../api/_mcp.ts')).mcpHandler;
 });
 beforeEach(() => { counts = new Map(); calls = []; fetched = []; });
 after(() => {

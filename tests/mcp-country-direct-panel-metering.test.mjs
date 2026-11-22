@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { HMAC_SECRET, makeProDeps, proReq, callBody } from './helpers/mcp-pro-deps.mjs';
-import { admitNewsPanel, authorizePanelRead } from '../api/mcp/panel-requests.ts';
+import { admitNewsPanel, authorizePanelRead } from '../api/_mcp/panel-requests.ts';
 import { dailyCounterKey } from '../server/_shared/pro-mcp-token.ts';
 import { Ratelimit } from '@upstash/ratelimit';
 
@@ -40,7 +40,7 @@ describe('direct country paid original reuse', () => {
       if (url.pathname === '/api/intelligence/v1/get-country-energy-profile') return Response.json({ countryCode: 'US', available: true });
       throw new Error(`Unexpected fixture fetch ${url.href}`);
     };
-    handler = (await import('../api/mcp.ts')).mcpHandler;
+    handler = (await import('../api/_mcp.ts')).mcpHandler;
   });
   afterEach(() => {
     Ratelimit.slidingWindow = originalSlidingWindow;

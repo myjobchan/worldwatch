@@ -1,8 +1,8 @@
 import { afterEach, describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
-import { requireCountryCode, resolveCountryArg, resolveCountryFilter } from '../api/mcp/_country-args.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { requireCountryCode, resolveCountryArg, resolveCountryFilter } from '../api/_mcp/_country-args.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { normalizeLocalizedCountryToken } from '../shared/country-code-resolve-localized.ts';
 import DATA from '../shared/country-names-localized.json' with { type: 'json' };
 import { assignedCountryCodes } from '../scripts/build-country-names-ar.mjs';

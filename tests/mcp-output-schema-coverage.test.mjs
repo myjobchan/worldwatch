@@ -23,7 +23,7 @@ const VALID_KEY = 'wm_test_key_output_schema';
 const originalEnv = { ...process.env };
 
 async function freshMod() {
-  return import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+  return import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
 }
 
 function collectInvalidToolSchemas(tools) {
@@ -54,7 +54,7 @@ function collectInvalidToolSchemas(tools) {
   return failures;
 }
 
-describe('api/mcp.ts — per-tool outputSchema coverage (v1.7.0)', () => {
+describe('api/_mcp.ts — per-tool outputSchema coverage (v1.7.0)', () => {
   let mod;
 
   beforeEach(async () => {

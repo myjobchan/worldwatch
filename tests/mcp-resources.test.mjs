@@ -32,8 +32,8 @@ import {
   makeProDeps,
   proReq,
 } from './helpers/mcp-pro-deps.mjs';
-import { buildUiResourceRead, isUiResourceUri, UI_RESOURCE_LIST_RESPONSE, UI_RESOURCE_REGISTRY } from '../api/mcp/ui/registry.ts';
-import { buildAppHtml } from '../api/mcp/ui/shell.ts';
+import { buildUiResourceRead, isUiResourceUri, UI_RESOURCE_LIST_RESPONSE, UI_RESOURCE_REGISTRY } from '../api/_mcp/ui/registry.ts';
+import { buildAppHtml } from '../api/_mcp/ui/shell.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const originalFetch = globalThis.fetch;
@@ -375,7 +375,7 @@ let TEMPLATE_RESOURCE_REGISTRY;
 let TOOL_REGISTRY;
 let CHOKEPOINT_SLUGS;
 
-describe('api/mcp.ts — resources capability + stability + auth-symmetry', () => {
+describe('api/_mcp.ts — resources capability + stability + auth-symmetry', () => {
   beforeEach(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     process.env.UPSTASH_REDIS_REST_URL = 'https://fake.upstash.io';
@@ -385,7 +385,7 @@ describe('api/mcp.ts — resources capability + stability + auth-symmetry', () =
 
     installMockFetch();
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-resources`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-resources`);
     handler = mod.default;
     mcpHandler = mod.mcpHandler;
     PUBLIC_RESOURCE_REGISTRY = mod.__testing__.PUBLIC_RESOURCE_REGISTRY;
@@ -1646,7 +1646,7 @@ describe('api/mcp.ts — resources capability + stability + auth-symmetry', () =
     assert.deepEqual(actualSorted, expected, 'CHOKEPOINT_SLUGS contents must match the snapshot byte-for-byte');
   });
 
-  it('api/mcp/resources/slugs.ts file-on-disk parses to the same CHOKEPOINT_SLUGS export', () => {
+  it('api/_mcp/resources/slugs.ts file-on-disk parses to the same CHOKEPOINT_SLUGS export', () => {
     // Defense-in-depth: the snapshot test above runs against the
     // already-loaded module; this one re-reads the source file from disk
     // so a sabotage that edits ONLY the in-memory const (test bypass)

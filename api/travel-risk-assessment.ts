@@ -21,8 +21,8 @@ import { validateBearerToken } from '../server/auth-session';
 import { getEntitlements, isEntitlementBackendConfigured } from '../server/_shared/entitlement-check';
 import { checkRateLimit, checkScopedRateLimit, scopedTooManyRequestsResponse } from '../server/_shared/rate-limit';
 import { createTravelRiskExportHandler } from '../server/_shared/travel-risk-export';
-import { createTravelRiskTool } from './mcp/registry/travel-risk-tool';
-import type { TravelRiskResult } from './mcp/registry/_travel-risk-document';
+import { createTravelRiskTool } from './_mcp/registry/travel-risk-tool';
+import type { TravelRiskResult } from './_mcp/registry/_travel-risk-document';
 
 const RATE_SCOPE = '/api/travel-risk-assessment';
 const RATE_LIMIT = 20;

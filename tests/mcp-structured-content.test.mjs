@@ -8,8 +8,8 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
 
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
-import { TOOL_ALIASES } from '../api/mcp/registry/index.ts';
-import { DEPRECATION_NOTICE_SCHEMA } from '../api/mcp/structured-content.ts';
+import { TOOL_ALIASES } from '../api/_mcp/registry/index.ts';
+import { DEPRECATION_NOTICE_SCHEMA } from '../api/_mcp/structured-content.ts';
 
 const originalFetch = globalThis.fetch;
 const originalEnv = { ...process.env };
@@ -50,7 +50,7 @@ describe('tools/call returns structuredContent a strict client accepts (#8328)',
       JSON.stringify({ result: JSON.stringify({}) }),
       { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
     registry = mod.__testing__.TOOL_REGISTRY;
     const { deps } = makeProDeps();

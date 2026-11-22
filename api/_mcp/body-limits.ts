@@ -1,6 +1,6 @@
 // Shared JSON-RPC POST body cap for `/api/mcp` and sibling MCP entry
 // points that opt in. Kept in a leaf module so Edge facades
-// (`api/docs-mcp.ts`, `api/mcp-proxy.ts`) can import the number without
+// (`api/docs-mcp.ts`, `api/_mcp-proxy.ts`) can import the number without
 // pulling the broader MCP constants / upgrade graph.
 //
 // Untrusted clients — including confused LLM hosts pasting large blobs

@@ -61,7 +61,7 @@ export type PremiumCallerIdentity =
       /**
        * Present on `desktop-key` only: what the per-account desktop meter
        * (KTD6 / R6) needs — the owner's plan and its sold limits — so a
-       * standalone edge (api/mcp-proxy.ts, api/chat-analyst.ts) can charge
+       * standalone edge (api/_mcp-proxy.ts, api/chat-analyst.ts) can charge
        * `chargeDesktopKeyBudget` without a second entitlement read. The meter
        * is NOT charged here: gateway-served handlers resolve this identity too
        * and the gateway has already charged them; charging twice would halve

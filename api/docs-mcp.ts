@@ -18,22 +18,22 @@
 // Genuine tool-execution failures deliberately stay `isError` results — the
 // MCP spec reserves top-level errors for protocol-level failures only.
 import { ENDPOINT_RATE_POLICIES, checkScopedRateLimit, checkIpScopedEdgeProof, getClientIp, rateLimitKeyForIp } from '../server/_shared/rate-limit';
-import { readBoundedRequestBody, RequestBodyTooLargeError } from './mcp/bounded-body';
-import { MAX_JSON_RPC_BODY_BYTES } from './mcp/body-limits';
-import { safeJsonRpcId } from './mcp/utils';
+import { readBoundedRequestBody, RequestBodyTooLargeError } from './_mcp/bounded-body';
+import { MAX_JSON_RPC_BODY_BYTES } from './_mcp/body-limits';
+import { safeJsonRpcId } from './_mcp/utils';
 
 export const config = { runtime: 'edge' };
 
 const UPSTREAM_URL = 'https://worldmonitor.mintlify.dev/docs/mcp';
 const UPSTREAM_TIMEOUT_MS = 30_000;
-const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/mcp.ts
+const RATE_LIMIT_ERROR_CODE = -32029; // JSON-RPC code mirrored from api/_mcp.ts
 
 const RATE_LIMIT_SCOPE = '/api/docs-mcp';
 const RATE_LIMIT_POLICY = ENDPOINT_RATE_POLICIES[RATE_LIMIT_SCOPE];
 if (!RATE_LIMIT_POLICY) {
   // Module-load failure — better to crash the function cold-start with a loud
   // message than to silently fall back to "no rate limit" if someone
-  // accidentally deletes the registry entry (same guard as api/mcp-proxy.ts).
+  // accidentally deletes the registry entry (same guard as api/_mcp-proxy.ts).
   throw new Error(
     `[docs-mcp] missing ENDPOINT_RATE_POLICIES['${RATE_LIMIT_SCOPE}'] — see server/_shared/rate-limit.ts`,
   );

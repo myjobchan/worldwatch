@@ -3,7 +3,7 @@
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync, existsSync } from 'node:fs';
-import { SERVER_INFO, SERVER_NAME, SERVER_VERSION } from '../api/mcp/constants.ts';
+import { SERVER_INFO, SERVER_NAME, SERVER_VERSION } from '../api/_mcp/constants.ts';
 
 const card = JSON.parse(readFileSync(new URL('../public/.well-known/mcp/server-card.json', import.meta.url), 'utf8'));
 

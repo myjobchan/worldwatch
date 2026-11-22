@@ -276,7 +276,7 @@ climateZoneNormals: 'climate:zone-normals:v1',
 
 2. **`api/health.js`** — add each data key (not zone-normals) to the `BOOTSTRAP_KEYS` array (startup hydration on deploy)
 
-3. **`api/mcp.ts`** — add keys to the `get_climate_data` tool's `_cacheKeys` array (see MCP Tool section below)
+3. **`api/_mcp.ts`** — add keys to the `get_climate_data` tool's `_cacheKeys` array (see MCP Tool section below)
 
 4. **Each seed script** — must call `runSeed()` with the correct canonical key so it writes `seed-meta:<domain>:<name>` automatically. The seed-meta key is required for health monitoring (`_seedMetaKey` in the MCP tool).
 
@@ -284,7 +284,7 @@ climateZoneNormals: 'climate:zone-normals:v1',
 
 ## MCP Tool: Update `get_climate_data`
 
-Replace current entry in `api/mcp.ts`:
+Replace current entry in `api/_mcp.ts`:
 
 ```ts
 {

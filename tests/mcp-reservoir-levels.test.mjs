@@ -3,13 +3,13 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
 import { __testing__ as health } from '../api/health.js';
-import { utf8ByteLength } from '../api/mcp.ts';
-import { validateToolArgs } from '../api/mcp/_validate-args.ts';
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
-import { executeTool } from '../api/mcp/dispatch.ts';
-import { evaluateFreshness } from '../api/mcp/freshness.ts';
-import { CACHE_TOOLS } from '../api/mcp/registry/cache-tools.ts';
-import { RESERVOIR_STATUSES } from '../api/mcp/registry/_reservoir-levels.ts';
+import { utf8ByteLength } from '../api/_mcp.ts';
+import { validateToolArgs } from '../api/_mcp/_validate-args.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
+import { executeTool } from '../api/_mcp/dispatch.ts';
+import { evaluateFreshness } from '../api/_mcp/freshness.ts';
+import { CACHE_TOOLS } from '../api/_mcp/registry/cache-tools.ts';
+import { RESERVOIR_STATUSES } from '../api/_mcp/registry/_reservoir-levels.ts';
 import { classifyStatus } from '../scripts/_reservoir-levels.mjs';
 import { buildSummary } from '../scripts/seed-reservoir-levels.mjs';
 

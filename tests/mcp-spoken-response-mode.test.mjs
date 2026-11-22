@@ -20,7 +20,7 @@ import {
   spokenPredictionMarkets,
   spokenResilienceIndicators,
   spokenWorldBrief,
-} from '../api/mcp/spoken-narrators.ts';
+} from '../api/_mcp/spoken-narrators.ts';
 import {
   SPOKEN_MAX_CHARS,
   arabicCount,
@@ -30,7 +30,7 @@ import {
   recordStaleFreshnessKeys,
   spokenAgo,
   spokenPoints,
-} from '../api/mcp/spoken.ts';
+} from '../api/_mcp/spoken.ts';
 import { CHOKEPOINT_REGISTRY } from '../server/_shared/chokepoint-registry.ts';
 
 const originalFetch = globalThis.fetch;
@@ -707,7 +707,7 @@ describe('tools/call response_mode: "spoken" through the MCP handler', () => {
       }
       throw new Error(`unexpected fetch in test: ${u}`);
     };
-    mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     handler = mod.default;
     registry = mod.__testing__.TOOL_REGISTRY;
     const listed = await handler(new Request(BASE_URL, {

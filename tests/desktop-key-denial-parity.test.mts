@@ -237,7 +237,7 @@ describe('desktop-key denials are identical on the gateway and bootstrap', () =>
     assert.equal(chat.status, 403, await chat.clone().text());
     assert.deepEqual(await chat.json(), { error: DESKTOP_KEY_CLIENT_ERROR });
 
-    const { handler: mcpProxy } = await import('../api/mcp-proxy.js') as { handler: (req: Request, ctx: unknown) => Promise<Response> };
+    const { handler: mcpProxy } = await import('../api/_mcp-proxy.js') as { handler: (req: Request, ctx: unknown) => Promise<Response> };
     const mcp = await mcpProxy(new Request('https://api.worldmonitor.app/api/mcp-proxy?action=list-tools&serverUrl=https%3A%2F%2Fmcp.example.com', { headers }), { waitUntil: () => {} });
     assert.equal(mcp.status, 403, await mcp.clone().text());
     assert.deepEqual(await mcp.json(), { error: DESKTOP_KEY_CLIENT_ERROR });

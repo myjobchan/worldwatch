@@ -32,7 +32,7 @@ describe('commodities news agent parity (#5889)', () => {
       ].sort();
       assert.deepEqual([...categories].sort(), feedKeys, `${edition} categories must match its digest (and no extras)`);
     }
-    const nlpSrc = readFileSync(join(ROOT, 'api/mcp/registry/nlp-tools.ts'), 'utf8');
+    const nlpSrc = readFileSync(join(ROOT, 'api/_mcp/registry/nlp-tools.ts'), 'utf8');
     assert.match(nlpSrc, /const ALL_DIGEST_CATEGORIES = \[\.\.\.new Set\(Object\.values\(NEWS_POOL_LAYOUT\.editions\)/);
   });
 

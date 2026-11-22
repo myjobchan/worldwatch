@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 const tool = TOOL_REGISTRY.find((entry) => entry.name === 'get_prediction_markets');
 

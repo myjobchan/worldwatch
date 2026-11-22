@@ -178,14 +178,14 @@ flowchart TD
 - A pre-change generic entry still authenticates through re-fetch, with no 401 window.
 - Revocation clears the entry for a desktop key.
 - Convex outage still yields the retryable 503.
-**Verification:** Generic callers stay unchanged and reject desktop keys: `api/mcp/auth.ts`, `api/v2/shipping/webhooks/*`, `server/worldmonitor/shipping/v2/register-webhook.ts`, `server/worldmonitor/shipping/v2/list-webhooks.ts`, `api/_oauth-token.js`, `api/oauth/authorize.js`, `api/embed/entitlement.ts`, `server/_shared/embed-entitlement.ts`, `api/telegram-feed.js`.
+**Verification:** Generic callers stay unchanged and reject desktop keys: `api/_mcp/auth.ts`, `api/v2/shipping/webhooks/*`, `server/worldmonitor/shipping/v2/register-webhook.ts`, `server/worldmonitor/shipping/v2/list-webhooks.ts`, `api/_oauth-token.js`, `api/oauth/authorize.js`, `api/embed/entitlement.ts`, `server/_shared/embed-entitlement.ts`, `api/telegram-feed.js`.
 
 ### U4. Gateway, premium-check, and bootstrap accept desktop principals
 
 **Goal:** A desktop key alone gets non-empty Pro data on the gateway, in handlers, and in bootstrap, under the account limits.
 **Requirements:** R3, R4, R5, R6, R8, R9
 **Dependencies:** U1, U3
-**Files:** `server/gateway.ts`, `server/_shared/premium-check.ts`, `server/_shared/api-only-paths.ts` (new), `api/bootstrap.js`, `api/mcp/auth.ts`, `tests/gateway-desktop-key.test.mts` (new), the existing premium-check and bootstrap auth test files
+**Files:** `server/gateway.ts`, `server/_shared/premium-check.ts`, `server/_shared/api-only-paths.ts` (new), `api/bootstrap.js`, `api/_mcp/auth.ts`, `tests/gateway-desktop-key.test.mts` (new), the existing premium-check and bootstrap auth test files
 **Approach:** Add the KTD7 set. Apply KTD4 and KTD5 in the gateway and in `resolvePremiumCallerIdentity`, returning Pro LLM limits for desktop principals. MCP's `wm_` path rejects downgraded owners. Add the KTD6 account counter and burst bucket, charged by the gateway and bootstrap. Bootstrap serves a desktop principal what it serves a signed-in Pro session.
 **Execution note:** Write failing tests for AE1, AE2, and AE6 before changing any gate.
 **Test scenarios:**

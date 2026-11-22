@@ -2,7 +2,7 @@
 title: "Codex's OAuth discovery probe was refused with 400 because rmcp sends a fixed 2024-11-05 MCP-Protocol-Version"
 date: 2026-10-24
 category: integration-issues
-module: "MCP server transport auth (api/mcp/handler.ts)"
+module: "MCP server transport auth (api/_mcp/handler.ts)"
 problem_type: integration_issue
 component: authentication
 severity: medium
@@ -45,7 +45,7 @@ Codex checks whether an MCP server needs sign-in with the Rust SDK's OAuth disco
 
 ## Solution
 
-#9601: an anonymous plain `GET` on the transport that carries any `MCP-Protocol-Version` is treated as an OAuth discovery probe and gets the standard challenge. "Plain" means no `Last-Event-ID` and no `text/event-stream` Accept. The challenge is the same `401` and `WWW-Authenticate: Bearer realm="worldmonitor", resource_metadata=".../.well-known/oauth-protected-resource/mcp"` that an anonymous `initialize` gets. It is decided before the version gate, so the probe's unsupported `2024-11-05` no longer short-circuits it. In `api/mcp/handler.ts` the condition is `anonymousAuthProbe`:
+#9601: an anonymous plain `GET` on the transport that carries any `MCP-Protocol-Version` is treated as an OAuth discovery probe and gets the standard challenge. "Plain" means no `Last-Event-ID` and no `text/event-stream` Accept. The challenge is the same `401` and `WWW-Authenticate: Bearer realm="worldmonitor", resource_metadata=".../.well-known/oauth-protected-resource/mcp"` that an anonymous `initialize` gets. It is decided before the version gate, so the probe's unsupported `2024-11-05` no longer short-circuits it. In `api/_mcp/handler.ts` the condition is `anonymousAuthProbe`:
 
 ```ts
 const anonymousAuthProbe = req.method === 'GET'

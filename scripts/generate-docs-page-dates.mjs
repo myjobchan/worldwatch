@@ -24,8 +24,27 @@ import { load as loadYaml } from 'js-yaml';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = 'src/config/docs-page-dates.generated.ts';
+const OUTPUT_PATH = join(ROOT, OUTPUT);
 const CHECK = process.argv.includes('--check');
 const FETCH_HISTORY = process.argv.includes('--fetch-history');
+
+function runningOnVercel() {
+  return process.env.VERCEL === '1';
+}
+
+function commandFailureLine(error) {
+  const stderr = error?.stderr ? error.stderr.toString().trim() : '';
+  const message = stderr || String(error?.message || error);
+  return message.split('\n').map((line) => line.trim()).find(Boolean) || 'git fetch failed';
+}
+
+// A shallow Vercel checkout cannot unshallow a private HTTPS remote without
+// credentials. The committed manifest is the build input in that case.
+function keepCommittedDates(reason) {
+  if (!existsSync(OUTPUT_PATH)) return false;
+  console.log(`docs page dates: ${reason}; keeping committed ${OUTPUT}`);
+  return true;
+}
 
 function listDocPages() {
   const pages = new Map();
@@ -72,6 +91,10 @@ function commitDateRanges() {
   const isShallow = () => execFileSync('git', ['rev-parse', '--is-shallow-repository'], {
     cwd: ROOT, encoding: 'utf8',
   }).trim() === 'true';
+  if (isShallow() && runningOnVercel()) {
+    if (keepCommittedDates('shallow git checkout on Vercel (not fetching)')) return null;
+    throw new Error(`docs page dates: shallow checkout on Vercel and ${OUTPUT} is missing`);
+  }
   if (isShallow() && FETCH_HISTORY) {
     const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
     const remotes = execFileSync('git', ['remote'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
@@ -83,9 +106,14 @@ function commitDateRanges() {
       }
       remote = `https://github.com/${owner}/${repo}.git`;
     }
-    execFileSync('git', ['fetch', '--unshallow', '--no-tags', '--filter=blob:none', '--no-write-fetch-head', remote, sha], {
-      cwd: ROOT, stdio: 'pipe', timeout: 120_000,
-    });
+    try {
+      execFileSync('git', ['fetch', '--unshallow', '--no-tags', '--filter=blob:none', '--no-write-fetch-head', remote, sha], {
+        cwd: ROOT, stdio: 'pipe', timeout: 120_000,
+      });
+    } catch (error) {
+      if (keepCommittedDates(`git fetch failed (${commandFailureLine(error)})`)) return null;
+      throw error;
+    }
   }
   if (isShallow()) {
     throw new Error(
@@ -137,8 +165,9 @@ function render(dates) {
   ].join('\n');
 }
 
-const pages = listDocPages();
 const commitDates = commitDateRanges();
+if (!commitDates) process.exit(0);
+const pages = listDocPages();
 const missing = [...new Set(pages.values())].filter((file) => !commitDates.has(file));
 if (missing.length > 0) {
   throw new Error(
@@ -149,7 +178,7 @@ const dates = new Map(
   [...pages].map(([slug, file]) => [slug, commitDates.get(file)]),
 );
 const expected = render(dates);
-const outputPath = join(ROOT, OUTPUT);
+const outputPath = OUTPUT_PATH;
 const actual = existsSync(outputPath) ? readFileSync(outputPath, 'utf8') : null;
 if (actual === expected) {
   console.log(`docs page dates unchanged (${dates.size} pages)`);

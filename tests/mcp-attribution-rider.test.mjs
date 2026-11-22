@@ -4,8 +4,8 @@ import { afterEach, describe, test } from 'node:test';
 
 import jmespath from 'jmespath';
 
-import { executeTool } from '../api/mcp/dispatch.ts';
-import { RETIRED_TOOLS, TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { executeTool } from '../api/_mcp/dispatch.ts';
+import { RETIRED_TOOLS, TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 // Retired tools leave tools/list but stay callable, so their licence fields
 // still need the rider.

@@ -19,10 +19,10 @@
  * or a log line. The response is `no-store`.
  */
 
-import { RpcValidationError } from '../../api/mcp/billing-denial';
-import type { TravelRiskResult } from '../../api/mcp/registry/_travel-risk-document';
-import { parseTravelRiskArgs } from '../../api/mcp/registry/travel-risk-tool';
-import { McpSourceUnavailableError } from '../../api/mcp/source-unavailable';
+import { RpcValidationError } from '../../api/_mcp/billing-denial';
+import type { TravelRiskResult } from '../../api/_mcp/registry/_travel-risk-document';
+import { parseTravelRiskArgs } from '../../api/_mcp/registry/travel-risk-tool';
+import { McpSourceUnavailableError } from '../../api/_mcp/source-unavailable';
 import { hasTravelRiskAssessment, type TravelRiskEntitlement } from '../../shared/travel-risk-access';
 import { hasCurrentEntitlementCoverage } from './entitlement-coverage';
 import {

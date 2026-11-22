@@ -14,7 +14,7 @@ tags: [mcp, freshness, deployment-order, cache-tools, registry, staleness, get-e
 
 ## Context
 
-An MCP cache tool bundles many datasets behind one call. `get_economic_data` reads 14 cache keys and returns them in one response. Its `_freshnessChecks` array declares which `seed-meta:*` keys gate the response's freshness (`api/mcp/registry/cache-tools.ts`).
+An MCP cache tool bundles many datasets behind one call. `get_economic_data` reads 14 cache keys and returns them in one response. Its `_freshnessChecks` array declares which `seed-meta:*` keys gate the response's freshness (`api/_mcp/registry/cache-tools.ts`).
 
 The natural instinct when adding a dataset is to add a matching freshness check — the BIS datasets each have one, and per-dataset checks were added deliberately in the first place because an aggregate `seed-meta:economic:bis-extended` would report "fresh" when only one of three slices was current.
 
@@ -24,7 +24,7 @@ That instinct is right for a key whose producer is already running, and wrong fo
 
 Do not add a `_freshnessChecks` entry for a cache key whose producer has never run in production. Add the key to `_cacheKeys` (so the data is served), and let the key's own health surface own freshness until the producer has published at least once.
 
-The reason is in `evaluateFreshness` (`api/mcp/freshness.ts:22-83`). It is a single OR across every check, and a **missing** seed-meta counts as stale:
+The reason is in `evaluateFreshness` (`api/_mcp/freshness.ts:22-83`). It is a single OR across every check, and a **missing** seed-meta counts as stale:
 
 ```js
 if (!Number.isFinite(fetchedAt) || fetchedAt <= 0) {
@@ -51,7 +51,7 @@ The blast radius is inverted from what the change looks like. The diff adds one 
 
 The deployment-order gap is structural, not a race to be tightened: Vercel ships on merge, Railway seeders run on their own cron. Any new key has this window.
 
-The obvious mitigation does not apply. `FreshnessCheck` has a `contentFreshnessActivationKey` field (`api/mcp/types.ts:158`) that grants a deployment-order grace — but `evaluateFreshness` consults it only inside the `requireContentFreshness` block, so it bridges a missing *content-freshness* assessment, not a missing seed-meta. `/api/health` has its own bridge for the same problem (`ACTIVATION_MARKERS` + `ON_DEMAND_KEYS`), and that one *does* cover a missing key — which is why health is the right owner during the gap.
+The obvious mitigation does not apply. `FreshnessCheck` has a `contentFreshnessActivationKey` field (`api/_mcp/types.ts:158`) that grants a deployment-order grace — but `evaluateFreshness` consults it only inside the `requireContentFreshness` block, so it bridges a missing *content-freshness* assessment, not a missing seed-meta. `/api/health` has its own bridge for the same problem (`ACTIVATION_MARKERS` + `ON_DEMAND_KEYS`), and that one *does* cover a missing key — which is why health is the right owner during the gap.
 
 The precedent already points the same way: of the 14 datasets in `get_economic_data`, only 6 have freshness checks. The closest peer to any newly added FX or rates dataset — `ecb-fx-rates` — has none.
 

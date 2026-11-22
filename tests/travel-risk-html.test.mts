@@ -8,8 +8,8 @@
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { buildTravelRiskResult, type TravelRiskSources, type SourceSnapshot, TRAVEL_RISK_FEEDS } from '../api/mcp/registry/_travel-risk-document';
-import { parseTravelRiskArgs } from '../api/mcp/registry/travel-risk-tool';
+import { buildTravelRiskResult, type TravelRiskSources, type SourceSnapshot, TRAVEL_RISK_FEEDS } from '../api/_mcp/registry/_travel-risk-document';
+import { parseTravelRiskArgs } from '../api/_mcp/registry/travel-risk-tool';
 import { renderTravelRiskHtml } from '../server/_shared/travel-risk-html';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');

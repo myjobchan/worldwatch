@@ -9,9 +9,9 @@ import { readFileSync } from 'node:fs';
 
 import { getRequiredTier, TIER_GATED_PATHS } from '../server/_shared/entitlement-check.ts';
 import { PREMIUM_RPC_PATHS } from '../src/shared/premium-paths.ts';
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
-import { executeTool } from '../api/mcp/dispatch.ts';
-import type { CacheToolDef, McpToolExecutionContext, ToolDef } from '../api/mcp/types.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
+import { executeTool } from '../api/_mcp/dispatch.ts';
+import type { CacheToolDef, McpToolExecutionContext, ToolDef } from '../api/_mcp/types.ts';
 import { HMAC_SECRET, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
 
 const PAID_PATHS: ReadonlySet<string> = new Set([...TIER_GATED_PATHS, ...PREMIUM_RPC_PATHS]);
@@ -234,7 +234,7 @@ describe('free-account cache reads skip _subscriptionCacheKeys', () => {
   });
 
   it('resources/read for a free account reaches the same lock (worldmonitor://markets/{symbol}/quote)', async () => {
-    const { mcpHandler } = await import(`../api/mcp.ts?invariant=${Date.now()}`);
+    const { mcpHandler } = await import(`../api/_mcp.ts?invariant=${Date.now()}`);
     const { deps } = makeProDeps({
       getEntitlements: async () => ({ planKey: 'free', features: { tier: 0, mcpAccess: false }, validUntil: Date.now() + 86_400_000 }),
     });

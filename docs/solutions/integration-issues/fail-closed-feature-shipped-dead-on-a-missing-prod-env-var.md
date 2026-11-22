@@ -25,7 +25,7 @@ Agent feedback (#8721) went live with every report refused. `submitAgentFeedback
 ## Symptoms
 
 - A live `report_issue` call returned HTTP 503 with `Feedback is temporarily unavailable.`
-- The Axiom usage row for that call said `status=503 reason=rate_limit_degraded`. MCP dispatch maps every 503 to that reason (`api/mcp/usage.ts:258-261`), so the row pointed at the limiter instead of the config.
+- The Axiom usage row for that call said `status=503 reason=rate_limit_degraded`. MCP dispatch maps every 503 to that reason (`api/_mcp/usage.ts:258-261`), so the row pointed at the limiter instead of the config.
 - Nothing failed before the first real write. Unit tests stub the env, and tools/list only shows the tool is registered.
 
 ## What Didn't Work

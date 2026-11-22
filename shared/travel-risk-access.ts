@@ -2,7 +2,7 @@
  * Whether the account holds the travel risk assessment grant (#10451): Pro
  * Business, API Business and Enterprise.
  *
- * The server enforces it in the MCP tool (`api/mcp/auth.ts` reads
+ * The server enforces it in the MCP tool (`api/_mcp/auth.ts` reads
  * `features.travelRiskAssessment`). This copy is the browser's presentation
  * gate for the focus bar's "Draft assessment" action, so an account that
  * could not run the tool is not shown it. It protects nothing: the action

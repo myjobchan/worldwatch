@@ -2,7 +2,7 @@ import { after, before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { Window } from 'happy-dom';
 import { Ratelimit } from '@upstash/ratelimit';
-import { NATURAL_DISASTERS_APP_HTML } from '../api/mcp/ui/natural-disasters-app.ts';
+import { NATURAL_DISASTERS_APP_HTML } from '../api/_mcp/ui/natural-disasters-app.ts';
 import { HMAC_SECRET, makeProDeps, proReq, callBody } from './helpers/mcp-pro-deps.mjs';
 
 const original = { fetch: globalThis.fetch, env: { ...process.env }, limiter: Ratelimit.slidingWindow };
@@ -44,7 +44,7 @@ before(async () => {
     const value = sources.get(key);
     return Response.json({ result: value == null ? null : JSON.stringify(value) });
   };
-  handler = (await import('../api/mcp.ts')).mcpHandler;
+  handler = (await import('../api/_mcp.ts')).mcpHandler;
 });
 after(() => {
   globalThis.fetch = original.fetch;

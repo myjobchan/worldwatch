@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
 
-import { mcpErrorFingerprint } from '../api/mcp/error-fingerprint.ts';
+import { mcpErrorFingerprint } from '../api/_mcp/error-fingerprint.ts';
 
 // Regression guard for WORLDMONITOR-T8: the minified edge bundle gives every
-// api/mcp error identical anonymous frames, so without an explicit fingerprint
+// api/_mcp error identical anonymous frames, so without an explicit fingerprint
 // Sentry merges all tool 4xx/5xx sibling-fetch failures into one catch-all
 // issue. These assertions pin the grouping so a future regex edit can't
 // silently re-merge the groups.

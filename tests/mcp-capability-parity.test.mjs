@@ -3,9 +3,9 @@ import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
 
 import { BASE_URL } from './helpers/mcp-pro-deps.mjs';
-import { resolveMcpBudget } from '../api/mcp/quota.ts';
-import { MCP_DEFAULT_BURST_PER_MINUTE, MCP_PROTOCOL_BURST_PER_MINUTE, resolveMcpBurstPerMinute } from '../api/mcp/auth.ts';
-import { PANEL_READ_LIMIT } from '../api/mcp/panel-requests.ts';
+import { resolveMcpBudget } from '../api/_mcp/quota.ts';
+import { MCP_DEFAULT_BURST_PER_MINUTE, MCP_PROTOCOL_BURST_PER_MINUTE, resolveMcpBurstPerMinute } from '../api/_mcp/auth.ts';
+import { PANEL_READ_LIMIT } from '../api/_mcp/panel-requests.ts';
 import { PRODUCT_CATALOG } from '../convex/config/productCatalog.ts';
 import { OPERATOR_KEY_DAILY_CEILINGS } from '../server/_shared/high-usage-alarm.ts';
 
@@ -87,14 +87,14 @@ let registries;
 // the disk read isn't repeated three times per run.
 let cardCaps;
 
-describe('api/mcp.ts — capability parity (advertised AND non-empty)', () => {
+describe('api/_mcp.ts — capability parity (advertised AND non-empty)', () => {
   beforeEach(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     process.env.MCP_TELEMETRY = 'false';
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-cap-parity`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-cap-parity`);
     handler = mod.default;
     registries = mod.__testing__;
     cardCaps = loadServerCardCapabilities();

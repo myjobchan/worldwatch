@@ -1,6 +1,6 @@
 import { test, expect, type Page, type Route } from '@playwright/test';
 import { join } from 'node:path';
-import { buildPluginShell } from '../api/mcp/ui/_plugin-loader';
+import { buildPluginShell } from '../api/_mcp/ui/_plugin-loader';
 
 // Claude serves an MCP Apps view from its own sandbox origin
 // (<hash>.claudemcpcontent.com) with a CSP that blocks <base>, so the shell's

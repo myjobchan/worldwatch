@@ -193,7 +193,7 @@ describe('Registry wiring (issue #3028)', () => {
   });
 
   it('MCP serves the three EU overlays as get_country_macro datasets', async () => {
-    const { TOOL_REGISTRY } = await import('../api/mcp/registry/index.ts');
+    const { TOOL_REGISTRY } = await import('../api/_mcp/registry/index.ts');
     const tool = TOOL_REGISTRY.find((entry) => entry.name === 'get_country_macro');
     const datasets = {
       'house-prices': 'economic:eurostat:house-prices:v1',

@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { RETIRED_TOOLS, TOOL_ALIASES, TOOL_LIST_RESPONSE, TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { RETIRED_TOOLS, TOOL_ALIASES, TOOL_LIST_RESPONSE, TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 const RETIRED_NAMES = ['generate_forecasts', 'get_toronto_reported_occurrences', 'get_toronto_calls_attended'];
 const ALIAS_NAMES = [

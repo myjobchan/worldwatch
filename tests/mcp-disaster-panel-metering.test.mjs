@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
-import { admitNewsPanel, admitCountryPanel, admitMarketPanel, authorizePanelRead } from '../api/mcp/panel-requests.ts';
+import { admitNewsPanel, admitCountryPanel, admitMarketPanel, authorizePanelRead } from '../api/_mcp/panel-requests.ts';
 import { dailyCounterKey } from '../server/_shared/pro-mcp-token.ts';
 
 const originalFetch = globalThis.fetch;
@@ -53,7 +53,7 @@ describe('Natural Disasters paid admission and original source deadlines', () =>
       if (value instanceof Error) throw value;
       return Response.json({ result: value === undefined || value === null ? null : JSON.stringify(value) });
     };
-    handler = (await import('../api/mcp.ts')).mcpHandler;
+    handler = (await import('../api/_mcp.ts')).mcpHandler;
   });
   afterEach(() => {
     globalThis.fetch = originalFetch; Date.now = originalNow;

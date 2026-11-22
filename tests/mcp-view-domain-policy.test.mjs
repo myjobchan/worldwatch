@@ -14,8 +14,8 @@
  */
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { mcpHandler } from '../api/mcp/handler.ts';
-import { UI_RESOURCE_LIST_RESPONSE } from '../api/mcp/ui/registry.ts';
+import { mcpHandler } from '../api/_mcp/handler.ts';
+import { UI_RESOURCE_LIST_RESPONSE } from '../api/_mcp/ui/registry.ts';
 import { HMAC_SECRET, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
 
 const CHATGPT_UA = 'openai-mcp/1.0.0 (ChatGPT)';

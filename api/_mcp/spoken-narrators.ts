@@ -25,7 +25,7 @@ import {
 } from './spoken';
 import { resolveCountryArg } from './_country-args';
 
-// Per-tool narrators for `response_mode: "spoken"` (api/mcp/spoken.ts). Each
+// Per-tool narrators for `response_mode: "spoken"` (api/_mcp/spoken.ts). Each
 // reads the tool's documented payload shape and returns 2-3 sentences plus
 // citations. Every number spoken is read from the payload; nothing is
 // estimated or generated. Each tool declares its narrator as `_spoken` on

@@ -2,14 +2,14 @@
 // instructions about model behavior, other tools, or external instruction
 // sources". A description says what its own tool returns. Which tool fits
 // which question, and how to treat availability flags, lives in
-// AGENT_GUIDE (api/mcp/constants.ts), served as worldmonitor://guide/agents,
+// AGENT_GUIDE (api/_mcp/constants.ts), served as worldmonitor://guide/agents,
 // which the policy does not cover.
 
 import { strict as assert } from 'node:assert';
 import { describe, it } from 'node:test';
 
-const { __testing__ } = await import('../api/mcp.ts');
-const { AGENT_GUIDE } = await import('../api/mcp/constants.ts');
+const { __testing__ } = await import('../api/_mcp.ts');
+const { AGENT_GUIDE } = await import('../api/_mcp/constants.ts');
 const REGISTRY = __testing__.TOOL_REGISTRY;
 const NAMES = REGISTRY.map((tool) => tool.name);
 
@@ -54,7 +54,7 @@ describe('MCP tool descriptions describe only their own tool', () => {
   // The scorecard description switches wording while an accuracy audit is
   // configured; the registry only shows whichever mode is live today.
   it('the forecast scorecard description passes in audit mode too', async () => {
-    const { forecastScorecardDescription } = await import('../api/mcp/registry/cache-tools.ts');
+    const { forecastScorecardDescription } = await import('../api/_mcp/registry/cache-tools.ts');
     const audit = { since: '2026-10-07', issue: 8990, reason: 'Fixture reason.' };
     for (const configured of [null, audit]) {
       const tool = { name: 'get_forecast_scorecard', description: forecastScorecardDescription(configured) };

@@ -17,10 +17,10 @@ import {
   callBody,
 } from './helpers/mcp-pro-deps.mjs';
 import { getEntitlementFeatures, PRODUCT_CATALOG } from '../convex/config/productCatalog.ts';
-import { buildMcpStructuredDenial, informOnlyNextStep } from '../api/mcp/upgrade.ts';
+import { buildMcpStructuredDenial, informOnlyNextStep } from '../api/_mcp/upgrade.ts';
 import { MCP_UPGRADE_URL } from '../shared/mcp-attribution.ts';
-import { recommendedPlanForFeature } from '../api/mcp/checkout.ts';
-import { toolWeight, TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { recommendedPlanForFeature } from '../api/_mcp/checkout.ts';
+import { toolWeight, TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 const TOOL = 'prepare_travel_risk_assessment';
 const TRIP = { countries: [{ country_code: 'TH', cities: ['Bangkok'], arrive: '2026-12-01', depart: '2026-12-05' }] };
@@ -91,7 +91,7 @@ describe('prepare_travel_risk_assessment plan gate through mcpHandler', () => {
     delete process.env.API_RATE_LIMIT_ENFORCE;
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
     process.env.MCP_TELEMETRY = 'false';
-    ({ mcpHandler } = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`));
+    ({ mcpHandler } = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`));
   });
 
   afterEach(() => {
@@ -128,10 +128,10 @@ describe('prepare_travel_risk_assessment plan gate through mcpHandler', () => {
 
   it('streams a legacy SSE draft live without keeping a replayable copy of the trip', async () => {
     stubSourceReads();
-    const store = (await import('../api/mcp/handler.ts')).__sseReplayStoreForTest;
+    const store = (await import('../api/_mcp/handler.ts')).__sseReplayStoreForTest;
     const sse = { Accept: 'application/json, text/event-stream', 'Mcp-Session-Id': 'sess-travel-risk' };
     const entitled = () => makeProDeps({ getEntitlements: async () => catalogEntitlement('pro_business_monthly') }).deps;
-    const { mcpHandler: handler } = await import('../api/mcp/handler.ts');
+    const { mcpHandler: handler } = await import('../api/_mcp/handler.ts');
     store.reset();
     const control = await handler(proReq('POST', { jsonrpc: '2.0', id: 1, method: 'prompts/list' }, sse), entitled());
     await control.text();
@@ -154,7 +154,7 @@ describe('prepare_travel_risk_assessment plan gate through mcpHandler', () => {
       assert.equal(body.result?.isError, undefined, planKey);
       assert.match(body.result.structuredContent.markdown, /^# Travel risk assessment draft/m, planKey);
       // A dedicated MCP allowance counts calls; a budget shared with REST
-      // charges the tool weight (api/mcp/quota.ts).
+      // charges the tool weight (api/_mcp/quota.ts).
       const shared = getEntitlementFeatures(planKey).planLimits.mcpCallsPerDay === 'shared-api-budget';
       assert.equal(pipe.count, shared ? toolWeight(travelTool) : 1, planKey);
     });

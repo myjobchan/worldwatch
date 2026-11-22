@@ -168,7 +168,7 @@ describe('Toronto safety qualification wiring (#7012)', () => {
     assert.equal(SAFETY_HINT.test(seedHealth) && /gta-update/.test(seedHealth), false);
     const mcpGrant = read('src/mcp-grant-main.ts');
     assert.equal(/gtaupdate|gta-update/.test(mcpGrant), false);
-    const mcpApi = read('api/mcp.ts');
+    const mcpApi = read('api/_mcp.ts');
     assert.equal(/gtaupdate|gta-update|safety:toronto:gta-update/.test(mcpApi), false);
   });
 

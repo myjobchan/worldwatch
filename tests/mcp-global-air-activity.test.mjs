@@ -13,7 +13,7 @@ import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 
 import { installRedis } from './helpers/fake-upstash-redis.mts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 const findTool = (name) => TOOL_REGISTRY.find((t) => t.name === name);
 const ORIGINAL_FETCH = globalThis.fetch;

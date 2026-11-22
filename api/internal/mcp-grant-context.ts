@@ -123,7 +123,7 @@ export async function grantContextHandler(req: Request, deps: ContextDeps): Prom
   // The decision is shared with mcp-grant-mint.ts and oauth/authorize-pro.ts
   // (server/_shared/pro-mcp-gate.ts) so the gates cannot drift: both tier >= 1
   // AND mcpAccess === true are required — mirroring the downstream MCP-edge gate
-  // (api/mcp.ts runProPreChecks), because gating on tier alone lets a tier-1
+  // (api/_mcp.ts runProPreChecks), because gating on tier alone lets a tier-1
   // user without mcpAccess complete OAuth, get a tokenId, then have every
   // tools/call fail at the gateway — and an entitlement that could not be
   // VERIFIED answers a retryable 503 instead of the terminal INSUFFICIENT_TIER

@@ -9,8 +9,8 @@ import {
   SETUP_PATH,
   serverCardWithoutTools,
 } from '../scripts/generate-mcp-discovery-documents.mjs';
-import * as generated from '../api/mcp/discovery-documents.generated.ts';
-import { serverCardTools } from '../api/mcp/server-card-tools.ts';
+import * as generated from '../api/_mcp/discovery-documents.generated.ts';
+import { serverCardTools } from '../api/_mcp/server-card-tools.ts';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 

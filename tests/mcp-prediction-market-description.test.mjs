@@ -3,11 +3,11 @@ import { readFileSync } from 'node:fs';
 import { describe, it } from 'node:test';
 import { readToolsReference } from './helpers/mcp-tools-reference-docs.mjs';
 
-import { TOOL_DESCRIPTION_MAX_BYTES } from '../api/mcp/constants.ts';
+import { TOOL_DESCRIPTION_MAX_BYTES } from '../api/_mcp/constants.ts';
 import {
   TOOL_LIST_RESPONSE,
   TOOL_REGISTRY,
-} from '../api/mcp/registry/index.ts';
+} from '../api/_mcp/registry/index.ts';
 
 const EXPECTED_CATEGORIES = ['geopolitical', 'tech', 'finance'];
 const TOOL_NAME = 'get_prediction_markets';

@@ -62,7 +62,7 @@ describe('shipped news catalog views match the catalog in order', () => {
 
   it('server feed registry reads the generated slice, not the catalog JSON', () => {
     // A value import of shared/news-catalog bundles the whole catalog into the
-    // digest and MCP functions (api/mcp.ts budget, tests/edge-function-size).
+    // digest and MCP functions (api/_mcp.ts budget, tests/edge-function-size).
     const source = readFileSync(join(repoRoot, 'server/worldmonitor/news/v1/_feeds.ts'), 'utf8');
     assert.doesNotMatch(source, /^import\s+(?!type\b)[^;]*from\s+['"][./]*shared\/news-catalog['"]/m);
   });

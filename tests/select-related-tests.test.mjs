@@ -22,16 +22,16 @@ function fixture(files) {
 const FILES = {
   'package.json': JSON.stringify({ scripts: { 'test:data': 'node scripts/run-data-tests.mjs tests/*.test.mjs tests/*.test.mts' } }),
   'src/feature.ts': 'export const feature = 1;\n',
-  'api/mcp.ts': "import { registry } from './mcp/registry/index.ts';\nexport default registry;\n",
-  'api/mcp/registry/index.ts': "export { tools as registry } from './nlp-tools.ts';\n",
-  'api/mcp/registry/nlp-tools.ts': 'export const tools = [];\n',
+  'api/_mcp.ts': "import { registry } from './_mcp/registry/index.ts';\nexport default registry;\n",
+  'api/_mcp/registry/index.ts': "export { tools as registry } from './nlp-tools.ts';\n",
+  'api/_mcp/registry/nlp-tools.ts': 'export const tools = [];\n',
   'server/helper.js': 'module.exports = 1;\n',
   'scripts/railway-services.json': '{}\n',
   'tests/helpers/deps.mjs': "export { feature } from '../../src/feature.ts';\n",
   'tests/static.test.mjs': "import { feature } from '../src/feature.ts';\n",
   'tests/via-helper.test.mjs': "import { feature } from './helpers/deps.mjs';\n",
   // The import that a name-only selector missed in the 2026-11-09 audit.
-  'tests/template.test.mjs': 'const mod = await import(`../api/mcp.ts?verify=${Date.now()}`);\n',
+  'tests/template.test.mjs': 'const mod = await import(`../api/_mcp.ts?verify=${Date.now()}`);\n',
   'tests/require.test.mts': "const helper = require('../server/helper.js');\n",
   'tests/reads-config.test.mjs': "readFileSync('scripts/railway-services.json');\n",
   'tests/unrelated.test.mjs': "import assert from 'node:assert';\n",
@@ -52,7 +52,7 @@ describe('selectRelatedTests', () => {
   });
 
   it('follows a template-literal dynamic import with a query string, transitively', () => {
-    assert.deepEqual(selectRelatedTests({ root, inventory, changed: ['api/mcp/registry/nlp-tools.ts'] }), ['tests/template.test.mjs']);
+    assert.deepEqual(selectRelatedTests({ root, inventory, changed: ['api/_mcp/registry/nlp-tools.ts'] }), ['tests/template.test.mjs']);
   });
 
   it('follows require()', () => {

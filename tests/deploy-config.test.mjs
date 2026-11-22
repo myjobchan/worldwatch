@@ -4247,17 +4247,17 @@ describe('agent readiness: MCP/OAuth origin alignment', () => {
     );
   });
 
-  it('api/mcp.ts resource_metadata is host-derived, not hardcoded', () => {
+  it('api/_mcp.ts resource_metadata is host-derived, not hardcoded', () => {
     // After the structural split (refactor PR), the host-derivation
     // (`requestHost = req.headers.get('host') ?? ...`) lives in
-    // api/mcp/handler.ts and the template-literal that emits
+    // api/_mcp/handler.ts and the template-literal that emits
     // `resource_metadata="${url}"` lives in api/_www-authenticate.ts (the
-    // `wwwAuthHeader` helper, re-exported by api/mcp/auth.ts since #4840 so
+    // `wwwAuthHeader` helper, re-exported by api/_mcp/auth.ts since #4840 so
     // the gateway's API-key challenge lives alongside it). Concatenate all three so the sub-greps
     // below still see the same byte surface they did pre-split.
-    const source = readFileSync(resolve(__dirname, '../api/mcp/handler.ts'), 'utf-8')
+    const source = readFileSync(resolve(__dirname, '../api/_mcp/handler.ts'), 'utf-8')
       + '\n'
-      + readFileSync(resolve(__dirname, '../api/mcp/auth.ts'), 'utf-8')
+      + readFileSync(resolve(__dirname, '../api/_mcp/auth.ts'), 'utf-8')
       + '\n'
       + readFileSync(resolve(__dirname, '../api/_www-authenticate.ts'), 'utf-8');
     // Must NOT contain a hardcoded apex or api URL for resource_metadata —
@@ -4265,13 +4265,13 @@ describe('agent readiness: MCP/OAuth origin alignment', () => {
     // api.worldmonitor.app/mcp 401s) and the grep-only test didn't catch it.
     assert.ok(
       !/resource_metadata="https:\/\/(?:api\.)?worldmonitor\.app\/\.well-known\//.test(source),
-      'api/mcp.ts must not hardcode resource_metadata URL — derive from request host'
+      'api/_mcp.ts must not hardcode resource_metadata URL — derive from request host'
     );
     // Must contain a template-literal construction that uses a host variable.
     assert.match(
       source,
       /resource_metadata="\$\{[A-Za-z_][A-Za-z0-9_]*\}"|`[^`]*resource_metadata="\$\{[^}]+\}"/,
-      'api/mcp.ts must construct resource_metadata from a host-derived variable'
+      'api/_mcp.ts must construct resource_metadata from a host-derived variable'
     );
     // Must derive the origin from the request, through the shared resolver that
     // validates Host against the allowlist (api/_agent-metadata.ts). Reading the
@@ -4280,7 +4280,7 @@ describe('agent readiness: MCP/OAuth origin alignment', () => {
     assert.match(
       source,
       /resolveMetadataOrigin\(req(?:uest)?\)/,
-      'api/mcp.ts must derive the resource_metadata origin via resolveMetadataOrigin'
+      'api/_mcp.ts must derive the resource_metadata origin via resolveMetadataOrigin'
     );
   });
 

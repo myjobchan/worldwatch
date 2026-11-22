@@ -11,7 +11,7 @@ WorldMonitor accumulates, curates, and caches real-time intelligence across 25+ 
 
 ## Requirements
 
-- R1. A new Vercel edge function at `api/mcp.ts` implements the MCP Streamable HTTP transport (protocol version `2025-03-26`), handling `initialize`, `tools/list`, and `tools/call` JSON-RPC methods.
+- R1. A new Vercel edge function at `api/_mcp.ts` implements the MCP Streamable HTTP transport (protocol version `2025-03-26`), handling `initialize`, `tools/list`, and `tools/call` JSON-RPC methods.
 - R2. All requests require a valid PRO API key via `X-WorldMonitor-Key` header, validated against `WORLDMONITOR_VALID_KEYS` using the existing `validateApiKey()` helper. Unauthenticated requests return a JSON-RPC error (code -32001).
 - R3. The server exposes one MCP tool per logical domain group. Tools read from the Redis bootstrap cache (Upstash) — no upstream API calls during tool execution.
 - R4. Rate limiting reuses the existing per-key Redis rate limiter (same mechanism as the widget agent), enforced before tool execution. Exceeded limit returns a JSON-RPC error (code -32029).
@@ -56,7 +56,7 @@ WorldMonitor accumulates, curates, and caches real-time intelligence across 25+ 
 - No new data sources added for MCP; tools surface existing bootstrap cache only.
 - No tool-level ACL beyond the PRO gate (all PRO keys get all tools).
 - No MCP resource or prompt primitives in v1 — tools only.
-- `api/mcp-proxy.js` (external MCP proxy for the widget agent) is unrelated and untouched.
+- `api/_mcp-proxy.js` (external MCP proxy for the widget agent) is unrelated and untouched.
 
 ## Key Decisions
 
@@ -71,14 +71,14 @@ WorldMonitor accumulates, curates, and caches real-time intelligence across 25+ 
 - All tool domains have active seed scripts or relay loops keeping Redis fresh (true as of 2026-03-27, per health.js BOOTSTRAP_KEYS).
 - `WORLDMONITOR_VALID_KEYS` env var is already set in Vercel production (it is — used by desktop auth).
 - The Upstash Redis client (`@upstash/redis`) is already in package.json (it is).
-- MCP Streamable HTTP transport is supported by Claude Desktop as of protocol version 2025-03-26 (confirmed in `api/mcp-proxy.js`).
+- MCP Streamable HTTP transport is supported by Claude Desktop as of protocol version 2025-03-26 (confirmed in `api/_mcp-proxy.js`).
 
 ## Outstanding Questions
 
 ### Deferred to Planning
 
 - [Affects R3][Technical] What is the exact Redis key and shape for each domain's bootstrap entry? Planner should read `api/bootstrap.js` and `api/health.js` BOOTSTRAP_KEYS to map tool → cache key → expected shape.
-- [Affects R1][Technical] Should `api/mcp.ts` live at a flat path or use a catch-all route (`api/mcp/[...path].ts`)? Depends on whether the MCP client sends sub-paths (e.g. `/mcp/sse`). Planner should check the MCP 2025-03-26 spec for path requirements.
+- [Affects R1][Technical] Should `api/_mcp.ts` live at a flat path or use a catch-all route (`api/_mcp/[...path].ts`)? Depends on whether the MCP client sends sub-paths (e.g. `/mcp/sse`). Planner should check the MCP 2025-03-26 spec for path requirements.
 - [Affects R4][Technical] The existing rate limiter is in `api/_rate-limit.js`. Planner should verify it's edge-compatible (no Node.js APIs) before wiring it in.
 - [Affects R6][Needs research] What is the expected refresh interval per domain? Planner should extract `maxStaleMin` from `api/health.js` BOOTSTRAP_KEYS to compute `stale` flag per tool.
 

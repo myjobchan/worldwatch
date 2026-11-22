@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
-import { TOOL_ALIASES, TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
+import { TOOL_ALIASES, TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 
 const BASE_URL = 'https://worldmonitor.app';
 const AUTH = { kind: 'pro', userId: 'user_flight_modes', mcpTokenId: 'mcp_flight_modes' } as const;

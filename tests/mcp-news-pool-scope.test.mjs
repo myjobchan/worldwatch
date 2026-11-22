@@ -58,7 +58,7 @@ describe('MCP news languages and editions', () => {
       if (url.includes('/api/news/v1/list-news-pool')) return Response.json(poolBody);
       throw new Error(`unexpected fetch: ${url}`);
     };
-    const mod = await import(`../api/mcp.ts?pool=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?pool=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

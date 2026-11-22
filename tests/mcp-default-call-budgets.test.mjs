@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { Ratelimit } from '@upstash/ratelimit';
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
 import { readFixture } from './helpers/mcp-output-budget.mjs';
-import { TOOL_ALIASES } from '../api/mcp/registry/index.ts';
+import { TOOL_ALIASES } from '../api/_mcp/registry/index.ts';
 
 // generate_forecasts is retired (unlisted) but still callable, so its cases stay.
 const budgetOf = name => {
@@ -64,7 +64,7 @@ describe('argument-free calls fit their output budget on production-size data', 
       const key = decodeURIComponent(url.pathname.replace(/^\/get\//, ''));
       return Response.json({ result: redis.has(key) ? JSON.stringify(redis.get(key)) : null });
     };
-    handler = (await import('../api/mcp.ts')).mcpHandler;
+    handler = (await import('../api/_mcp.ts')).mcpHandler;
   });
   afterEach(() => {
     globalThis.fetch = originalFetch; Ratelimit.slidingWindow = originalLimiter;

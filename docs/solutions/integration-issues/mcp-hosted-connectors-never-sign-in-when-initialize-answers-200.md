@@ -2,7 +2,7 @@
 title: "Hosted MCP connectors could never sign in because the unauthenticated initialize answered 200"
 date: 2026-09-18
 category: integration-issues
-module: "MCP server transport auth (api/mcp/handler.ts)"
+module: "MCP server transport auth (api/_mcp/handler.ts)"
 problem_type: integration_issue
 component: authentication
 severity: high
@@ -58,7 +58,7 @@ Only Claude copes with a `401` that arrives mid-session.
 
 ## Solution
 
-Challenge only the handshake, only on the transport (#8321). In `api/mcp/handler.ts`, right after the method is parsed:
+Challenge only the handshake, only on the transport (#8321). In `api/_mcp/handler.ts`, right after the method is parsed:
 
 ```ts
 if (method === 'initialize' && !hasCredentials(req) && !WELL_KNOWN_MCP_PATHS.has(requestPathname)) {

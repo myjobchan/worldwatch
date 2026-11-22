@@ -2,7 +2,7 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
 
-import { SERVER_VERSION } from '../api/mcp/constants.ts';
+import { SERVER_VERSION } from '../api/_mcp/constants.ts';
 
 const originalFetch = globalThis.fetch;
 const originalEnv = { ...process.env };
@@ -33,10 +33,10 @@ function initBody(id = 1) {
 // Fresh module import per test so module-load side effects (collision
 // guard, TOOL_LIST_RESPONSE construction) re-run cleanly.
 async function freshMod() {
-  return import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+  return import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
 }
 
-describe('api/mcp.ts — JMESPath projection (v1.7.0)', () => {
+describe('api/_mcp.ts — JMESPath projection (v1.7.0)', () => {
   let mod;
 
   beforeEach(async () => {
@@ -392,7 +392,7 @@ describe('api/mcp.ts — JMESPath projection (v1.7.0)', () => {
   // ============================================================
   describe('initialize handshake', () => {
     it('serverInfo.version === SERVER_VERSION', async () => {
-      // Reads SERVER_VERSION from api/mcp/constants.ts so a deliberate bump
+      // Reads SERVER_VERSION from api/_mcp/constants.ts so a deliberate bump
       // does not need to edit this file; the bump itself is pinned by the
       // published-versions ledger in tests/mcp-registry-artifacts.test.mjs.
       const res = await mod.default(makeReq(initBody(1)));
@@ -423,7 +423,7 @@ describe('api/mcp.ts — JMESPath projection (v1.7.0)', () => {
     });
 
     it('server-card.json version matches SERVER_VERSION', () => {
-      // Cross-check the comment at api/mcp.ts:~56 — discovery scanners
+      // Cross-check the comment at api/_mcp.ts:~56 — discovery scanners
       // verify both values; a future bump that misses one would break
       // discovery. This is the test that prevents that drift.
       const card = JSON.parse(readFileSync(new URL('../public/.well-known/mcp/server-card.json', import.meta.url), 'utf8'));

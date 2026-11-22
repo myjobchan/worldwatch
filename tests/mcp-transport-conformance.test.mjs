@@ -125,7 +125,7 @@ async function readAllSseEvents(response) {
   return parseSseFrames(await response.text());
 }
 
-describe('api/mcp.ts — transport conformance over real HTTP', () => {
+describe('api/_mcp.ts — transport conformance over real HTTP', () => {
   let mcpHandler;
   let deps;
   let server;
@@ -136,7 +136,7 @@ describe('api/mcp.ts — transport conformance over real HTTP', () => {
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
     deps = makeProDeps().deps;
     server = await startMcpServer(mcpHandler, deps);
@@ -963,7 +963,7 @@ describe('api/mcp.ts — transport conformance over real HTTP', () => {
 // manifest found at /.well-known/mcp but protocol handshake failed" (3/6).
 // GET keeps serving the server card so manifest fetchers are unaffected, and
 // an SSE-flavored GET falls through to the endpoint's standalone-stream 405.
-describe('api/mcp.ts — /.well-known/mcp dual-role alias', () => {
+describe('api/_mcp.ts — /.well-known/mcp dual-role alias', () => {
   let mcpHandler;
   let deps;
   let server;
@@ -979,7 +979,7 @@ describe('api/mcp.ts — /.well-known/mcp dual-role alias', () => {
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}-wk`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}-wk`);
     mcpHandler = mod.mcpHandler;
     deps = makeProDeps().deps;
     server = await startMcpServer(mcpHandler, deps);
@@ -1081,7 +1081,7 @@ describe('api/mcp.ts — /.well-known/mcp dual-role alias', () => {
     // ship inside the function bundle, so no read here
     // may depend on the network. Import the implementation directly with a
     // unique query so no module-scope state carries over from other tests.
-    const fresh = await import(`../api/mcp/handler.ts?unreachable=${Date.now()}-${Math.random()}`);
+    const fresh = await import(`../api/_mcp/handler.ts?unreachable=${Date.now()}-${Math.random()}`);
     const isolatedServer = await startMcpServer(fresh.mcpHandler, deps);
     const isolatedAliasUrl = isolatedServer.url.replace('/mcp', '/.well-known/mcp');
     const successfulStaticFetch = globalThis.fetch;
@@ -1253,10 +1253,10 @@ describe('api/mcp.ts — /.well-known/mcp dual-role alias', () => {
 // Keep this block LAST in the file. It is the only one that ENABLES the Upstash
 // env; the blocks above delete it, so `getMcpAnonRatelimit()` returns null up
 // there and never memoizes. auth.ts's limiter singletons are module-scoped and
-// the `?t=` cache-bust below does not reach them (api/mcp.ts re-exports
+// the `?t=` cache-bust below does not reach them (api/_mcp.ts re-exports
 // ./mcp/auth by a plain specifier), so a describe appended after this one that
 // also enables the env would silently inherit this block's stubbed limiter.
-describe('api/mcp.ts — rate-limit denials stay correlatable over the wire (#7818)', () => {
+describe('api/_mcp.ts — rate-limit denials stay correlatable over the wire (#7818)', () => {
   const ORIGINAL_SLIDING_WINDOW = Ratelimit.slidingWindow;
   let server;
   let denyLimiter;
@@ -1289,7 +1289,7 @@ describe('api/mcp.ts — rate-limit denials stay correlatable over the wire (#78
         };
       },
     });
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}-rl`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}-rl`);
     server = await startMcpServer(mod.mcpHandler, makeProDeps().deps);
   });
 
@@ -1367,9 +1367,9 @@ describe('api/mcp.ts — rate-limit denials stay correlatable over the wire (#78
   });
 });
 
-describe('api/mcp/handler.ts — SSE replay byte budget', () => {
+describe('api/_mcp/handler.ts — SSE replay byte budget', () => {
   it('one principal at its session cap cannot evict another principal\'s replay', async () => {
-    const { __sseReplayStoreForTest: store } = await import('../api/mcp/handler.ts');
+    const { __sseReplayStoreForTest: store } = await import('../api/_mcp/handler.ts');
     store.reset();
     try {
       const big = 'x'.repeat(120 * 1024);

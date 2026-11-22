@@ -9,7 +9,7 @@ account is Hexion (PO C000003282).
 Code: `convex/enterpriseAccounts.ts` (operator functions),
 `convex/lib/enterpriseAccounts.ts` (membership reads),
 `server/_shared/account-rate-limit.ts` and the per-key block in
-`server/gateway.ts` (REST), `api/mcp/auth.ts` and `api/mcp/quota.ts` (MCP).
+`server/gateway.ts` (REST), `api/_mcp/auth.ts` and `api/_mcp/quota.ts` (MCP).
 
 ## What membership does
 

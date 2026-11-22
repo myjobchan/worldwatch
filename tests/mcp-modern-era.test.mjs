@@ -14,7 +14,7 @@ import { Readable } from 'node:stream';
 import { isDeepStrictEqual } from 'node:util';
 import { Ratelimit } from '@upstash/ratelimit';
 
-import { SERVER_INSTRUCTIONS } from '../api/mcp/constants.ts';
+import { SERVER_INSTRUCTIONS } from '../api/_mcp/constants.ts';
 import { HMAC_SECRET, PRO_BEARER, makeProDeps } from './helpers/mcp-pro-deps.mjs';
 
 const originalEnv = { ...process.env };
@@ -168,7 +168,7 @@ const LEGACY_VERSION_REJECTION = JSON.stringify({
   error: { code: -32600, message: 'Unsupported MCP-Protocol-Version' },
 });
 
-describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
+describe('api/_mcp.ts — MCP 2026-07-28 era detection and validation', () => {
   let server;
   let deps;
   let handler;
@@ -177,7 +177,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     if (server) await server.close();
     if (flag === undefined) delete process.env.MCP_PROTOCOL_2026_07_28;
     else process.env.MCP_PROTOCOL_2026_07_28 = flag;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     deps = makeProDeps(depsOverrides).deps;
     handler = recordingHandler(mod.mcpHandler);
     server = await startMcpServer(handler, deps);
@@ -671,7 +671,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     });
 
     it('never echoes Mcp-Session-Id or stores a replay buffer for a modern response', async () => {
-      const { __sseReplayStoreForTest: store } = await import('../api/mcp/handler.ts');
+      const { __sseReplayStoreForTest: store } = await import('../api/_mcp/handler.ts');
       const sessionHeaders = { 'Mcp-Session-Id': 'client-chosen-session' };
 
       store.reset();
@@ -866,7 +866,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     });
 
     it('streams a tools/call as session-free SSE when Accept allows it, final event shaped', async () => {
-      const { __sseReplayStoreForTest: store } = await import('../api/mcp/handler.ts');
+      const { __sseReplayStoreForTest: store } = await import('../api/_mcp/handler.ts');
       store.reset();
       const res = await post(
         modernBody(61, 'tools/call', { name: 'get_sources', arguments: {} }),
@@ -905,7 +905,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     });
 
     it('merges serverInfo into an existing result _meta without dropping worldmonitor/usage', async () => {
-      const { shapeModernResponse } = await import('../api/mcp/modern.ts');
+      const { shapeModernResponse } = await import('../api/_mcp/modern.ts');
       const usage = { remaining: 3, limit: 5 };
       const original = new Response(
         JSON.stringify({ jsonrpc: '2.0', id: 63, result: { content: [], _meta: { 'worldmonitor/usage': usage } } }),
@@ -921,7 +921,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     });
 
     it('passes empty, 202 and non-JSON bodies through untouched', async () => {
-      const { shapeModernResponse } = await import('../api/mcp/modern.ts');
+      const { shapeModernResponse } = await import('../api/_mcp/modern.ts');
       const options = { method: 'tools/call', acceptsSse: true };
       for (const original of [
         new Response(null, { status: 202, headers: { 'X-A': '1' } }),
@@ -1017,7 +1017,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
     });
   });
 
-  // Last in the file: the limiter singletons in api/mcp/auth.ts memoize the
+  // Last in the file: the limiter singletons in api/_mcp/auth.ts memoize the
   // first construction, so the stub is installed before any can be built and
   // reads its verdict at call time (see tests/mcp-rate-limit-request-id.test.mjs).
   describe('flag on — modern method surface limits', () => {
@@ -1112,7 +1112,7 @@ describe('api/mcp.ts — MCP 2026-07-28 era detection and validation', () => {
   });
 });
 
-describe('api/mcp/modern.ts — era recorded on the usage object', () => {
+describe('api/_mcp/modern.ts — era recorded on the usage object', () => {
   afterEach(() => {
     Object.keys(process.env).forEach((k) => {
       if (!(k in originalEnv)) delete process.env[k];
@@ -1121,8 +1121,8 @@ describe('api/mcp/modern.ts — era recorded on the usage object', () => {
   });
 
   async function load() {
-    const usageMod = await import('../api/mcp/usage.ts');
-    const modern = await import(`../api/mcp/modern.ts?t=${Date.now()}-${Math.random()}`);
+    const usageMod = await import('../api/_mcp/usage.ts');
+    const modern = await import(`../api/_mcp/modern.ts?t=${Date.now()}-${Math.random()}`);
     return { usageMod, modern };
   }
 
@@ -1180,7 +1180,7 @@ describe('api/mcp/modern.ts — era recorded on the usage object', () => {
 // or a code from the spec's reserved -32020..-32099 range other than the two it
 // defines (-32020 HeaderMismatch, -32022 UnsupportedProtocolVersion). Runs last
 // so the recording handler has seen every modern request above.
-describe('api/mcp.ts — modern error codes across the whole suite', () => {
+describe('api/_mcp.ts — modern error codes across the whole suite', () => {
   it('never answers a modern request with -32002 or an undefined reserved-range code', () => {
     assert.ok(modernResponses.length >= 50, `the sweep saw only ${modernResponses.length} modern responses`);
     const codes = new Set();

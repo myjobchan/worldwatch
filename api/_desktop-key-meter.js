@@ -12,7 +12,7 @@
 // the Redis pipeline, so the same module serves the edge gateway
 // (server/_shared/redis.ts runRedisPipeline), the self-contained bootstrap
 // entry (api/_upstash-json.js redisPipeline), which lint:boundaries forbids
-// from importing server/, and the standalone premium edges (api/mcp-proxy.ts,
+// from importing server/, and the standalone premium edges (api/_mcp-proxy.ts,
 // api/chat-analyst.ts). The typed mirror is server/_shared/desktop-key-meter.ts.
 //
 // `chargeDesktopKeyBudget` layers the one response contract on top — status,
@@ -32,7 +32,7 @@ import { rateLimitHeaders } from './_api-key-rate-limit.js';
  * Catalog ceilings (convex/config/productCatalog.ts). Duplicated rather than
  * imported: this plain-JS module is bundled into the bootstrap edge entry,
  * which must not pull the Convex config graph in — the same reasoning as
- * `SHARED_API_BUDGET` in api/mcp/quota.ts. tests/gateway-desktop-key.test.mts
+ * `SHARED_API_BUDGET` in api/_mcp/quota.ts. tests/gateway-desktop-key.test.mts
  * pins both literals equal to the catalog.
  */
 export const DESKTOP_KEY_DAILY_CEILING = 7_500;
@@ -118,7 +118,7 @@ export function secondsUntilNextMinute(now) {
  * Charge one request against the owner's daily ceiling and burst bucket.
  *
  * INCR-first (atomic, no check-then-increment race), mirroring
- * api/mcp/quota.ts and api/_api-key-rate-limit.js. A rejected request is
+ * api/_mcp/quota.ts and api/_api-key-rate-limit.js. A rejected request is
  * rolled back (DECR both keys) so a rejection never consumes allowance; an
  * admitted request keeps its increments unless the caller later rolls it
  * back (a downstream limiter rejecting the same request). Both failures are

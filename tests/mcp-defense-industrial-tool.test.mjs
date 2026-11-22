@@ -77,7 +77,7 @@ describe('get_defense_industrial_base MCP tool', () => {
         headers: { 'Content-Type': 'application/json' },
       });
     };
-    const mod = await import(`../api/mcp.ts?defense-industrial=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?defense-industrial=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

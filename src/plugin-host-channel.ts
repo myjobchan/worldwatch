@@ -1,4 +1,4 @@
-// Set by the MCP App loader (api/mcp/ui/_plugin-loader.ts), which owns the host handshake.
+// Set by the MCP App loader (api/_mcp/ui/_plugin-loader.ts), which owns the host handshake.
 export type PluginHostChannel = {
   initialized: Promise<unknown>;
   adopt(listener: (event: MessageEvent) => void): void;

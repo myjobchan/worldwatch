@@ -13,7 +13,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, it } from 'node:test';
 
-import { __testing__ } from '../api/mcp.ts';
+import { __testing__ } from '../api/_mcp.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 

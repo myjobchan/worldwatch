@@ -10,7 +10,7 @@ import { build } from 'esbuild';
 // measurement. MCP reserves 24 KiB below the 1 MiB Edge ceiling; displacement
 // gets a separate 300 KiB growth budget even though it has more platform room.
 for (const [entry, budget] of [
-  ['api/mcp.ts', 1024 * 1000],
+  ['api/_mcp.ts', 1024 * 1000],
   ['api/displacement/v1/[rpc].ts', 300 * 1024],
   // Orbital Watch point and country RPCs: about 166 KiB after #10725 added per-mission coverage grids (85 KB minified);
   // the budget leaves room for one more mission grid.
@@ -28,7 +28,7 @@ for (const [entry, budget] of [
 }
 
 // `import { z }` binds zod's namespace object as a value, so esbuild keeps every
-// zod export, all locales included: about 63 KB gzip in api/mcp.ts.
+// zod export, all locales included: about 63 KB gzip in api/_mcp.ts.
 // docs/solutions/performance-issues/zod-named-z-import-bloats-edge-bundle.md
 // Type-only imports (`import type { z }`, `import { type z }`) are erased and stay allowed.
 // Anchoring at line start skips commented-out imports and quoted fixtures.

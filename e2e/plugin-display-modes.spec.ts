@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { join } from 'node:path';
-import { buildPluginShell } from '../api/mcp/ui/_plugin-loader';
+import { buildPluginShell } from '../api/_mcp/ui/_plugin-loader';
 import { evidenceScreenshot } from './evidence-screenshot';
 
 // Built news-and-maps view in an opaque iframe with a controlled MCP Apps host.

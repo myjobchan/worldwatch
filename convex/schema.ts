@@ -2001,7 +2001,7 @@ export default defineSchema({
   // Non-key Pro MCP identity rows. One row per OAuth grant for a Pro user.
   // Referenced from OAuth code/token records as `mcpTokenId` — never carries
   // plaintext or `wm_` keys. Revoke deletes the row's revokedAt → next
-  // bearer-resolution at api/mcp.ts returns 401 (no token-index sweep needed).
+  // bearer-resolution at api/_mcp.ts returns 401 (no token-index sweep needed).
   // See plan: docs/plans/2026-05-10-001-feat-pro-mcp-clerk-auth-quota-plan.md
   mcpProTokens: defineTable({
     userId: v.string(),

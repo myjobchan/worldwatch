@@ -17,7 +17,7 @@
 import assert from 'node:assert/strict';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 
-import { CACHE_TOOLS } from '../api/mcp/registry/cache-tools.ts';
+import { CACHE_TOOLS } from '../api/_mcp/registry/cache-tools.ts';
 
 const tool = CACHE_TOOLS.find((t) => t.name === 'get_chokepoint_status');
 
@@ -68,11 +68,11 @@ function flowsData() {
 
 describe('get_chokepoint_status FlowSource taxonomy (#6113)', () => {
   // Every assertion below reads the RETURNED object, because that is what
-  // api/mcp/dispatch.ts serves (`result = tool._postFilter(structuredClone(
+  // api/_mcp/dispatch.ts serves (`result = tool._postFilter(structuredClone(
   // data), params)`), not the caller's reference.
   //
   // Honest limit on what that buys: selectDatasets shallow-copies
-  // (api/mcp/filters.ts:189), so the flows map and its entries are the SAME
+  // (api/_mcp/filters.ts:189), so the flows map and its entries are the SAME
   // objects in both. Reading the return therefore pins the top-level shape the
   // dispatcher serves, but it canNOT distinguish "mutated in place" from
   // "rebuilt" — an entry-rebuilding refactor stays invisible either way. The
@@ -112,7 +112,7 @@ describe('get_chokepoint_status FlowSource taxonomy (#6113)', () => {
     assert.equal(served['chokepoint-flows'].suez.source, 'FLOW_SOURCE_UNSPECIFIED');
   });
 
-  // `dataset` is the one argument shape where selectDatasets (api/mcp/filters
+  // `dataset` is the one argument shape where selectDatasets (api/_mcp/filters
   // .ts:187-192) builds a genuinely NEW top-level object rather than returning
   // the input reference — the branch where "assert on input" and "assert on
   // return" could diverge. Nothing else in this file exercises it.
@@ -190,7 +190,7 @@ describe('get_chokepoint_status FlowSource taxonomy (#6113)', () => {
  * the SERVED value is narrowed — not just that the schema validates". The block
  * above calls `_postFilter` directly, which does not cross the dispatcher: it
  * misses `structuredClone`, the fail-open try/catch, and JSON serialization.
- * This drives a real `tools/call` through api/mcp.ts and reads the bytes a
+ * This drives a real `tools/call` through api/_mcp.ts and reads the bytes a
  * client actually receives, matching the bar the REST twin's own gate sets in
  * tests/chokepoint-flow-source-taxonomy.test.mts.
  */
@@ -236,7 +236,7 @@ describe('get_chokepoint_status narrows source end-to-end through tools/call (#6
   });
 
   it('serves no source value outside the declared enum', async () => {
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
 
     const res = await mod.default(new Request('https://worldmonitor.app/mcp', {
       method: 'POST',
@@ -278,7 +278,7 @@ describe('get_chokepoint_status narrows source end-to-end through tools/call (#6
       return Response.json({ result: null });
     };
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
     const res = await mod.default(new Request('https://worldmonitor.app/mcp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-WorldMonitor-Key': VALID_KEY },

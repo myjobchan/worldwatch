@@ -2,7 +2,7 @@
  * HTML for the in-app travel risk assessment export (#10451, phase 2).
  *
  * The draft is assembled once, as Markdown, by `renderTravelRiskMarkdown`
- * (api/mcp/registry/_travel-risk-document.ts). This converts that Markdown, so
+ * (api/_mcp/registry/_travel-risk-document.ts). This converts that Markdown, so
  * the Markdown file and the Word/PDF file cannot disagree about what the draft
  * says. It is not a general Markdown renderer. It reads the closed grammar the
  * assembler writes: `#`/`##`/`###` headings, paragraphs, `-` and `1.` lists,

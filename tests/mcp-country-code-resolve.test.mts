@@ -27,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { normalizeCountryToken, resolveCountryCode } from '../shared/country-code-resolve.ts';
 import COUNTRY_NAMES from '../shared/country-names.json' with { type: 'json' };
 import ISO3_TO_ISO2 from '../shared/iso3-to-iso2.json' with { type: 'json' };
-import { mcpHandler } from '../api/mcp.ts';
+import { mcpHandler } from '../api/_mcp.ts';
 import { HMAC_SECRET, callBody, makePipelineMock } from './helpers/mcp-pro-deps.mjs';
 
 const require = createRequire(import.meta.url);
@@ -421,7 +421,7 @@ describe('no MCP executor truncates a country code', () => {
   it('no registry file coerces a country code by truncation', () => {
     // Scan every registry module, not just the one that had the bug — the same
     // two-line coercion in a sibling tool file would be just as silent.
-    const registryDir = fileURLToPath(new URL('../api/mcp/registry/', import.meta.url));
+    const registryDir = fileURLToPath(new URL('../api/_mcp/registry/', import.meta.url));
     const offenders = readdirSync(registryDir)
       .filter((name) => name.endsWith('.ts'))
       .flatMap((name) => readFileSync(join(registryDir, name), 'utf8').split('\n')

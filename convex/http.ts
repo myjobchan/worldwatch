@@ -2090,7 +2090,7 @@ http.route({
 
 // ---------------------------------------------------------------------------
 // Pro MCP token routes (service-to-service, x-convex-shared-secret auth).
-// Called by the Vercel edge (api/oauth/authorize-pro, api/mcp.ts, settings).
+// Called by the Vercel edge (api/oauth/authorize-pro, api/_mcp.ts, settings).
 // See plan U1 / docs/plans/2026-05-10-001-feat-pro-mcp-clerk-auth-quota-plan.md
 // ---------------------------------------------------------------------------
 

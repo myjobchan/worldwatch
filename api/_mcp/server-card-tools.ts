@@ -6,7 +6,7 @@ import type { ToolDef } from './types';
  * The server card's `tools` list: one public preview per registry tool.
  *
  * scripts/generate-public-product-facts.mjs writes it into
- * public/.well-known/mcp/server-card.json, and api/mcp/handler.ts rebuilds the
+ * public/.well-known/mcp/server-card.json, and api/_mcp/handler.ts rebuilds the
  * card from the same projection, so the bundle does not carry a second copy of
  * every tool description.
  *

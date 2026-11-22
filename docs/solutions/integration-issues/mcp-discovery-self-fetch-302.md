@@ -2,7 +2,7 @@
 title: "MCP discovery URLs returned a 302 when the handler's self-fetch of its own static files failed"
 date: 2026-11-19
 category: integration-issues
-module: api/mcp/handler.ts
+module: api/_mcp/handler.ts
 problem_type: integration_issue
 component: tooling
 severity: medium
@@ -28,17 +28,17 @@ tags: [mcp, edge-bundle, self-fetch, server-card, discovery, mcp-live-smoke]
 
 ## What Didn't Work
 
-- Embedding all three documents as strings. The 99 KB server card, 84 KB of which is the `tools` list, put `api/mcp.ts` at 1,046,834 bytes gzip-9. That is over the 1,024,000 budget in `tests/edge-function-size.test.mjs` and about 1.7 KB under the 1 MiB Edge ceiling.
+- Embedding all three documents as strings. The 99 KB server card, 84 KB of which is the `tools` list, put `api/_mcp.ts` at 1,046,834 bytes gzip-9. That is over the 1,024,000 budget in `tests/edge-function-size.test.mjs` and about 1.7 KB under the 1 MiB Edge ceiling.
 - Loosening or retrying the smoke check. That hides a real 302 that crawlers also see.
 
 ## Solution
 
 PR #11046:
 
-- `scripts/generate-mcp-discovery-documents.mjs` is a `npm run generate` step with `--check`. It writes `api/mcp/discovery-documents.generated.ts`, which contains the guide, the setup page, and the server card with `"tools": []`.
-- `api/mcp/server-card-tools.ts` projects `TOOL_REGISTRY` into the card's `tools` list. `scripts/generate-public-product-facts.mjs` uses it to write the published card, and the handler uses it to rebuild the served card once per instance.
+- `scripts/generate-mcp-discovery-documents.mjs` is a `npm run generate` step with `--check`. It writes `api/_mcp/discovery-documents.generated.ts`, which contains the guide, the setup page, and the server card with `"tools": []`.
+- `api/_mcp/server-card-tools.ts` projects `TOOL_REGISTRY` into the card's `tools` list. `scripts/generate-public-product-facts.mjs` uses it to write the published card, and the handler uses it to rebuild the served card once per instance.
 - The served card must equal `public/.well-known/mcp/server-card.json` byte for byte. That works because the product-facts generator emits canonical `JSON.stringify(card, null, 2)` and its domain-summary rewrite replaces one string value in place.
-- Result: `api/mcp.ts` grows from 1,010,185 to about 1,021,500 bytes gzip-9.
+- Result: `api/_mcp.ts` grows from 1,010,185 to about 1,021,500 bytes gzip-9.
 
 ## Why This Works
 
@@ -47,11 +47,11 @@ The documents never leave the function, so a cold instance needs no network to s
 ## Prevention
 
 - Do not fetch your own deployment from an Edge handler to read a static file. The fetch is a hidden dependency on the CDN, redirects and the static origin, and its failure path becomes the response.
-- Measure `tests/edge-function-size.test.mjs` before embedding anything in `api/mcp.ts`. Headroom is about 2.5 KB after this change.
+- Measure `tests/edge-function-size.test.mjs` before embedding anything in `api/_mcp.ts`. Headroom is about 2.5 KB after this change.
 - A runtime projection shared with a generator should not throw on an invariant the generator enforces. A tool missing from `TOOL_CATEGORY_BY_NAME` fails `product:facts`, which runs in the deploy build through `prebuild:full`, and `tests/mcp-domains.test.mjs`. If the mismatch reaches a runtime anyway, the projection leaves the category out instead of failing the discovery request.
 - Regression test: `tests/mcp-transport-conformance.test.mjs` "serves every discovery document when the deployment cannot be reached" rejects every asset fetch and requires 200 with the on-disk bodies.
 
 ## Related Issues
 
-- `docs/solutions/performance-issues/zod-named-z-import-bloats-edge-bundle.md`: the same `api/mcp.ts` gzip budget.
+- `docs/solutions/performance-issues/zod-named-z-import-bloats-edge-bundle.md`: the same `api/_mcp.ts` gzip budget.
 - PR #11046

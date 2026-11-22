@@ -220,8 +220,8 @@ async function executeCacheTool(
     && activationStates.size !== activationKeys.length;
   if (activationUnknown) {
     captureSilentError(new Error('mcp activation marker read failed'), {
-      tags: { route: 'api/mcp', step: 'activation-marker', tool: tool.name },
-      fingerprint: ['api/mcp', 'activation-marker', 'Error'],
+      tags: { route: 'api/_mcp', step: 'activation-marker', tool: tool.name },
+      fingerprint: ['api/_mcp', 'activation-marker', 'Error'],
     });
   }
   // Sample wall time AFTER the Redis reads, never at function entry. The same
@@ -287,12 +287,12 @@ async function executeCacheTool(
     // record that Redis failed some reads. Warning level: one blip is noise,
     // a brownout escalates by volume under its own fingerprint.
     captureSilentError(new Error('mcp cache read failed'), {
-      tags: { route: 'api/mcp', step: 'cache-read', tool: tool.name },
+      tags: { route: 'api/_mcp', step: 'cache-read', tool: tool.name },
       extra: {
         unreadable,
         freshness_unreadable: freshnessChecks.filter((_, i) => !metaOutcomes[i]!.ok).map((check) => check.key),
       },
-      fingerprint: ['api/mcp', 'cache-read', 'Error'],
+      fingerprint: ['api/_mcp', 'cache-read', 'Error'],
       level: 'warning',
     });
   }
@@ -346,9 +346,9 @@ async function executeCacheTool(
       if (isMcpStoredContractError(err) || err instanceof RpcValidationError || execution?.panelScope === 'forecasts') throw err;
       // Same minified-frame over-grouping guard as the tool-execution catch
       // below — key on step + tool + error type so a post-filter bug in one
-      // tool doesn't merge into the shared api/mcp catch-all (WORLDMONITOR-T8).
+      // tool doesn't merge into the shared api/_mcp catch-all (WORLDMONITOR-T8).
       captureSilentError(err, {
-        tags: { route: 'api/mcp', step: 'post-filter', tool: tool.name },
+        tags: { route: 'api/_mcp', step: 'post-filter', tool: tool.name },
         fingerprint: mcpErrorFingerprint('post-filter', tool.name, err),
       });
       result = data;
@@ -387,7 +387,7 @@ function filterCacheToolData(tool: CacheToolDef, data: Record<string, unknown>, 
   } catch (err) {
     if (isMcpStoredContractError(err) || err instanceof RpcValidationError) throw err;
     captureSilentError(err, {
-      tags: { route: 'api/mcp', step: 'post-filter', tool: tool.name },
+      tags: { route: 'api/_mcp', step: 'post-filter', tool: tool.name },
       fingerprint: mcpErrorFingerprint('post-filter', tool.name, err),
     });
     return data;
@@ -469,7 +469,7 @@ const REGISTERED_TOOL_NAMES: ReadonlySet<string> = new Set(TOOL_REGISTRY.map((to
 
 // #8721 phase 7: an error that suggests a bug (an unexpected tool failure) or
 // a missing capability (an unknown tool) names the tool that takes a report.
-// The handler's exit adds `requestId` beside it (api/mcp/request-id.ts). Known
+// The handler's exit adds `requestId` beside it (api/_mcp/request-id.ts). Known
 // states, such as billing denials, rate limits, validation errors, source
 // outages and report_issue's own refusals, do not carry it.
 const REPORT_GUIDANCE = { reportWith: REPORT_ISSUE_TOOL } as const;
@@ -514,7 +514,7 @@ export async function dispatchToolsCall(
   body: { id?: unknown; params?: unknown },
   corsHeaders: Record<string, string>,
   ctx?: { waitUntil: (p: Promise<unknown>) => void },
-  // Budget resolved by the context pre-check (api/mcp/auth.ts) from the
+  // Budget resolved by the context pre-check (api/_mcp/auth.ts) from the
   // entitlement it already fetched: which counter to charge and its ceiling.
   // Omitted → the dedicated Pro counter at `PRO_DAILY_QUOTA_LIMIT`, so a caller
   // that skips the pre-check inherits the plan default rather than a wider cap.
@@ -674,7 +674,7 @@ export async function dispatchToolsCall(
   // same classifier as the advertised catalog and are denied before metering.
   // A tool with `_execute` fans out to server/gateway.ts, which runs its own
   // checkProMcpAccess re-check that this feature deliberately does not relax
-  // (see api/mcp/types.ts's `freeAccountAllowance` note). Admitting one would
+  // (see api/_mcp/types.ts's `freeAccountAllowance` note). Admitting one would
   // charge a free slot and then hand the caller a gateway 401 — burning the
   // day's allowance on errors it can never convert into data. Refuse BEFORE the
   // reservation so no slot is spent.
@@ -1372,7 +1372,7 @@ export async function dispatchToolsCall(
     log('[mcp] tool execution error:', err);
     captureSilentError(err, {
       tags: {
-        route: 'api/mcp',
+        route: 'api/_mcp',
         step: 'tool-execution',
         tool: tool.name,
         auth_kind: context.kind,
@@ -1389,8 +1389,8 @@ export async function dispatchToolsCall(
         },
       } : {}),
       ctx,
-      // Split the api/mcp catch-all (WORLDMONITOR-T8) into per-tool,
-      // per-status groups — see api/mcp/error-fingerprint.ts.
+      // Split the api/_mcp catch-all (WORLDMONITOR-T8) into per-tool,
+      // per-status groups — see api/_mcp/error-fingerprint.ts.
       fingerprint: mcpErrorFingerprint('tool-execution', tool.name, err),
       ...(isClient4xx || isExpectedDenial || isExpectedSourceOutage || isExpectedRefusal ? { level: 'warning' as const } : {}),
     });

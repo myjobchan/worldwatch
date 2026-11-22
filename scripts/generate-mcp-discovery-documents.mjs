@@ -6,7 +6,7 @@
 //
 // The server card is embedded without its `tools` list (84 KB of the 99 KB
 // file). The handler rebuilds that list from the tool registry already in the
-// bundle (api/mcp/server-card-tools.ts); the full card would push api/mcp.ts
+// bundle (api/_mcp/server-card-tools.ts); the full card would push api/_mcp.ts
 // past its compressed budget in tests/edge-function-size.test.mjs.
 //
 //   node scripts/generate-mcp-discovery-documents.mjs          # rewrite
@@ -17,7 +17,7 @@ import { dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-export const OUTPUT_PATH = 'api/mcp/discovery-documents.generated.ts';
+export const OUTPUT_PATH = 'api/_mcp/discovery-documents.generated.ts';
 export const SERVER_CARD_PATH = 'public/.well-known/mcp/server-card.json';
 export const GUIDE_PATH = 'public/mcp-server.md';
 export const SETUP_PATH = 'public/mcp-setup.html';

@@ -13,14 +13,14 @@ import {
   buildTravelRiskResult,
   seasonalBlock,
   TRAVEL_RISK_FEEDS,
-} from '../api/mcp/registry/_travel-risk-document.ts';
+} from '../api/_mcp/registry/_travel-risk-document.ts';
 import {
   createTravelRiskTool,
   gatherTravelRiskSources,
   parseTravelRiskArgs,
-} from '../api/mcp/registry/travel-risk-tool.ts';
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
-import { McpSourceUnavailableError } from '../api/mcp/source-unavailable.ts';
+} from '../api/_mcp/registry/travel-risk-tool.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
+import { McpSourceUnavailableError } from '../api/_mcp/source-unavailable.ts';
 import { CII_COUNTRY_CODES } from '../shared/cii-weights.ts';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');

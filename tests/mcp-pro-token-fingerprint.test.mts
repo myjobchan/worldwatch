@@ -5,11 +5,11 @@ import { HMAC_SECRET, PRO_TOKEN_ID, PRO_USER_ID, makeProDeps } from './helpers/m
 
 // ─── WORLDMONITOR-ZR / T8: the Pro-token gate needs an explicit fingerprint ──
 //
-// Both `api/mcp` capture sites in the Pro-token gate run inside the minified
+// Both `api/_mcp` capture sites in the Pro-token gate run inside the minified
 // edge bundle, whose frames are all anonymous `(vc/edge/function` with no
 // source map and `in_app=false`. Sentry's default grouping keys on that stack,
 // so every capture sharing it collapses into the WORLDMONITOR-T8 catch-all —
-// the exact pathology `api/mcp/error-fingerprint.ts` was written to close.
+// the exact pathology `api/_mcp/error-fingerprint.ts` was written to close.
 //
 // Observed 2026-09-11: `Pro MCP token validation temporarily unavailable` was
 // live in TWO groups at once. WORLDMONITOR-ZR held six events and was resolved
@@ -48,7 +48,7 @@ process.env.CONVEX_SERVER_SHARED_SECRET = 'test-convex-shared-secret';
 
 const ENVELOPE_URL_PREFIX = 'https://sentry.test/api/12345/envelope';
 
-const { validateProMcpAuthorization } = await import('../api/mcp/auth.ts');
+const { validateProMcpAuthorization } = await import('../api/_mcp/auth.ts');
 
 const originalFetch = globalThis.fetch;
 after(() => {

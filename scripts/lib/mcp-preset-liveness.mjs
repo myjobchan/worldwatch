@@ -39,7 +39,7 @@ export function isTemplatePreset(preset) {
 }
 
 // The monitor's verdict must not be STRICTER than what the proxy can actually
-// serve, or it reports an outage for traffic that works. api/mcp-proxy.ts
+// serve, or it reports an outage for traffic that works. api/_mcp-proxy.ts
 // follows exactly one method-preserving hop, https-only, so this mirrors that
 // boundary rather than inventing its own.
 //
@@ -56,7 +56,7 @@ const MAX_REDIRECT_HOPS = 1;
 // The vendor chooses this target, so it is untrusted in exactly the way the
 // proxy's serverUrl is: without the same checks a 308 could point the probe at
 // a loopback, private, or link-local address, and because `observed` is
-// published into a public issue, the reachability answer leaks. api/mcp-proxy.ts
+// published into a public issue, the reachability answer leaks. api/_mcp-proxy.ts
 // re-runs assertServerUrlSafe on every hop; this is the scripts-side equivalent,
 // reusing the repo's SSRF classifier rather than restating its address ranges.
 // It returns the vetted addresses so the hop connects to exactly what was
@@ -82,7 +82,7 @@ async function redirectTargetFor(response, fromUrl, { resolveHostname } = {}) {
   }
 }
 
-// Same pin as api/mcp-proxy.ts: the URL hostname still drives SNI, certificate
+// Same pin as api/_mcp-proxy.ts: the URL hostname still drives SNI, certificate
 // validation and Host; only the socket address is fixed to the vetted answer.
 function pinnedDispatcher(resolvedAddresses) {
   const address = resolvedAddresses.find(candidate => !candidate.includes(':')) ?? resolvedAddresses[0];

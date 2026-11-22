@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { HMAC_SECRET, makeProDeps, proReq, callBody } from './helpers/mcp-pro-deps.mjs';
-import { admitNewsPanel, admitCountryPanel, authorizePanelRead } from '../api/mcp/panel-requests.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { admitNewsPanel, admitCountryPanel, authorizePanelRead } from '../api/_mcp/panel-requests.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { dailyCounterKey } from '../server/_shared/pro-mcp-token.ts';
 import { INTEL_TOPIC_IDS } from '../shared/intelligence-snapshots.js';
 import { writeFileSync, readFileSync } from 'node:fs';
@@ -58,7 +58,7 @@ describe('News Intelligence closed paid admission', () => {
       const result = sources[key]; if (result instanceof Error) throw result;
       return Response.json({ result: result == null ? null : JSON.stringify(result) });
     };
-    handler = (await import('../api/mcp.ts')).mcpHandler;
+    handler = (await import('../api/_mcp.ts')).mcpHandler;
   });
   afterEach(() => {
     globalThis.fetch = originalFetch; globalThis.Date = OriginalDate; Date.now = originalNow;

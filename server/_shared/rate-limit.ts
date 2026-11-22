@@ -12,7 +12,7 @@ import { durationToSeconds, limitWithFallback, resetRateLimitFallbackForTest } f
 // seeder-reachable modules (usage.ts) can use it without pulling this file's
 // @upstash imports into Railway containers. Re-exported here because this was
 // the helpers' original home and existing callers import them from this
-// module (getClientIp: api/ask.ts, api/a2a.ts, api/mcp-proxy.ts;
+// module (getClientIp: api/ask.ts, api/a2a.ts, api/_mcp-proxy.ts;
 // UNKNOWN_CLIENT_IP: turnstile.ts; plus the rate-limit test suites).
 export { getClientIp, getClientRateLimitKey, hasCloudflareTransitProof, hasUnprovenCloudflareClientIp, rateLimitKeyForIp, UNKNOWN_CLIENT_IP } from './client-ip.js';
 
@@ -214,7 +214,7 @@ function logScopedRateLimitMissingConfig(scope: string): void {
 
 // One-per-isolate latch for edge-proof rejections. Spoofed cf-connecting-ip
 // headers are caller-controlled on a direct origin hit; reporting every 403
-// would create an amplification path (mirrors api/mcp/auth.ts). (#8402)
+// would create an amplification path (mirrors api/_mcp/auth.ts). (#8402)
 const EDGE_PROOF_RATE_LIMIT_LATCH = Symbol.for('worldmonitor.rate-limit.edge-proof-reported.v1');
 
 function reportEdgeProofRequiredOnce(stage: string, err: Error): void {
@@ -877,7 +877,7 @@ export const ENDPOINT_RATE_POLICIES: Record<string, EndpointRatePolicy> = {
   // cold per-country cache miss. Match the MCP minute ceiling and fail closed.
   '/api/resilience/v1/get-resilience-indicators': { limit: 60, window: '60 s' },
   // #3805 / PR #3821: MCP proxy is a top-level Vercel Edge Function in
-  // `api/mcp-proxy.ts` (registered as `external-protocol` in
+  // `api/_mcp-proxy.ts` (registered as `external-protocol` in
   // api/api-route-exceptions.json — JSON-RPC shape dictated by the MCP spec),
   // so it does NOT flow through the gateway and `checkEndpointRateLimit`
   // never fires for it. The handler reads this policy and enforces it

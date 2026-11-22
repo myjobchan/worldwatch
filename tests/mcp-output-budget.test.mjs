@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { isOrdinaryMarketDefault, presentDefaultMarketData } from '../api/mcp/registry/cache-tools.ts';
+import { isOrdinaryMarketDefault, presentDefaultMarketData } from '../api/_mcp/registry/cache-tools.ts';
 
 import {
   FIXTURES,
@@ -12,7 +12,7 @@ import {
   runBudgetChecks,
 } from './helpers/mcp-output-budget.mjs';
 
-describe('api/mcp.ts — per-tool output byte-budget regression (v1.7.0)', () => {
+describe('api/_mcp.ts — per-tool output byte-budget regression (v1.7.0)', () => {
   const { rows, deadEntries } = runBudgetChecks();
   const rowByTool = new Map(rows.map((r) => [r.tool, r]));
 

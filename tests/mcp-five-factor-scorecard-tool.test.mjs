@@ -2,8 +2,8 @@ import { afterEach, beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
-import { dispatchToolsCall } from '../api/mcp/dispatch.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { dispatchToolsCall } from '../api/_mcp/dispatch.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { documentedOutputSchema } from './helpers/mcp-output-schema.mjs';
 
 const originalFetch = globalThis.fetch;
@@ -38,7 +38,7 @@ describe('get_five_factor_scorecard MCP tool', () => {
       requests.push({ url: String(input), init });
       return new Response(JSON.stringify(downstreamResponse), { headers: { 'Content-Type': 'application/json' } });
     };
-    const mod = await import(`../api/mcp.ts?five-factor=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?five-factor=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

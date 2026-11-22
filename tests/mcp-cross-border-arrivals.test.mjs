@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, test } from 'node:test';
-import { CACHE_TOOLS } from '../api/mcp/registry/cache-tools.ts';
-import { executeTool } from '../api/mcp/dispatch.ts';
-import { McpSourceUnavailableError } from '../api/mcp/source-unavailable.ts';
+import { CACHE_TOOLS } from '../api/_mcp/registry/cache-tools.ts';
+import { executeTool } from '../api/_mcp/dispatch.ts';
+import { McpSourceUnavailableError } from '../api/_mcp/source-unavailable.ts';
 import { installRedis } from './helpers/fake-upstash-redis.mts';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { HMAC_SECRET, callBody, makeProDeps, proReq } from './helpers/mcp-pro-deps.mjs';
@@ -125,7 +125,7 @@ test('unreadable data is a source outage and makes no provider fallback', async 
 
 test('projection keeps the license, credit and transformation notice', async () => {
   seed();
-  const mod = await import('../api/mcp.ts');
+  const mod = await import('../api/_mcp.ts');
   const { deps } = makeProDeps();
   const res = await mod.mcpHandler(proReq('POST', callBody('get_cross_border_arrivals', { jmespath: 'data.crossBorderArrivals.situations[].name' })), deps);
   const body = await res.json();
@@ -152,7 +152,7 @@ test('summaries keep attribution and source URLs with and without projection', a
   wide.situations.push({ ...structuredClone(snapshot.situations[0]), id: 'third' }, { ...structuredClone(snapshot.situations[0]), id: 'fourth' });
   for (const arguments_ of [{ summary: true }, { summary: true, jmespath: 'data.crossBorderArrivals.situations[].name' }]) {
     seed(wide);
-    const mod = await import('../api/mcp.ts');
+    const mod = await import('../api/_mcp.ts');
     const { deps } = makeProDeps();
     const res = await mod.mcpHandler(proReq('POST', callBody('get_cross_border_arrivals', arguments_)), deps);
     const body = await res.json();

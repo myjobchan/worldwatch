@@ -1,4 +1,4 @@
-// Shared type declarations for the MCP server modules under api/mcp/.
+// Shared type declarations for the MCP server modules under api/_mcp/.
 // Pure types only — no runtime exports — so this module is safe to import
 // from anywhere without creating evaluation-order surprises or cycles.
 
@@ -140,7 +140,7 @@ export interface BaseToolDef {
   // `response_mode: "spoken"` (#9722). A tool that declares a narrator
   // advertises `response_mode` in its input schema and the spoken branch in
   // its output schema; the dispatcher replaces the finished payload with the
-  // narrator's 2-3 sentence envelope (api/mcp/spoken.ts). Declared HERE, on
+  // narrator's 2-3 sentence envelope (api/_mcp/spoken.ts). Declared HERE, on
   // the tool, so the roster is the registry itself. The narrator sees the
   // payload a full call would serialize after filters and presentation but
   // before any output-budget fit (the envelope is small, so the fit is
@@ -475,7 +475,7 @@ export interface PublicToolShape {
 // `error` exists because Upstash reports per-command failures inside an
 // otherwise-successful 200 — the shape readExistsFlags branches on. While this
 // omitted `error`, a consumer could not read that field without a local cast
-// (api/mcp/dispatch.ts carried one, with a comment saying so, until #6152).
+// (api/_mcp/dispatch.ts carried one, with a comment saying so, until #6152).
 //
 // PRECONDITION (#7674): the production binding (PRODUCTION_DEPS.redisPipeline)
 // sends commands VERBATIM (raw = true default) because the MCP quota and

@@ -1,6 +1,6 @@
 /**
  * Cross-domain alert digest core — "what tripped a threshold today?" plus a
- * weekly-trends view, shared between the MCP tool (api/mcp) and any future
+ * weekly-trends view, shared between the MCP tool (api/_mcp) and any future
  * dashboard rollup (#5696).
  *
  * Each domain trips on ITS OWN existing severity vocabulary (CII level bands,

@@ -193,7 +193,7 @@ describe('mcp-quota handler', () => {
 
   it('F9: env-prefixed key shape — preview deploys do not collide with production counters', async () => {
     // Drive the helper through a preview-deploy env. The reader (this
-    // handler) and the writer (api/mcp.ts) both call dailyCounterKey
+    // handler) and the writer (api/_mcp.ts) both call dailyCounterKey
     // from the same module — so the prefixed key must be byte-identical
     // across both. Round-trip: import the helper, derive a key, then
     // confirm the handler reads the same key shape.
@@ -416,10 +416,10 @@ describe('mcp-quota handler — plan-resolved limit (U3b)', () => {
     assert.equal(normalizeQuotaLimit(Number.NaN), 50);
   });
 
-  it('reuses api/mcp/quota.ts resolveDailyLimit — no second copy of the normalisation', async () => {
+  it('reuses api/_mcp/quota.ts resolveDailyLimit — no second copy of the normalisation', async () => {
     // Drift guard: if the reader ever grows its own copy of the three-way
     // contract, this import breaks or the pairing below diverges.
-    const { resolveDailyLimit } = await import('../api/mcp/quota.ts');
+    const { resolveDailyLimit } = await import('../api/_mcp/quota.ts');
     for (const [planLimit, expected] of [
       [250, 250],
       [null, null],

@@ -9,9 +9,9 @@ import { readFileSync } from 'node:fs';
 import { strict as assert } from 'node:assert';
 
 import { getEntitlementFeatures } from '../convex/config/productCatalog';
-import { McpSourceUnavailableError } from '../api/mcp/source-unavailable';
-import { createTravelRiskTool } from '../api/mcp/registry/travel-risk-tool';
-import type { TravelRiskResult } from '../api/mcp/registry/_travel-risk-document';
+import { McpSourceUnavailableError } from '../api/_mcp/source-unavailable';
+import { createTravelRiskTool } from '../api/_mcp/registry/travel-risk-tool';
+import type { TravelRiskResult } from '../api/_mcp/registry/_travel-risk-document';
 import {
   createTravelRiskExportHandler,
   TRAVEL_RISK_EXPORT_MAX_BODY_BYTES,

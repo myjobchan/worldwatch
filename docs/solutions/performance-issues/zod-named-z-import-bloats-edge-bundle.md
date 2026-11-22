@@ -2,12 +2,12 @@
 title: "Named `import { z } from 'zod'` keeps all of zod in the MCP edge bundle"
 date: 2026-11-12
 category: performance-issues
-module: api/mcp.ts
+module: api/_mcp.ts
 problem_type: performance_issue
 component: tooling
 severity: high
 symptoms:
-  - "tests/edge-function-size.test.mjs fails with \"api/mcp.ts: 1026401 bytes exceeds 1024000\" after adding one small MCP tool"
+  - "tests/edge-function-size.test.mjs fails with \"api/_mcp.ts: 1026401 bytes exceeds 1024000\" after adding one small MCP tool"
   - "main measured 1,023,401 bytes gzip-9, leaving 599 bytes for any new MCP tool"
 root_cause: wrong_api
 resolution_type: code_fix
@@ -18,11 +18,11 @@ tags: [zod, esbuild, tree-shaking, edge-bundle, mcp, bundle-size]
 
 ## Problem
 
-`tests/edge-function-size.test.mjs` caps the esbuild + gzip-9 size of `api/mcp.ts` at 1,024,000 bytes. That keeps it 24 KiB below the 1 MiB Edge ceiling. When the budget landed in #10491, main already measured 1,023,401 bytes. PR #10526 added `get_reservoir_levels`, about 3 KB, and the bundle failed at 1,026,401 bytes.
+`tests/edge-function-size.test.mjs` caps the esbuild + gzip-9 size of `api/_mcp.ts` at 1,024,000 bytes. That keeps it 24 KiB below the 1 MiB Edge ceiling. When the budget landed in #10491, main already measured 1,023,401 bytes. PR #10526 added `get_reservoir_levels`, about 3 KB, and the bundle failed at 1,026,401 bytes.
 
 ## Symptoms
 
-- `unit-shard` failed on `api/mcp.ts stays within its compressed function budget`.
+- `unit-shard` failed on `api/_mcp.ts stays within its compressed function budget`.
 - Shrinking the new tool could not fix it. Its whole addition was about 3 KB gzip, and the overrun was 2.4 KB.
 
 ## What didn't work
@@ -32,7 +32,7 @@ tags: [zod, esbuild, tree-shaking, edge-bundle, mcp, bundle-size]
 
 ## Solution
 
-Change every `import { z } from 'zod';` to `import * as z from 'zod';`. The PR changed 18 files across `shared/`, `api/mcp/` and `src/`.
+Change every `import { z } from 'zod';` to `import * as z from 'zod';`. The PR changed 18 files across `shared/`, `api/_mcp/` and `src/`.
 
 ```ts
 // before

@@ -34,14 +34,14 @@ let handler;
 let PROMPT_REGISTRY;
 let TOOL_REGISTRY;
 
-describe('api/mcp.ts — prompts capability + JMESPath-vs-schema parity', () => {
+describe('api/_mcp.ts — prompts capability + JMESPath-vs-schema parity', () => {
   beforeEach(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     process.env.MCP_TELEMETRY = 'false';
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}-prompts`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}-prompts`);
     handler = mod.default;
     PROMPT_REGISTRY = mod.__testing__.PROMPT_REGISTRY;
     TOOL_REGISTRY = mod.__testing__.TOOL_REGISTRY;
@@ -529,7 +529,7 @@ describe('api/mcp.ts — prompts capability + JMESPath-vs-schema parity', () => 
     }),
     // Tariff fixtures mirror the route bodies plus the MCP-layer `coverage`
     // object (tests/mcp-tariff-tools.test.mts, buildCoverage in
-    // api/mcp/registry/tariff-tools.ts).
+    // api/_mcp/registry/tariff-tools.ts).
     get_us_import_duty: () => ({
       hsCode: '870380',
       partnerCountry: '156',

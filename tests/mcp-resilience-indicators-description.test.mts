@@ -7,7 +7,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { INDICATOR_REGISTRY } from '../server/worldmonitor/resilience/v1/_indicator-registry.ts';
-const { __testing__ } = await import('../api/mcp.ts');
+const { __testing__ } = await import('../api/_mcp.ts');
 
 const description: string = __testing__.TOOL_REGISTRY.find((t: { name: string }) => t.name === 'get_resilience_indicators').description;
 const count = (cadences: string[]) => INDICATOR_REGISTRY.filter((i) => cadences.includes(i.cadence)).length;

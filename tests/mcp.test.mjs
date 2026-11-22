@@ -12,7 +12,7 @@ import {
   callBody,
 } from './helpers/mcp-pro-deps.mjs';
 import { buildOfficialChinaMacroFixture } from './helpers/china-macro-fixture.mjs';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { documentedOutputSchema } from './helpers/mcp-output-schema.mjs';
 
@@ -48,7 +48,7 @@ function assertNoStore(res, label) {
 let handler;
 let evaluateFreshness;
 
-describe('api/mcp.ts — PRO MCP Server', () => {
+describe('api/_mcp.ts — PRO MCP Server', () => {
   beforeEach(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     // No UPSTASH vars — rate limiter gracefully skipped, Redis reads return null
@@ -60,7 +60,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     // locally.
     process.env.MCP_TELEMETRY = 'false';
 
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     handler = mod.default;
     evaluateFreshness = mod.evaluateFreshness;
   });
@@ -391,7 +391,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('rejects an oversized JSON-RPC body before parsing (#7406)', async () => {
-    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const rpc = '{"jsonrpc":"2.0","id":1,"method":"ping","params":{}}';
     const oversized = `${rpc.slice(0, -1)}${' '.repeat(MAX_JSON_RPC_BODY_BYTES - rpc.length + 1)}}`;
     assert.ok(
@@ -420,7 +420,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('rejects an oversized Content-Length without reading the body (#7406)', async () => {
-    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/_mcp.ts?t=${Date.now()}`);
     let pullCount = 0;
     const body = new ReadableStream({
       pull(controller) {
@@ -449,7 +449,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('accepts a JSON-RPC body at the exact byte cap', async () => {
-    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const { MAX_JSON_RPC_BODY_BYTES } = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const rpc = '{"jsonrpc":"2.0","id":1,"method":"ping","params":{}}';
     const atCap = `${rpc.slice(0, -1)}${' '.repeat(MAX_JSON_RPC_BODY_BYTES - rpc.length)}}`;
     assert.equal(new TextEncoder().encode(atCap).byteLength, MAX_JSON_RPC_BODY_BYTES);
@@ -906,7 +906,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('get_chokepoint_status declares the PortWatch 174-country freshness floor', async () => {
-    const { CACHE_TOOLS } = await import(`../api/mcp/registry/cache-tools.ts?t=${Date.now()}`);
+    const { CACHE_TOOLS } = await import(`../api/_mcp/registry/cache-tools.ts?t=${Date.now()}`);
     const tool = CACHE_TOOLS.find((candidate) => candidate.name === 'get_chokepoint_status');
     const portwatchFreshness = tool?._freshnessChecks?.find(
       (check) => check.key === 'seed-meta:supply_chain:portwatch-ports',
@@ -936,7 +936,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     };
 
     // Re-import fresh module with UPSTASH env set
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', initBody()));
@@ -953,7 +953,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     // Simulate Redis being unreachable — fetch throws a network/timeout error
     globalThis.fetch = async () => { throw new TypeError('fetch failed'); };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -1016,7 +1016,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   async function callTool(name, args) {
     process.env.UPSTASH_REDIS_REST_URL = 'https://fake.upstash.io';
     process.env.UPSTASH_REDIS_REST_TOKEN = 'fake_token';
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const res = await freshMod.default(makeReq('POST', {
       jsonrpc: '2.0', id: 701, method: 'tools/call', params: { name, arguments: args },
     }));
@@ -1162,7 +1162,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     console.log = (line) => captured.push(line);
     console.error = () => {}; // swallow the captureSilentError stderr noise
     try {
-      const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+      const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
       const res = await freshMod.default(makeReq('POST', {
         jsonrpc: '2.0', id: 901, method: 'tools/call',
         params: { name: 'get_market_data', arguments: {} },
@@ -1198,7 +1198,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     try {
       process.env.UPSTASH_REDIS_REST_URL = 'https://fake.upstash.io';
       process.env.UPSTASH_REDIS_REST_TOKEN = 'fake_token';
-      const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+      const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
       const res = await freshMod.default(makeReq('POST', {
         jsonrpc: '2.0', id: 902, method: 'tools/call',
         params: { name: 'get_market_data', arguments: { jmespath: 'a.' } },
@@ -1219,7 +1219,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
 
   it('telemetry: initialize emits mcp.tools_list_emitted with tools_array_bytes, tool_count, client_user_agent', async () => {
     process.env.MCP_TELEMETRY = 'true';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const expectedToolCount = mod.__testing__.TOOL_REGISTRY.length;
     const captured = [];
     const origLog = console.log;
@@ -1243,7 +1243,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
 
   it('telemetry: initialize records the MCP client name and its AI client source', async () => {
     process.env.MCP_TELEMETRY = 'true';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const captured = [];
     const origLog = console.log;
     console.log = (line) => captured.push(line);
@@ -1266,7 +1266,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
 
   it('telemetry: initialize falls back to the User-Agent when clientInfo is generic or absent', async () => {
     process.env.MCP_TELEMETRY = 'true';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const captured = [];
     const origLog = console.log;
     console.log = (line) => captured.push(line);
@@ -1284,7 +1284,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
 
   it('telemetry: 32 KB User-Agent is capped at 256 chars in client_user_agent', async () => {
     process.env.MCP_TELEMETRY = 'true';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const captured = [];
     const origLog = console.log;
     console.log = (line) => captured.push(line);
@@ -1299,7 +1299,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('telemetry: circular _execute result + clean JMESPath projection stays 200 with bytes_pre_jmespath=-1 sentinel', async () => {
-    // Regression guard for the round-1 blocker fix at api/mcp.ts:3173-3184.
+    // Regression guard for the round-1 blocker fix at api/_mcp.ts:3173-3184.
     // Without the inner try/catch, the telemetry `JSON.stringify(result)`
     // on a circular `result` throws, control jumps to the outer catch, the
     // request becomes a 5xx tool error — even though JMESPath successfully
@@ -1309,7 +1309,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     //   (c) emit `bytes_post_jmespath > 0` (projection succeeded).
     // The sentinel is *the* observable that proves the inner catch fired.
     process.env.MCP_TELEMETRY = 'true';
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const tool = freshMod.__testing__.TOOL_REGISTRY.find((t) => t.name === 'get_commodity_geo');
     assert.ok(tool && tool._execute, 'get_commodity_geo must exist with an _execute');
     const originalExecute = tool._execute;
@@ -1426,7 +1426,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       { 'market:stocks-bootstrap:v1': { quotes: hugeQuotes }, 'market:crypto:v1': { quotes: [] } },
       { 'seed-meta:market:stocks': { fetchedAt: Date.now() - 60_000, recordCount: hugeQuotes.length } },
     );
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const res = await freshMod.default(makeReq('POST', {
       jsonrpc: '2.0', id: 801, method: 'tools/call',
       params: { name: 'get_market_data', arguments: { limit: 0 } },
@@ -1444,7 +1444,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
   });
 
   it('budget: every TOOL_REGISTRY entry declares a positive integer _outputBudgetBytes', async () => {
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const registry = mod.__testing__.TOOL_REGISTRY;
     assert.ok(Array.isArray(registry) && registry.length > 0, 'TOOL_REGISTRY must be a non-empty array');
     for (const tool of registry) {
@@ -1775,7 +1775,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       { 'fake:key:v1': { value: 1 } },
       { 'seed-meta:fake': { fetchedAt: Date.now() - 60_000, recordCount: 1 } },
     );
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const throwingTool = {
       name: 'fake_throwing_tool',
       description: 'test seam',
@@ -2180,7 +2180,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       mockCacheKeys({ [dataKey]: cacheValue }, meta);
       process.env.UPSTASH_REDIS_REST_URL = 'https://fake.upstash.io';
       process.env.UPSTASH_REDIS_REST_TOKEN = 'fake_token';
-      const freshMod = await import(`../api/mcp.ts?t=${Date.now()}-${Math.random()}`);
+      const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}-${Math.random()}`);
       const res = await freshMod.default(makeReq('POST', {
         jsonrpc: '2.0', id: 8489, method: 'tools/call',
         params: { name: 'get_displacement_data', arguments: args },
@@ -2317,7 +2317,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2343,7 +2343,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       status: 200, headers: { 'Content-Type': 'application/json' },
     });
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2391,7 +2391,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2444,7 +2444,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2487,7 +2487,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2569,7 +2569,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
         return Response.json({});
       };
 
-      const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+      const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
       const freshHandler = freshMod.default;
 
       const res = await freshHandler(makeReq('POST', {
@@ -2616,7 +2616,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2672,7 +2672,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     // throws on all-null while this one would return a misleading success.
     globalThis.fetch = async () => new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2745,7 +2745,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2801,7 +2801,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2836,7 +2836,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -2886,7 +2886,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3001,7 +3001,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return originalFetch(url);
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3071,7 +3071,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3114,7 +3114,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3214,7 +3214,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: JSON_HDR });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3265,7 +3265,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3288,7 +3288,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
     // callers this is a post-execution failure, so the slot remains charged.
     globalThis.fetch = async () => new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3337,7 +3337,7 @@ describe('api/mcp.ts — PRO MCP Server', () => {
       return new Response(JSON.stringify({}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
 
-    const freshMod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const freshMod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     const freshHandler = freshMod.default;
 
     const res = await freshHandler(makeReq('POST', {
@@ -3881,14 +3881,14 @@ describe('api/mcp.ts — PRO MCP Server', () => {
 // callBody) live in tests/helpers/mcp-pro-deps.mjs so the concurrent-quota
 // and per-tool contract suites can share them.
 
-describe('api/mcp.ts — U7 Pro-path', () => {
+describe('api/_mcp.ts — U7 Pro-path', () => {
   let mcpHandler;
   beforeEach(async () => {
     process.env.WORLDMONITOR_VALID_KEYS = VALID_KEY;
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
     process.env.MCP_INTERNAL_HMAC_SECRET = HMAC_SECRET;
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     mcpHandler = mod.mcpHandler;
   });
   afterEach(() => {
@@ -4411,7 +4411,7 @@ describe('api/mcp.ts — U7 Pro-path', () => {
   });
 
   it('classifies billing-verification denials distinctly in usage telemetry', async () => {
-    const { mcpReasonFor } = await import('../api/mcp/usage.ts');
+    const { mcpReasonFor } = await import('../api/_mcp/usage.ts');
     assert.equal(mcpReasonFor('billing', 503), 'billing_verification_503');
     assert.equal(mcpReasonFor('billing', 403), 'tier_403');
     assert.equal(mcpReasonFor('precheck', 503), 'auth_unavailable');
@@ -4967,7 +4967,7 @@ describe('get_sanctions_data screening contract', () => {
       const key = decodeURIComponent(new URL(url).pathname.slice(5));
       return new Response(JSON.stringify({ result: key in cache ? JSON.stringify(cache[key]) : null }));
     };
-    const { mcpHandler } = await import('../api/mcp.ts');
+    const { mcpHandler } = await import('../api/_mcp.ts');
     const { deps } = makeProDeps();
     const response = await mcpHandler(proReq('POST', callBody('get_sanctions_data', {
       screen: 'Northern Star', country: 'RU', min_score: 100, limit: 1,
@@ -5101,7 +5101,7 @@ describe('get_sanctions_data change feed contract', () => {
       reads.push(key);
       return new Response(JSON.stringify({ result: key in cache ? JSON.stringify(cache[key]) : null }));
     };
-    const { mcpHandler } = await import('../api/mcp.ts');
+    const { mcpHandler } = await import('../api/_mcp.ts');
     const { deps } = makeProDeps();
     cache['seed-meta:sanctions:changes'] = { fetchedAt: now - 13 * 3600000, recordCount: 4 };
     const ordinary = await mcpHandler(proReq('POST', callBody('get_sanctions_data', {}, 99)), deps);

@@ -2,7 +2,7 @@
  * Pooled limits of an Enterprise contract account (convex/enterpriseAccounts.ts).
  *
  * One shape for both doors — the gateway's REST meter and the MCP budget
- * (api/mcp/quota.ts) — so they cannot disagree on the pool's identity, its
+ * (api/_mcp/quota.ts) — so they cannot disagree on the pool's identity, its
  * burst, or where the safety limit sits:
  *
  *   identity       `acct:<id>` — the shared per-minute burst bucket and the
@@ -82,7 +82,7 @@ export interface AccountMeterReading {
  * headers keep quoting the contract allowance the customer bought; the body
  * names the limit that tripped (`limit`) beside it (`allowance`). No upgrade
  * link: a contract has no self-serve step up. The MCP denial for the same
- * state (api/mcp/upgrade.ts) carries the same two numbers.
+ * state (api/_mcp/upgrade.ts) carries the same two numbers.
  */
 export function accountSafetyLimitResponse(
   plan: AccountRateLimitPlan,

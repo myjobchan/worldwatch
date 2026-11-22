@@ -10,7 +10,7 @@
  * standing up Redis — `_execute` bodies keep the IO and nothing else.
  *
  * Dependency-free by the same rule as the cores: no `src/`, no `@/`, no DOM,
- * so this module survives the `api/mcp.ts` esbuild edge bundle.
+ * so this module survives the `api/_mcp.ts` esbuild edge bundle.
  */
 
 import {

@@ -1557,7 +1557,7 @@ export function createDomainGateway(
       }
       // Entitlement re-check at the gateway: the MCP edge already verifies
       // tier ≥ 1 + mcpAccess + validUntil before signing the outbound
-      // fetch (api/mcp.ts). This second check defends against (a) the
+      // fetch (api/_mcp.ts). This second check defends against (a) the
       // edge being bypassed (e.g. captured signature + leaked secret), (b)
       // mid-request entitlement lapse, (c) future regressions where a
       // non-edge caller signs requests.
@@ -2413,7 +2413,7 @@ export function createDomainGateway(
     let pendingGlobalRateLimit: Promise<Response | null> | null = null;
 
     // Internal-MCP verified requests skip the remaining gateway layer: the MCP edge
-    // already enforced 50/day + 60/min per userId in api/mcp.ts. A second
+    // already enforced 50/day + 60/min per userId in api/_mcp.ts. A second
     // limiter here would create misleading double-counting and could 429
     // legitimate Pro tool fetches that pass the upstream cap.
     //

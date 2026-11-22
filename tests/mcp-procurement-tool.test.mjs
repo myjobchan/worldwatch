@@ -42,7 +42,7 @@ describe('get_procurement_opportunities MCP tool', () => {
         headers: { 'Content-Type': 'application/json' },
       });
     };
-    const mod = await import(`../api/mcp.ts?procurement=${Date.now()}-${Math.random()}`);
+    const mod = await import(`../api/_mcp.ts?procurement=${Date.now()}-${Math.random()}`);
     mcpHandler = mod.mcpHandler;
   });
 

@@ -1,6 +1,6 @@
 // Closed-key allowlist contract for MCP telemetry events (`mcp.toolcall`,
 // `mcp.downstream`, `mcp.tools_list_emitted`, and `mcp.rate_limit_hit`). The exported allowlists in
-// api/mcp.ts are the schema of what is allowed to land in the log drain.
+// api/_mcp.ts are the schema of what is allowed to land in the log drain.
 // This file is what makes them load-bearing: any new top-level key on an
 // emitted JSON line that isn't in the matching allowlist fails by name,
 // and a positive sentinel assertion catches the specific case the
@@ -78,7 +78,7 @@ function mockCacheKeys(keyMap, metaKeys = {}) {
   };
 }
 
-describe('api/mcp.ts — telemetry redaction (closed-key allowlist)', () => {
+describe('api/_mcp.ts — telemetry redaction (closed-key allowlist)', () => {
   let handler;
   let MCP_TOOLCALL_TELEMETRY_KEYS;
   let MCP_TOOLS_LIST_TELEMETRY_KEYS;
@@ -93,7 +93,7 @@ describe('api/mcp.ts — telemetry redaction (closed-key allowlist)', () => {
     process.env.MCP_TELEMETRY = 'true';
     process.env.UPSTASH_REDIS_REST_URL = 'https://fake.upstash.io';
     process.env.UPSTASH_REDIS_REST_TOKEN = 'fake_token';
-    const mod = await import(`../api/mcp.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp.ts?t=${Date.now()}`);
     handler = mod.default;
     MCP_TOOLCALL_TELEMETRY_KEYS = mod.MCP_TOOLCALL_TELEMETRY_KEYS;
     MCP_TOOLS_LIST_TELEMETRY_KEYS = mod.MCP_TOOLS_LIST_TELEMETRY_KEYS;
@@ -114,7 +114,7 @@ describe('api/mcp.ts — telemetry redaction (closed-key allowlist)', () => {
     Object.assign(process.env, originalEnv);
   });
 
-  it('declares non-empty allowlists exported from api/mcp.ts', () => {
+  it('declares non-empty allowlists exported from api/_mcp.ts', () => {
     assert.ok(Array.isArray(MCP_TOOLCALL_TELEMETRY_KEYS), 'MCP_TOOLCALL_TELEMETRY_KEYS must be exported as an array');
     assert.ok(MCP_TOOLCALL_TELEMETRY_KEYS.length > 0, 'MCP_TOOLCALL_TELEMETRY_KEYS must be non-empty');
     assert.ok(Array.isArray(MCP_TOOLS_LIST_TELEMETRY_KEYS), 'MCP_TOOLS_LIST_TELEMETRY_KEYS must be exported as an array');

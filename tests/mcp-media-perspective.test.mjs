@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { MEDIA_PERSPECTIVE_TOOL as tool } from '../api/mcp/registry/media-perspective-tool.ts';
+import { MEDIA_PERSPECTIVE_TOOL as tool } from '../api/_mcp/registry/media-perspective-tool.ts';
 
 function rejects(params, field) {
   assert.throws(() => tool._validateArgs(params), (error) => error.violations?.some((violation) => violation.field === field));

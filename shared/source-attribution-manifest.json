@@ -1815,10 +1815,10 @@
       "status": "terms-review",
       "references": [
         {
-          "path": "api/mcp/registry/webcam-tools.ts"
+          "path": "api/_mcp/registry/webcam-tools.ts"
         },
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/seed-webcams.mjs"
@@ -1903,16 +1903,16 @@
       "status": "excluded",
       "references": [
         {
+          "path": "api/_mcp/downstream.ts"
+        },
+        {
+          "path": "api/_mcp/skill-extension/generated.ts"
+        },
+        {
           "path": "api/a2a.ts"
         },
         {
           "path": "api/internal/mcp-grant-mint.ts"
-        },
-        {
-          "path": "api/mcp/downstream.ts"
-        },
-        {
-          "path": "api/mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/_widget-data-policy.cjs"
@@ -4808,7 +4808,7 @@
       "status": "terms-review",
       "references": [
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/seed-earthquakes.mjs"
@@ -7251,7 +7251,7 @@
       "status": "reviewed",
       "references": [
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/seed-supply-chain-trade.mjs"
@@ -7908,7 +7908,7 @@
       "status": "excluded",
       "references": [
         {
-          "path": "api/mcp/constants.ts"
+          "path": "api/_mcp/constants.ts"
         }
       ]
     },
@@ -11224,7 +11224,7 @@
       "status": "terms-review",
       "references": [
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/_bet-templates-markets.mjs"
@@ -15810,7 +15810,7 @@
       "status": "reviewed",
       "references": [
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "scripts/ais-relay.cjs"
@@ -15850,13 +15850,13 @@
           "path": "api/_agent-metadata.ts"
         },
         {
+          "path": "api/_mcp/skill-extension/generated.ts"
+        },
+        {
           "path": "api/a2a.ts"
         },
         {
           "path": "api/ask.ts"
-        },
-        {
-          "path": "api/mcp/skill-extension/generated.ts"
         },
         {
           "path": "api/miit-news.js"
@@ -18435,7 +18435,7 @@
       "status": "terms-review",
       "references": [
         {
-          "path": "api/mcp/registry/_travel-risk-document.ts"
+          "path": "api/_mcp/registry/_travel-risk-document.ts"
         },
         {
           "path": "scripts/build-seasonal-hazard-calendar.mjs"
@@ -22560,10 +22560,10 @@
       "status": "terms-review",
       "references": [
         {
-          "path": "api/mcp/registry/webcam-tools.ts"
+          "path": "api/_mcp/registry/webcam-tools.ts"
         },
         {
-          "path": "api/mcp/skill-extension/generated.ts"
+          "path": "api/_mcp/skill-extension/generated.ts"
         },
         {
           "path": "server/worldmonitor/webcam/v1/get-webcam-image.ts"
@@ -22628,6 +22628,18 @@
           "path": "api/_cors.js"
         },
         {
+          "path": "api/_mcp/auth.ts"
+        },
+        {
+          "path": "api/_mcp/skill-extension/generated.ts"
+        },
+        {
+          "path": "api/_mcp/ui/news-dashboard-app.ts"
+        },
+        {
+          "path": "api/_mcp/ui/shell.ts"
+        },
+        {
           "path": "api/a2a.ts"
         },
         {
@@ -22635,18 +22647,6 @@
         },
         {
           "path": "api/customer-portal.ts"
-        },
-        {
-          "path": "api/mcp/auth.ts"
-        },
-        {
-          "path": "api/mcp/skill-extension/generated.ts"
-        },
-        {
-          "path": "api/mcp/ui/news-dashboard-app.ts"
-        },
-        {
-          "path": "api/mcp/ui/shell.ts"
         },
         {
           "path": "api/not-found.ts"

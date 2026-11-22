@@ -12,7 +12,7 @@
 
 import { strict as assert } from 'node:assert';
 import { describe, it } from 'node:test';
-import { informOnlyNextStep } from '../api/mcp/upgrade.ts';
+import { informOnlyNextStep } from '../api/_mcp/upgrade.ts';
 
 const URL_MCP = 'https://worldmonitor.app/mcp';
 const CHALLENGE = 'Bearer realm="worldmonitor", resource_metadata="https://worldmonitor.app/.well-known/oauth-protected-resource/mcp"';
@@ -25,7 +25,7 @@ const INIT = {
 };
 
 async function request(init) {
-  const { mcpHandler } = await import('../api/mcp/handler.ts');
+  const { mcpHandler } = await import('../api/_mcp/handler.ts');
   return mcpHandler(new Request(URL_MCP, {
     ...init,
     headers: { host: 'worldmonitor.app', ...(init.headers ?? {}) },

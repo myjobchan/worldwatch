@@ -131,7 +131,7 @@ Detected by hostname (`tech.worldmonitor.app` → tech, `finance.worldmonitor.ap
 The `api/` directory holds two kinds of endpoints, both deployed as Vercel Edge Functions:
 
 - **Domain intelligence gateways** — generated from proto contracts and backed by handlers under `server/worldmonitor/**`. The per-domain thin entry points (`api/<domain>/v<N>/[rpc].ts`) are produced via `createDomainGateway` (`server/gateway.ts`) and esbuild-bundled, so the *deployed* artifact is self-contained even though the source composes server-side modules.
-- **Operational endpoints** — hand-written for concerns that don't fit the contract model: auth/session, checkout and customer portal, MCP, bootstrap/health, notifications, cache invalidation, and user workflows (e.g. `api/create-checkout.ts`, `api/customer-portal.ts`, `api/mcp.ts`, `api/user-prefs.ts`).
+- **Operational endpoints** — hand-written for concerns that don't fit the contract model: auth/session, checkout and customer portal, MCP, bootstrap/health, notifications, cache invalidation, and user workflows (e.g. `api/create-checkout.ts`, `api/customer-portal.ts`, `api/_mcp.ts`, `api/user-prefs.ts`).
 
 Compact health separates actionable `problems` from bounded `pending` diagnostics. Both retain the source diagnosis. Pending deadlines also bound the Redis verdict cache lifetime.
 

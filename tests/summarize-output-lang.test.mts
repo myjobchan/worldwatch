@@ -14,7 +14,7 @@ import {
   normalizeSummaryLanguage,
 } from '../server/worldmonitor/news/v1/_shared.ts';
 import { TRANSLATE_TARGET_LANGUAGES, summarizeArticle } from '../server/worldmonitor/news/v1/summarize-article.ts';
-import { TOOL_REGISTRY } from '../api/mcp/registry/index.ts';
+import { TOOL_REGISTRY } from '../api/_mcp/registry/index.ts';
 import { UI_LANGUAGES, UI_LANGUAGE_NAMES } from '../shared/ui-languages.js';
 
 const ENV_KEYS = ['OPENROUTER_API_KEY', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'WORLDMONITOR_VALID_KEYS'] as const;
@@ -128,7 +128,7 @@ describe('MCP analyze_news_headlines language', () => {
 });
 
 describe('translation language names', () => {
-  // A copy, not an import: shared/ui-languages.js would grow api/mcp.ts past its budget.
+  // A copy, not an import: shared/ui-languages.js would grow api/_mcp.ts past its budget.
   it('TRANSLATE_LANGUAGE_NAMES matches the shared list', () => {
     assert.deepEqual({ ...TRANSLATE_LANGUAGE_NAMES }, { ...UI_LANGUAGE_NAMES });
     for (const code of UI_LANGUAGES) assert.ok(TRANSLATE_LANGUAGE_NAMES[code], code);

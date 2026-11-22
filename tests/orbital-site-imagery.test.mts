@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 
-import { orbitalMcpTools, ORBITAL_MCP_TOOLS_PUBLISHED, ORBITAL_TOOLS } from '../api/mcp/registry/_orbital.ts';
-import { orbitalSiteImageryTools, WATCHED_SITE_IMAGERY_TOOL } from '../api/mcp/registry/_orbital-site-imagery.ts';
-import { TOOL_REGISTRY, toolAccess } from '../api/mcp/registry/index.ts';
+import { orbitalMcpTools, ORBITAL_MCP_TOOLS_PUBLISHED, ORBITAL_TOOLS } from '../api/_mcp/registry/_orbital.ts';
+import { orbitalSiteImageryTools, WATCHED_SITE_IMAGERY_TOOL } from '../api/_mcp/registry/_orbital-site-imagery.ts';
+import { TOOL_REGISTRY, toolAccess } from '../api/_mcp/registry/index.ts';
 import { getRequiredTier } from '../server/_shared/entitlement-check.ts';
 import { toCountryEvidence } from '../server/worldmonitor/orbital/v1/get-country-imagery-evidence.ts';
 import { orbitalWatchDarkResponse } from '../server/worldmonitor/orbital/v1/dark-launch.ts';

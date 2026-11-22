@@ -1,11 +1,11 @@
 // RUN WITH: `npm run test:data` OR `node --import=tsx --test tests/mcp-proxy.test.mjs`.
-// The handler under test (api/mcp-proxy.ts) imports premium auth helpers from
+// The handler under test (api/_mcp-proxy.ts) imports premium auth helpers from
 // server/_shared/premium-check (extensionless TS). Plain `node --test`
 // cannot resolve that import and will fail with ERR_MODULE_NOT_FOUND —
 // this is expected; use tsx (the project's standard test runner).
 import { strict as assert } from 'node:assert';
 import { describe, it, beforeEach, afterEach, before } from 'node:test';
-import { MAX_MCP_PROXY_JSON_DEPTH } from '../api/mcp/bounded-json.ts';
+import { MAX_MCP_PROXY_JSON_DEPTH } from '../api/_mcp/bounded-json.ts';
 
 // validateApiKey runs with forceKey:true on this endpoint (PR #3768 review
 // finding — wms_ session tokens are anonymous and freely mintable via
@@ -145,7 +145,7 @@ function dnsJsonResponse(records) {
   }), { status: 200, headers: { 'Content-Type': 'application/dns-json' } });
 }
 
-describe('api/mcp-proxy', () => {
+describe('api/_mcp-proxy', () => {
   it('rejects an unproven CF IP after premium auth and before proxy dispatch', async () => {
     const previous = process.env.CF_EDGE_PROOF_SECRET;
     process.env.CF_EDGE_PROOF_SECRET = 'test-edge-proof';
@@ -168,7 +168,7 @@ describe('api/mcp-proxy', () => {
   beforeEach(async () => {
     // mcp-proxy migrated .js → .ts in PR #3768 to unlock the
     // premium-check import from server/. Test must follow the rename.
-    const mod = await import(`../api/mcp-proxy.ts?t=${Date.now()}`);
+    const mod = await import(`../api/_mcp-proxy.ts?t=${Date.now()}`);
     handler = mod.handler;
     assert.equal(mod.__setMcpProxyResolveHostnameForTest, undefined);
     setResolvedAddresses([PUBLIC_TEST_ADDRESS]);
@@ -1200,7 +1200,7 @@ describe('api/mcp-proxy', () => {
     });
 
     it('rejects an oversized POST body before forwarding (#7406)', async () => {
-      const { MAX_JSON_RPC_BODY_BYTES } = await import('../api/mcp/body-limits.ts');
+      const { MAX_JSON_RPC_BODY_BYTES } = await import('../api/_mcp/body-limits.ts');
       const previousUpstashUrl = process.env.UPSTASH_REDIS_REST_URL;
       const previousUpstashToken = process.env.UPSTASH_REDIS_REST_TOKEN;
       delete process.env.UPSTASH_REDIS_REST_URL;
@@ -1236,7 +1236,7 @@ describe('api/mcp-proxy', () => {
           'oversized bodies must not reach upstream MCP servers',
         );
         const data = await res.json();
-        // Exact equality, not a substring match: api/mcp-proxy.ts is under
+        // Exact equality, not a substring match: api/_mcp-proxy.ts is under
         // `@ts-nocheck`, so `typecheck:api` cannot verify the RequestBodyTooLargeError
         // wiring there. This assertion is the only thing pinning that contract.
         assert.equal(data.error, `Request body exceeds ${MAX_JSON_RPC_BODY_BYTES} bytes`);
@@ -2048,7 +2048,7 @@ describe('api/mcp-proxy', () => {
 // whole file and every existing test's fetch stub would start seeing envelope
 // POSTs it does not expect. Same lever tests/rate-limit.test.mts uses.
 // ---------------------------------------------------------------------------
-describe('api/mcp-proxy — observability', () => {
+describe('api/_mcp-proxy — observability', () => {
   let obsHandler;
   const ORIGINAL_USAGE = process.env.USAGE_TELEMETRY;
   const ORIGINAL_AXIOM = process.env.AXIOM_API_TOKEN;
@@ -2056,7 +2056,7 @@ describe('api/mcp-proxy — observability', () => {
   beforeEach(async () => {
     process.env.USAGE_TELEMETRY = '1';
     process.env.AXIOM_API_TOKEN = 'test-axiom-token-not-a-real-secret';
-    const mod = await import(`../api/mcp-proxy.ts?obs=${Date.now()}`);
+    const mod = await import(`../api/_mcp-proxy.ts?obs=${Date.now()}`);
     obsHandler = mod.handler;
     setResolvedAddresses([PUBLIC_TEST_ADDRESS]);
   });
@@ -2159,7 +2159,7 @@ describe('api/mcp-proxy — observability', () => {
   });
 
   it('maps each premium caller identity onto the shared usage identity contract', async () => {
-    const { proxyUsageIdentityFor } = await import(`../api/mcp-proxy.ts?identity=${Date.now()}`);
+    const { proxyUsageIdentityFor } = await import(`../api/_mcp-proxy.ts?identity=${Date.now()}`);
     const request = makeGetRequest({ serverUrl: 'https://mcp.example.com/mcp' });
 
     assert.deepEqual(
@@ -2202,7 +2202,7 @@ describe('api/mcp-proxy — observability', () => {
 
   it('downgrades expected upstream failures but keeps proxy defects at error level', async () => {
     const { McpProxyUpstreamError, proxyFailureFor } = await import(
-      `../api/mcp-proxy.ts?failure=${Date.now()}`
+      `../api/_mcp-proxy.ts?failure=${Date.now()}`
     );
 
     assert.deepEqual(
@@ -2225,7 +2225,7 @@ describe('api/mcp-proxy — observability', () => {
   // audit log keeps the upstream status instead.
   it('does not report an upstream credential rejection to Sentry', async () => {
     const { McpProxyUpstreamError, proxyFailureFor } = await import(
-      `../api/mcp-proxy.ts?credential=${Date.now()}`
+      `../api/_mcp-proxy.ts?credential=${Date.now()}`
     );
     for (const status of [401, 403]) {
       const failure = proxyFailureFor(
@@ -2246,7 +2246,7 @@ describe('api/mcp-proxy — observability', () => {
   // second regrowth). The audit log keeps the upstream status.
   it('does not report an upstream rate limit to Sentry, but still reports upstream server faults', async () => {
     const { McpProxyUpstreamError, proxyFailureFor } = await import(
-      `../api/mcp-proxy.ts?rate-limit=${Date.now()}`
+      `../api/_mcp-proxy.ts?rate-limit=${Date.now()}`
     );
     const limited = proxyFailureFor(
       new McpProxyUpstreamError('tools/call failed: HTTP 429', { upstreamStatus: 429 }),
@@ -2286,7 +2286,7 @@ describe('api/mcp-proxy — observability', () => {
   // The caller still gets the 422; the audit log keeps the JSON-RPC code.
   it('does not report a JSON-RPC rejection answered by the upstream to Sentry', async () => {
     const { McpProxyUpstreamError, proxyFailureFor } = await import(
-      `../api/mcp-proxy.ts?rpc-rejection=${Date.now()}`
+      `../api/_mcp-proxy.ts?rpc-rejection=${Date.now()}`
     );
     const rejected = new McpProxyUpstreamError('Initialize error: MCP server rejected request', {
       upstreamRpcError: { code: -32000, message: 'Rate limit exceeded' },
@@ -2348,9 +2348,9 @@ describe('api/mcp-proxy — observability', () => {
   // detected only from its message still buckets as 'timeout', and a thrown
   // non-Error cannot put an arbitrary value into the fingerprint.
   it('classifies failures into bounded fingerprint classes', async () => {
-    const { proxyFailureFor } = await import(`../api/mcp-proxy.ts?failure-class=${Date.now()}`);
-    const { ResponseBodyTooLargeError } = await import('../api/mcp/bounded-body.ts');
-    const { McpProxyJsonDepthError } = await import('../api/mcp/bounded-json.ts');
+    const { proxyFailureFor } = await import(`../api/_mcp-proxy.ts?failure-class=${Date.now()}`);
+    const { ResponseBodyTooLargeError } = await import('../api/_mcp/bounded-body.ts');
+    const { McpProxyJsonDepthError } = await import('../api/_mcp/bounded-json.ts');
 
     assert.equal(proxyFailureFor(new Error('MCP server timed out after 10s')).errorClass, 'timeout');
     assert.equal(proxyFailureFor(new ResponseBodyTooLargeError(1024)).errorClass, 'ResponseBodyTooLargeError');
@@ -2360,12 +2360,12 @@ describe('api/mcp-proxy — observability', () => {
   });
 
   // Every value below must be a member of the RequestReason union in
-  // server/_shared/usage.ts. api/mcp-proxy.ts is `@ts-nocheck`, so tsc will
+  // server/_shared/usage.ts. api/_mcp-proxy.ts is `@ts-nocheck`, so tsc will
   // NOT catch a typo against that union — a misspelled reason would ship a row
   // no Axiom query can ever match, which is the exact class of silent blindness
   // this whole change exists to remove.
   it('maps every terminal status onto a real RequestReason member', async () => {
-    const mod = await import(`../api/mcp-proxy.ts?reason=${Date.now()}`);
+    const mod = await import(`../api/_mcp-proxy.ts?reason=${Date.now()}`);
     const { proxyReasonFor } = mod;
     assert.equal(proxyReasonFor(403), 'origin_403');
     assert.equal(proxyReasonFor(401), 'auth_401');
@@ -2383,7 +2383,7 @@ describe('api/mcp-proxy — observability', () => {
 
   it('the top-level catch reports to Sentry with the classified failure level', async () => {
     const fs = await import('node:fs');
-    const src = fs.readFileSync(new URL('../api/mcp-proxy.ts', import.meta.url), 'utf8');
+    const src = fs.readFileSync(new URL('../api/_mcp-proxy.ts', import.meta.url), 'utf8');
 
     const catchAt = src.indexOf('const failure = proxyFailureFor(err);');
     assert.ok(catchAt > 0, 'the top-level catch still classifies failures');
@@ -2421,9 +2421,9 @@ describe('api/mcp-proxy — observability', () => {
 // send the proxy to loopback or cloud metadata. On Node every upstream request
 // carries its own undici dispatcher whose lookup returns the vetted address.
 // ---------------------------------------------------------------------------
-describe('api/mcp-proxy — Node runtime module shape (GHSA-887j)', () => {
+describe('api/_mcp-proxy — Node runtime module shape (GHSA-887j)', () => {
   it('exports per-method Web handlers and no default, so Vercel Node invokes them with a Request', async () => {
-    const mod = await import(`../api/mcp-proxy.ts?shape=${Date.now()}`);
+    const mod = await import(`../api/_mcp-proxy.ts?shape=${Date.now()}`);
     // @vercel/node unwraps `default` first and then ignores the method
     // exports, calling the default as (IncomingMessage, ServerResponse).
     assert.equal(mod.default, undefined);
@@ -2432,14 +2432,14 @@ describe('api/mcp-proxy — Node runtime module shape (GHSA-887j)', () => {
   });
 });
 
-describe('api/mcp-proxy — pinned upstream dispatch (GHSA-887j)', () => {
+describe('api/_mcp-proxy — pinned upstream dispatch (GHSA-887j)', () => {
   let pinHandler;
   let pinning;
   let Agent;
   let Dispatcher1Wrapper;
 
   beforeEach(async () => {
-    const mod = await import(`../api/mcp-proxy.ts?pin=${Date.now()}`);
+    const mod = await import(`../api/_mcp-proxy.ts?pin=${Date.now()}`);
     pinHandler = mod.handler;
     pinning = mod.__testing__;
     ({ Agent, Dispatcher1Wrapper } = await import('undici'));
@@ -2554,7 +2554,7 @@ describe('api/mcp-proxy — pinned upstream dispatch (GHSA-887j)', () => {
 // Real sockets: the advisory's attack shape. The platform resolver (simulated by
 // the global dispatcher) answers 127.0.0.1 for every name; the vetted address is
 // ::1. Both servers share one port, so only the address decides which is hit.
-describe('api/mcp-proxy — pinned socket on a real TLS connection (GHSA-887j)', () => {
+describe('api/_mcp-proxy — pinned socket on a real TLS connection (GHSA-887j)', () => {
   let tls;
   let pinning;
   let undici;
@@ -2569,7 +2569,7 @@ describe('api/mcp-proxy — pinned socket on a real TLS connection (GHSA-887j)',
       '-subj', '/CN=rebind.example', '-addext', 'subjectAltName=DNS:rebind.example',
       '-keyout', path.join(dir, 'key.pem'), '-out', path.join(dir, 'cert.pem')], { stdio: 'ignore' });
     tls = { key: readFileSync(path.join(dir, 'key.pem')), cert: readFileSync(path.join(dir, 'cert.pem')) };
-    pinning = (await import(`../api/mcp-proxy.ts?socket=${Date.now()}`)).__testing__;
+    pinning = (await import(`../api/_mcp-proxy.ts?socket=${Date.now()}`)).__testing__;
     undici = await import('undici');
   });
 

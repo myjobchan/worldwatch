@@ -73,7 +73,7 @@ const EXPOSED_HEADERS = [
   // `response.headers.get('X-RateLimit-Mode')` null for cross-origin JS
   // even though the header is on the wire (#7270).
   'X-RateLimit-Mode',
-  // api/mcp-proxy marks the 504 it relays for a remote MCP server timeout so
+  // api/_mcp-proxy marks the 504 it relays for a remote MCP server timeout so
   // premium-fetch's origin-5xx canary can skip it (WORLDMONITOR-17A).
   'X-Wm-Upstream-Timeout',
   'X-WorldMonitor-Bbox',

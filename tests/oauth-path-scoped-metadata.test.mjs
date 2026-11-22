@@ -99,7 +99,7 @@ describe('protected-resource metadata — path-scoped /mcp document', () => {
 
   // The suffix rewrite forwards a multi-segment suffix, which arrives either
   // literally or percent-encoded depending on how the platform serializes it.
-  for (const query of ['resource=api/mcp', 'resource=api%2Fmcp']) {
+  for (const query of ['resource=api/_mcp', 'resource=api%2Fmcp']) {
     it(`a rewritten ?${query} serves the /api/mcp document`, async () => {
       const json = await (await get(prmHandler, 'api.worldmonitor.app', `/api/oauth-protected-resource?${query}`)).json();
       assert.equal(json.resource, `https://${'api'}.worldmonitor.app/api/mcp`);
@@ -119,7 +119,7 @@ describe('protected-resource metadata — path-scoped /mcp document', () => {
     assert.equal(json.resource, 'https://worldmonitor.app');
   });
 
-  // `/api/mcp` is the deployed route (api/mcp.ts) and the URL
+  // `/api/mcp` is the deployed route (api/_mcp.ts) and the URL
   // docs/usage-quickstart.mdx publishes. The MCP SDK accepts a resource only
   // when the requested path starts with the advertised one, so a client on
   // `/api/mcp` cannot be handed the `/mcp` document.
@@ -162,7 +162,7 @@ describe('authorization-server metadata — registration method', () => {
 
 describe('the MCP 401 challenge points at the path-scoped document', () => {
   it('wwwAuthHeader carries the /mcp resource metadata URL', async () => {
-    const { wwwAuthHeader } = await import('../api/mcp/auth.ts');
+    const { wwwAuthHeader } = await import('../api/_mcp/auth.ts');
     assert.equal(
       wwwAuthHeader('https://worldmonitor.app/.well-known/oauth-protected-resource/mcp'),
       'Bearer realm="worldmonitor", resource_metadata="https://worldmonitor.app/.well-known/oauth-protected-resource/mcp"',
@@ -170,7 +170,7 @@ describe('the MCP 401 challenge points at the path-scoped document', () => {
   });
 
   const call = async (url, host) => {
-    const { mcpHandler } = await import('../api/mcp/handler.ts');
+    const { mcpHandler } = await import('../api/_mcp/handler.ts');
     return mcpHandler(new Request(url, {
       method: 'POST',
       headers: { host, 'Content-Type': 'application/json', Accept: 'application/json' },

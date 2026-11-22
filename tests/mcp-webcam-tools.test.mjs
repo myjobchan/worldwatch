@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import { beforeEach, afterEach, it } from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
-import { TOOL_REGISTRY, buildPublicTool, toolAccess, toolWeight } from '../api/mcp/registry/index.ts';
-import { validateToolArgs } from '../api/mcp/_validate-args.ts';
-import { dispatchToolsCall } from '../api/mcp/dispatch.ts';
-import { RpcValidationError } from '../api/mcp/billing-denial.ts';
+import { TOOL_REGISTRY, buildPublicTool, toolAccess, toolWeight } from '../api/_mcp/registry/index.ts';
+import { validateToolArgs } from '../api/_mcp/_validate-args.ts';
+import { dispatchToolsCall } from '../api/_mcp/dispatch.ts';
+import { RpcValidationError } from '../api/_mcp/billing-denial.ts';
 import { createWebcamServiceRoutes } from '../src/generated/server/worldmonitor/webcam/v1/service_server.ts';
 import { listWebcams } from '../server/worldmonitor/webcam/v1/list-webcams.ts';
 import { getWebcamImage } from '../server/worldmonitor/webcam/v1/get-webcam-image.ts';

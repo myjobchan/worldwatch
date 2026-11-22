@@ -12,7 +12,7 @@ import {
   reportHighUsageIfCrossed,
 } from '../server/_shared/high-usage-alarm.ts';
 import { PRODUCT_CATALOG, SHARED_API_BUDGET } from '../convex/config/productCatalog.ts';
-import { resolveMcpBudget } from '../api/mcp/quota.ts';
+import { resolveMcpBudget } from '../api/_mcp/quota.ts';
 import { mergeEntitlementFeatures } from '../convex/lib/entitlements.ts';
 
 describe('crossedHighUsageThreshold', () => {
