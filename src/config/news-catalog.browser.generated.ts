@@ -5227,8 +5227,7 @@ export const BROWSER_NEWS_CATALOG: BrowserCatalog = {
           "name": "Prachatai",
           "url": "https://feeds.feedburner.com/prachatai",
           "lang": "th",
-          "fetchInAllLanguages": true,
-          "strategicDefault": true
+          "fetchInAllLanguages": true
         },
         {
           "name": "Prothom Alo",
@@ -5556,7 +5555,7 @@ export const BROWSER_NEWS_CATALOG: BrowserCatalog = {
           "strategicDefault": true
         },
         {
-          "name": "Khaosod English",
+          "name": "Khaosod English RSS",
           "url": "https://www.khaosodenglish.com/feed/",
           "strategicDefault": true
         },
@@ -5574,13 +5573,6 @@ export const BROWSER_NEWS_CATALOG: BrowserCatalog = {
           "name": "TMD Earthquakes",
           "url": "https://earthquake.tmd.go.th/feed/rss_tmd.xml",
           "lang": "th",
-          "strategicDefault": true
-        },
-        {
-          "name": "Prachatai",
-          "url": "https://feeds.feedburner.com/prachatai",
-          "lang": "th",
-          "fetchInAllLanguages": true,
           "strategicDefault": true
         }
       ],

@@ -15059,17 +15059,7 @@
           "category": "asia",
           "browserOrder": 125,
           "serverOrder": 125
-        },
-        {
-          "edition": "full",
-          "category": "thailand",
-          "serverOrder": 5,
-          "browserOrder": 5
         }
-      ],
-      "strategicDefault": true,
-      "notes": [
-        "strategicDefault set by the worldwatch fork so the Thai-language feed reaches the Thailand & ASEAN panel in every locale"
       ]
     },
     {
@@ -18550,7 +18540,7 @@
       ]
     },
     {
-      "name": "Khaosod English",
+      "name": "Khaosod English RSS",
       "url": "https://www.khaosodenglish.com/feed/",
       "strategicDefault": true,
       "notes": [

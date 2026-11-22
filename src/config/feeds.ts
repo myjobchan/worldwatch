@@ -434,6 +434,11 @@ export const SCIENCE_DEFAULT_SOURCES = [
   'ScienceDaily',
 ] as const;
 
+/** worldwatch fork: sources added for the Thailand & ASEAN panel (all strategicDefault). */
+export const THAILAND_ASEAN_FORK_SOURCES = [
+  'Khaosod English RSS', 'Prachatai English', 'CNA Asia', 'TMD Earthquakes',
+] as const;
+
 /** Chronological feed introductions used to reconstruct untouched cap states. */
 export const REGIONAL_FEED_ROLLOUT_STAGES = [
   {
@@ -587,6 +592,18 @@ export const REGIONAL_FEED_ROLLOUT_STAGES = [
   },
   {
     introducedNames: [...PUBLISHER_DIRECT_OPT_IN_SOURCES],
+    protectedNames: [
+      ...FRONTLINE_EUROPE_PROTECTED_SOURCES,
+      ...REGIONAL_FEED_ROLLOUT_DEFAULT_SOURCES,
+      ...CANADA_EN_DEFAULT_SOURCES,
+      ...CRISIS_FLOOR_EN_DEFAULT_SOURCES,
+      ...CRISIS_FLOOR_STRATEGIC_DEFAULT_SOURCES,
+    ],
+  },
+  // worldwatch fork: Thailand & ASEAN panel (publisher RSS). Bangkok Post
+  // already existed, so only the new names are introduced here.
+  {
+    introducedNames: [...THAILAND_ASEAN_FORK_SOURCES],
     protectedNames: [
       ...FRONTLINE_EUROPE_PROTECTED_SOURCES,
       ...REGIONAL_FEED_ROLLOUT_DEFAULT_SOURCES,
