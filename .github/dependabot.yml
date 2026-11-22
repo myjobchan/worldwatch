@@ -1,7 +1,11 @@
+# worldwatch (unofficial fork): Dependabot version-update PRs are disabled by
+# open-pull-requests-limit: 0 on every entry. The file stays so the upstream
+# config tests still parse it. Existing dependabot/* branches are kept.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     groups:
@@ -10,6 +14,7 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     ignore:
@@ -21,6 +26,7 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/docker"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     ignore:
@@ -30,6 +36,7 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/consumer-prices-core"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     ignore:
@@ -39,6 +46,7 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/demos/verification-desk"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     ignore:
@@ -48,6 +56,7 @@ updates:
 
   - package-ecosystem: "docker"
     directory: "/.oss-scanner"
+    open-pull-requests-limit: 0  # worldwatch fork: version-update PRs off
     schedule:
       interval: "weekly"
     ignore:
