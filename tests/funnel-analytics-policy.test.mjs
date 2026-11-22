@@ -107,7 +107,14 @@ test('checkout-return reconciliation fires success/failed events', () => {
     'checkout-return failed path no longer fires trackCheckoutFailed');
 });
 
-test('/pro and welcome pages load the Umami tracker (www + nonce)', () => {
+// worldwatch fork: /pro and welcome no longer load the upstream tracker.
+test('/pro and welcome pages do not load the upstream Umami tracker', () => {
+  for (const page of ['pro-test/index.html', 'pro-test/welcome.html']) {
+    assert.doesNotMatch(read(page), /abacus\.worldmonitor\.app\/script\.js/, `${page}: upstream tracker must stay removed`);
+  }
+});
+
+test.skip('/pro and welcome pages load the Umami tracker (www + nonce)', () => {
   for (const page of ['pro-test/index.html', 'pro-test/welcome.html']) {
     const html = read(page);
     const tag = html.match(/<script[^>]+abacus\.worldmonitor\.app\/script\.js[^>]*>/);
@@ -145,7 +152,8 @@ test('/pro checkout service fires checkout-start on both paths', () => {
     "no trackFunnelEvent('checkout-start', …surface:'pro-resume') emission in tryResumeCheckoutFromUrl");
 });
 
-test('tracker tags are async', () => {
+// worldwatch fork: no tracker tag to check.
+test.skip('tracker tags are async', () => {
   for (const page of ['pro-test/index.html', 'pro-test/welcome.html']) {
     const tag = read(page).match(/<script[^>]+abacus\.worldmonitor\.app\/script\.js[^>]*>/)[0];
     assert.ok(/\basync\b/.test(tag),
@@ -155,7 +163,8 @@ test('tracker tags are async', () => {
 
 // Both marketing pages carry a tracker: /pro (index.html) and the homepage,
 // which vercel.json rewrites to /pro/welcome.html.
-for (const page of ['pro-test/index.html', 'pro-test/welcome.html']) test(`${page} redacts sensitive params per payload and keeps utm_*`, async () => {
+// worldwatch fork: no tracker tag, so no per-payload redaction hook to check.
+for (const page of ['pro-test/index.html', 'pro-test/welcome.html']) test.skip(`${page} redacts sensitive params per payload and keeps utm_*`, async () => {
   const html = read(page);
   const proTag = html.match(/<script[^>]+abacus[^>]*>/)[0];
   assert.ok(!proTag.includes('data-exclude-search'),

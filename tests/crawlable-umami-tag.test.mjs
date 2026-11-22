@@ -16,18 +16,20 @@ const DASHBOARD_ID = read('src/services/analytics.ts')
   .match(/const UMAMI_WEBSITE_ID = '([0-9a-f-]{36})'/)?.[1];
 const TRACKER_RE = /<script[^>]+abacus\.worldmonitor\.app\/script\.js[^>]*>/g;
 
+// worldwatch fork: crawlable pages must not load the upstream Umami tracker
+// (abacus.worldmonitor.app). These checks pin its absence.
 describe('Umami tag on crawlable pages', () => {
   it('reads the dashboard website ID', () => {
     assert.ok(DASHBOARD_ID, 'UMAMI_WEBSITE_ID not found in src/services/analytics.ts');
   });
 
-  it('shared tag uses the dashboard website ID', () => {
-    assert.ok(UMAMI_SCRIPT_TAG.includes(`data-website-id="${DASHBOARD_ID}"`));
+  it('shared tag is empty in the fork', () => {
+    assert.equal(UMAMI_SCRIPT_TAG, '');
   });
 
-  it('hand-written /agent page uses the dashboard website ID and no other', () => {
+  it('hand-written /agent page carries no tracker', () => {
     const ids = [...read('public/agent/index.html').matchAll(/data-website-id="([^"]+)"/g)].map((m) => m[1]);
-    assert.deepEqual(ids, [DASHBOARD_ID]);
+    assert.deepEqual(ids, []);
   });
 
   describe('generated corpus', () => {
@@ -50,7 +52,7 @@ describe('Umami tag on crawlable pages', () => {
       return child ? `${family}/${child}` : null;
     };
 
-    it('renders exactly one tracker with the dashboard ID on each page family', () => {
+    it('renders no upstream tracker on any page family', () => {
       const families = {
         countries: firstChild('countries'),
         chokepoint: 'chokepoints/strait-of-hormuz',
@@ -69,8 +71,7 @@ describe('Umami tag on crawlable pages', () => {
       for (const page of Object.values(families)) {
         const html = readFileSync(join(outDir, page, 'index.html'), 'utf8');
         const tags = html.match(TRACKER_RE) || [];
-        assert.equal(tags.length, 1, `${page}: expected one Umami tag, found ${tags.length}`);
-        assert.ok(tags[0].includes(`data-website-id="${DASHBOARD_ID}"`), `${page}: wrong website ID`);
+        assert.equal(tags.length, 0, `${page}: expected no Umami tag, found ${tags.length}`);
       }
     });
   });

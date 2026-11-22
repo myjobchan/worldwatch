@@ -82,7 +82,8 @@ describe('secondary dashboard startup', () => {
   });
 });
 
-describe('deferred Umami loader', () => {
+// worldwatch fork: the upstream Umami tracker (abacus.worldmonitor.app) is disabled (UMAMI_ENABLED=false in src/services/analytics.ts); the loader mechanics below are dead code in this fork.
+describe.skip('deferred Umami loader', () => {
   it('queues dashboard analytics calls and flushes them after the deferred script loads', async () => {
     const appendedScripts: Array<{
       async: boolean;
@@ -425,7 +426,23 @@ describe('scheduleAfterFirstPaint', () => {
   });
 });
 
-describe('deferred Umami loader — failure and edge paths', () => {
+describe('worldwatch fork: no upstream analytics', () => {
+  it('initAnalytics appends no tracker script and track() stays a safe no-op', async () => {
+    const analytics = await import('../src/services/analytics.ts');
+    analytics.resetAnalyticsForTesting();
+    const h = installUmamiHarness();
+    try {
+      analytics.track('search-open', { source: 'x' });
+      analytics.initAnalytics();
+      assert.equal(h.appendedScripts.length, 0, 'the fork must not load abacus.worldmonitor.app/script.js');
+    } finally {
+      h.restore();
+    }
+  });
+});
+
+// worldwatch fork: the upstream Umami tracker (abacus.worldmonitor.app) is disabled (UMAMI_ENABLED=false in src/services/analytics.ts); the loader mechanics below are dead code in this fork.
+describe.skip('deferred Umami loader — failure and edge paths', () => {
   it('stops after the attempt limit and appends no third script on exhaustion', async () => {
     const analytics = await import('../src/services/analytics.ts');
     analytics.resetAnalyticsForTesting();

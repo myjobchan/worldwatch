@@ -113,10 +113,8 @@ describe('blog conversion attribution', () => {
     assert.match(base, /productFacts\.product\.primaryCtaLabel/);
     assert.match(base, /href=\{proCtaUrl\}/);
     assert.match(post, /Explore Pro/);
-    assert.match(
-      base,
-      /data-domains="[^"]*\bwww\.worldmonitor\.app\b[^"]*"/,
-    );
+    // worldwatch fork: the blog layout no longer loads the upstream tracker.
+    assert.doesNotMatch(base, /abacus\.worldmonitor\.app\/script\.js/);
     assert.match(trackedLink, /BLOG_CONVERSION_EVENT/);
     assert.match(trackedLink, /data-wm-content-link/);
     assert.match(trackedLink, /data-umami-event-source/);

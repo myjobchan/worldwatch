@@ -324,8 +324,9 @@ describe('research report corpus (#5668)', () => {
         `missing analytics funnel target: ${target}`,
       );
     }
-    assert.match(html, /abacus\.worldmonitor\.app\/script\.js/, 'research pages must load analytics');
-    assert.match(html, /nonce="wm-static-bootstrap"/);
+    // worldwatch fork: the upstream tracker is removed from generated pages.
+    assert.doesNotMatch(html, /abacus\.worldmonitor\.app\/script\.js/, 'fork research pages must not load the upstream tracker');
+    // The static-bootstrap nonce only ever sat on the tracker tag, so it goes with it.
   });
 
   it('regenerates byte-identically from the committed snapshot', async () => {

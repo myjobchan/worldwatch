@@ -224,13 +224,15 @@ describe('brief-render — U11 source-link stamping', () => {
       html.includes("source: 'magazine'"),
       'tracker pins source: magazine',
     );
+    // worldwatch fork: the upstream loader is not emitted.
     assert.ok(
-      html.includes('https://abacus.worldmonitor.app/script.js'),
-      'umami loader script tag is emitted in the head',
+      !html.includes('https://abacus.worldmonitor.app/script.js'),
+      'fork magazine HTML must not load the upstream tracker',
     );
   });
 
-  it('tells the umami loader to drop the query string', () => {
+  // worldwatch fork: no loader tag exists, so there is no query string to drop.
+  it.skip('tells the umami loader to drop the query string', () => {
     const html = renderBriefMagazine(envelope(), { followedCountries: [] });
     const loader = html.match(/<script[^>]*abacus\.worldmonitor\.app\/script\.js[^>]*>/)?.[0];
     assert.ok(loader, 'umami loader tag present');
