@@ -450,7 +450,8 @@
     "panelCatMining": "معدن و زنجیره تأمین",
     "panelCatCommodityEcon": "اقتصاد و تجارت",
     "panelCatHappyNews": "اخبار خوب",
-    "panelCatHappyPlanet": "سیاره و نیکوکاری"
+    "panelCatHappyPlanet": "سیاره و نیکوکاری",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "اخبار زنده",
@@ -563,7 +564,8 @@
     "fx": "نرخ تبادل ارز",
     "ukmtoIncidents": "رویدادهای UKMTO",
     "reservoirLevels": "سطح آب راهبردی",
-    "gridDisruptionClock": "زمان‌سنج قطعی برق در ایالت‌های آمریکا"
+    "gridDisruptionClock": "زمان‌سنج قطعی برق در ایالت‌های آمریکا",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

@@ -381,7 +381,8 @@
     "panelCatCommodityEcon": "Wirtschaft & Handel",
     "panelCatHappyNews": "Gute Nachrichten",
     "panelCatHappyPlanet": "Planet & Spenden",
-    "embed": "Einbetten"
+    "embed": "Einbetten",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Live-Nachrichten",
@@ -494,7 +495,8 @@
     "fx": "Devisenkurse",
     "ukmtoIncidents": "UKMTO-Vorfälle",
     "reservoirLevels": "Strategische Wasserstände",
-    "gridDisruptionClock": "Stromausfall-Uhr für US-Bundesstaaten"
+    "gridDisruptionClock": "Stromausfall-Uhr für US-Bundesstaaten",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

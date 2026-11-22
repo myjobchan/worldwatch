@@ -17,6 +17,7 @@ export const NEWS_POOL_LAYOUT: NewsPoolLayout = {
       "africa",
       "latam",
       "asia",
+      "thailand",
       "energy",
       "thinktanks",
       "crisis",

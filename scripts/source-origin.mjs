@@ -175,6 +175,7 @@ const HOST_ORIGINS = Object.freeze({
   "odemocratagb.com": "GW",
   "onlinekhabar.com": "NP",
   "philenews.com": "CY",
+  "prachataienglish.com": "TH",
   "prensa.com": "PA",
   "pressafrik.com": "SN",
   "prothomalo.com": "BD",

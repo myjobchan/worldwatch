@@ -379,7 +379,8 @@
     "panelCatCommodityEcon": "经济与贸易",
     "panelCatHappyNews": "好消息",
     "panelCatHappyPlanet": "地球与慈善",
-    "embed": "嵌入"
+    "embed": "嵌入",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "实时新闻",
@@ -492,7 +493,8 @@
     "fx": "外汇汇率",
     "ukmtoIncidents": "UKMTO事件",
     "reservoirLevels": "战略水位",
-    "gridDisruptionClock": "美国各州电网停电时钟"
+    "gridDisruptionClock": "美国各州电网停电时钟",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

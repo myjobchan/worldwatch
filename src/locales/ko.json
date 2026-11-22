@@ -379,7 +379,8 @@
     "panelCatCommodityEcon": "경제 & 무역",
     "panelCatHappyNews": "좋은 소식",
     "panelCatHappyPlanet": "지구 & 기부",
-    "embed": "삽입"
+    "embed": "삽입",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "실시간 뉴스",
@@ -492,7 +493,8 @@
     "fx": "외환 환율",
     "ukmtoIncidents": "UKMTO 사건",
     "reservoirLevels": "전략 수위",
-    "gridDisruptionClock": "미국 주별 전력망 정전 현황"
+    "gridDisruptionClock": "미국 주별 전력망 정전 현황",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

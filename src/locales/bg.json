@@ -381,7 +381,8 @@
     "panelCatCommodityEcon": "Економија & Трговија",
     "panelCatHappyNews": "Добри Вести",
     "panelCatHappyPlanet": "Планета & Давање",
-    "embed": "Вграждане"
+    "embed": "Вграждане",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Живи новини",
@@ -494,7 +495,8 @@
     "fx": "Валутни курсове",
     "ukmtoIncidents": "Инциденти на UKMTO",
     "reservoirLevels": "Стратегически водни нива",
-    "gridDisruptionClock": "Часовник на прекъсванията в електрозахранването в щатите на САЩ"
+    "gridDisruptionClock": "Часовник на прекъсванията в електрозахранването в щатите на САЩ",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

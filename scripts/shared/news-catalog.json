@@ -18,6 +18,7 @@
         "africa",
         "latam",
         "asia",
+        "thailand",
         "energy",
         "science"
       ],
@@ -103,6 +104,7 @@
         "africa",
         "latam",
         "asia",
+        "thailand",
         "energy",
         "thinktanks",
         "crisis",
@@ -214,6 +216,12 @@
       "edition": "commodity",
       "category": "*",
       "note": "── Commodity variant (Mining, Metals, Energy) ─────────────────────────────"
+    },
+    {
+      "side": "server",
+      "edition": "full",
+      "category": "thailand",
+      "note": "Thailand & ASEAN panel added by the worldwatch fork. Publisher RSS only (no Google News relays); every feed is strategicDefault so the 80-source free cap cannot drop it."
     }
   ],
   "feeds": [
@@ -15051,7 +15059,17 @@
           "category": "asia",
           "browserOrder": 125,
           "serverOrder": 125
+        },
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 5,
+          "browserOrder": 5
         }
+      ],
+      "strategicDefault": true,
+      "notes": [
+        "strategicDefault set by the worldwatch fork so the Thai-language feed reaches the Thailand & ASEAN panel in every locale"
       ]
     },
     {
@@ -18512,6 +18530,87 @@
           "category": "asia",
           "browserOrder": 178,
           "serverOrder": 178
+        }
+      ]
+    },
+    {
+      "name": "Bangkok Post",
+      "url": "https://www.bangkokpost.com/rss/data/thailand.xml",
+      "strategicDefault": true,
+      "notes": [
+        "Thailand & ASEAN panel (worldwatch fork): publisher RSS, fetched and verified 2026-11-22"
+      ],
+      "placements": [
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 0,
+          "browserOrder": 0
+        }
+      ]
+    },
+    {
+      "name": "Khaosod English",
+      "url": "https://www.khaosodenglish.com/feed/",
+      "strategicDefault": true,
+      "notes": [
+        "Thailand & ASEAN panel (worldwatch fork): publisher RSS, fetched and verified 2026-11-22"
+      ],
+      "placements": [
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 1,
+          "browserOrder": 1
+        }
+      ]
+    },
+    {
+      "name": "Prachatai English",
+      "url": "https://prachataienglish.com/rss.xml",
+      "strategicDefault": true,
+      "notes": [
+        "Thailand & ASEAN panel (worldwatch fork): publisher RSS, fetched and verified 2026-11-22"
+      ],
+      "placements": [
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 2,
+          "browserOrder": 2
+        }
+      ]
+    },
+    {
+      "name": "CNA Asia",
+      "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6511",
+      "strategicDefault": true,
+      "notes": [
+        "Thailand & ASEAN panel (worldwatch fork): publisher RSS, fetched and verified 2026-11-22"
+      ],
+      "placements": [
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 3,
+          "browserOrder": 3
+        }
+      ]
+    },
+    {
+      "name": "TMD Earthquakes",
+      "url": "https://earthquake.tmd.go.th/feed/rss_tmd.xml",
+      "lang": "th",
+      "strategicDefault": true,
+      "notes": [
+        "Thailand & ASEAN panel (worldwatch fork): publisher RSS, fetched and verified 2026-11-22"
+      ],
+      "placements": [
+        {
+          "edition": "full",
+          "category": "thailand",
+          "serverOrder": 4,
+          "browserOrder": 4
         }
       ]
     },

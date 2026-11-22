@@ -110,7 +110,8 @@
     "fx": "Taxas de câmbio",
     "ukmtoIncidents": "Incidentes UKMTO",
     "reservoirLevels": "Níveis de água estratégicos",
-    "gridDisruptionClock": "Relógio de interrupções de energia nos estados dos EUA"
+    "gridDisruptionClock": "Relógio de interrupções de energia nos estados dos EUA",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {
@@ -4182,7 +4183,8 @@
     "panelCatCommodityEcon": "Economia & Comércio",
     "panelCatHappyNews": "Boas Notícias",
     "panelCatHappyPlanet": "Planeta & Doações",
-    "embed": "Incorporar"
+    "embed": "Incorporar",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "countryBrief": {
     "identifying": "Identificando país...",

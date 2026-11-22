@@ -452,7 +452,8 @@
     "panelCatCommodityEcon": "Ekonomija i trgovina",
     "panelCatHappyNews": "Dobre vijesti",
     "panelCatHappyPlanet": "Planet i pomoć",
-    "embed": "Ugradi"
+    "embed": "Ugradi",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Vijesti uživo",
@@ -565,7 +566,8 @@
     "fx": "Tečajevi deviza",
     "ukmtoIncidents": "Incidenti UKMTO-a",
     "reservoirLevels": "Strateški vodostaji",
-    "gridDisruptionClock": "Sat prekida opskrbe električnom energijom u saveznim državama SAD-a"
+    "gridDisruptionClock": "Sat prekida opskrbe električnom energijom u saveznim državama SAD-a",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

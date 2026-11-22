@@ -5048,7 +5048,8 @@ export const SERVER_NEWS_CATALOG: ServerNewsCatalog = {
           "name": "Prachatai",
           "url": "https://feeds.feedburner.com/prachatai",
           "lang": "th",
-          "fetchInAllLanguages": true
+          "fetchInAllLanguages": true,
+          "strategicDefault": true
         },
         {
           "name": "Prothom Alo",
@@ -5367,6 +5368,41 @@ export const SERVER_NEWS_CATALOG: ServerNewsCatalog = {
           "url": "https://www.matichon.co.th/feed",
           "lang": "th",
           "fetchInAllLanguages": true
+        }
+      ],
+      "thailand": [
+        {
+          "name": "Bangkok Post",
+          "url": "https://www.bangkokpost.com/rss/data/thailand.xml",
+          "strategicDefault": true
+        },
+        {
+          "name": "Khaosod English",
+          "url": "https://www.khaosodenglish.com/feed/",
+          "strategicDefault": true
+        },
+        {
+          "name": "Prachatai English",
+          "url": "https://prachataienglish.com/rss.xml",
+          "strategicDefault": true
+        },
+        {
+          "name": "CNA Asia",
+          "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6511",
+          "strategicDefault": true
+        },
+        {
+          "name": "TMD Earthquakes",
+          "url": "https://earthquake.tmd.go.th/feed/rss_tmd.xml",
+          "lang": "th",
+          "strategicDefault": true
+        },
+        {
+          "name": "Prachatai",
+          "url": "https://feeds.feedburner.com/prachatai",
+          "lang": "th",
+          "fetchInAllLanguages": true,
+          "strategicDefault": true
         }
       ],
       "energy": [

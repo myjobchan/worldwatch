@@ -389,7 +389,8 @@
     "panelCatCommodityEcon": "الاقتصاد والتجارة",
     "panelCatHappyNews": "أخبار إيجابية",
     "panelCatHappyPlanet": "الكوكب والعطاء",
-    "embed": "تضمين"
+    "embed": "تضمين",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "أخبار مباشرة",
@@ -502,7 +503,8 @@
     "fx": "أسعار الصرف الأجنبي",
     "ukmtoIncidents": "حوادث UKMTO",
     "reservoirLevels": "مستويات المياه الاستراتيجية",
-    "gridDisruptionClock": "ساعة انقطاعات الكهرباء في الولايات الأمريكية"
+    "gridDisruptionClock": "ساعة انقطاعات الكهرباء في الولايات الأمريكية",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

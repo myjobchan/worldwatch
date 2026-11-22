@@ -381,7 +381,8 @@
     "panelCatCommodityEcon": "Ekonomi & Ticaret",
     "panelCatHappyNews": "İyi Haberler",
     "panelCatHappyPlanet": "Gezegen & Hayırseverlik",
-    "embed": "Göm"
+    "embed": "Göm",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Canli Haberler",
@@ -494,7 +495,8 @@
     "fx": "Döviz kurları",
     "ukmtoIncidents": "UKMTO olayları",
     "reservoirLevels": "Stratejik Su Seviyeleri",
-    "gridDisruptionClock": "ABD eyaletlerinde elektrik kesintisi saati"
+    "gridDisruptionClock": "ABD eyaletlerinde elektrik kesintisi saati",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

@@ -379,7 +379,8 @@
     "panelCatCommodityEcon": "経済・貿易",
     "panelCatHappyNews": "ニュース",
     "panelCatHappyPlanet": "地球・社会貢献",
-    "embed": "埋め込む"
+    "embed": "埋め込む",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "ライブニュース",
@@ -492,7 +493,8 @@
     "fx": "外国為替レート",
     "ukmtoIncidents": "UKMTO事案",
     "reservoirLevels": "戦略的水位",
-    "gridDisruptionClock": "米国各州の停電時計"
+    "gridDisruptionClock": "米国各州の停電時計",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

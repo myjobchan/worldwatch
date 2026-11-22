@@ -450,7 +450,8 @@
     "panelCatCommodityEcon": "अर्थव्यवस्था और व्यापार",
     "panelCatHappyNews": "अच्छी खबरें",
     "panelCatHappyPlanet": "प्लैनेट और दान",
-    "embed": "एम्बेड"
+    "embed": "एम्बेड",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "ताजा खबरें",
@@ -563,7 +564,8 @@
     "fx": "विदेशी मुद्रा दरें",
     "ukmtoIncidents": "UKMTO घटनाएँ",
     "reservoirLevels": "रणनीतिक जल स्तर",
-    "gridDisruptionClock": "अमेरिकी राज्यों में बिजली कटौती की घड़ी"
+    "gridDisruptionClock": "अमेरिकी राज्यों में बिजली कटौती की घड़ी",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

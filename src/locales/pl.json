@@ -385,7 +385,8 @@
     "panelCatCommodityEcon": "Gospodarka i Handel",
     "panelCatHappyNews": "Dobre Wiadomości",
     "panelCatHappyPlanet": "Planeta i Filantropia",
-    "embed": "Osadź"
+    "embed": "Osadź",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Wiadomości na żywo",
@@ -498,7 +499,8 @@
     "fx": "Kursy walutowe",
     "ukmtoIncidents": "Incydenty UKMTO",
     "reservoirLevels": "Strategiczne poziomy wód",
-    "gridDisruptionClock": "Zegar awarii sieci energetycznej w stanach USA"
+    "gridDisruptionClock": "Zegar awarii sieci energetycznej w stanach USA",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

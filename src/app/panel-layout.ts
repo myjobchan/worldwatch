@@ -3574,6 +3574,7 @@ export class PanelLayoutManager implements AppModule {
     this.createNewsPanel('africa', 'panels.africa');
     this.createNewsPanel('latam', 'panels.latam');
     this.createNewsPanel('asia', 'panels.asia');
+    this.createNewsPanel('thailand', 'panels.thailand');
     this.createNewsPanel('energy', 'panels.energy');
 
     // Iterate CANONICAL_FEEDS (union of all variants), not just the active

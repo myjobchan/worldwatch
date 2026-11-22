@@ -383,7 +383,8 @@
     "panelCatCommodityEcon": "Economie și comerț",
     "panelCatHappyNews": "Știri bune",
     "panelCatHappyPlanet": "Planetă și donații",
-    "embed": "Încorporează"
+    "embed": "Încorporează",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Știri Live",
@@ -496,7 +497,8 @@
     "fx": "Cursuri de schimb valutar",
     "ukmtoIncidents": "Incidente UKMTO",
     "reservoirLevels": "Niveluri strategice ale apei",
-    "gridDisruptionClock": "Cronometrul întreruperilor de curent în statele SUA"
+    "gridDisruptionClock": "Cronometrul întreruperilor de curent în statele SUA",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

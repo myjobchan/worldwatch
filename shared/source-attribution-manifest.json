@@ -4799,6 +4799,20 @@
       ]
     },
     {
+      "host": "earthquake.tmd.go.th",
+      "provider": "earthquake.tmd.go.th",
+      "kind": "feed",
+      "observed": true,
+      "license": "Provider terms for this feed publisher; verify before redistribution",
+      "attribution": "Credit earthquake.tmd.go.th and link to the original feed publisher.",
+      "status": "terms-review",
+      "references": [
+        {
+          "path": "shared/news-catalog.json"
+        }
+      ]
+    },
+    {
       "host": "earthquake.usgs.gov",
       "provider": "earthquake.usgs.gov",
       "kind": "structured",
@@ -11297,6 +11311,20 @@
       ]
     },
     {
+      "host": "prachataienglish.com",
+      "provider": "prachataienglish.com",
+      "kind": "feed",
+      "observed": true,
+      "license": "Provider terms for this feed publisher; verify before redistribution",
+      "attribution": "Credit prachataienglish.com and link to the original feed publisher.",
+      "status": "terms-review",
+      "references": [
+        {
+          "path": "shared/news-catalog.json"
+        }
+      ]
+    },
+    {
       "host": "pravda.com.ua",
       "provider": "pravda.com.ua",
       "kind": "feed",
@@ -16650,6 +16678,20 @@
       ]
     },
     {
+      "host": "www.bangkokpost.com",
+      "provider": "www.bangkokpost.com",
+      "kind": "feed",
+      "observed": true,
+      "license": "Provider terms for this feed publisher; verify before redistribution",
+      "attribution": "Credit www.bangkokpost.com and link to the original feed publisher.",
+      "status": "terms-review",
+      "references": [
+        {
+          "path": "shared/news-catalog.json"
+        }
+      ]
+    },
+    {
       "host": "www.bankofcanada.ca",
       "provider": "Bank of Canada",
       "kind": "structured",
@@ -19289,6 +19331,20 @@
       "observed": true,
       "license": "Provider terms for this feed publisher; verify before redistribution",
       "attribution": "Credit www.khaleejtimes.com and link to the original feed publisher.",
+      "status": "terms-review",
+      "references": [
+        {
+          "path": "shared/news-catalog.json"
+        }
+      ]
+    },
+    {
+      "host": "www.khaosodenglish.com",
+      "provider": "www.khaosodenglish.com",
+      "kind": "feed",
+      "observed": true,
+      "license": "Provider terms for this feed publisher; verify before redistribution",
+      "attribution": "Credit www.khaosodenglish.com and link to the original feed publisher.",
       "status": "terms-review",
       "references": [
         {

@@ -385,7 +385,8 @@
     "panelCatCommodityEcon": "Ekonomika a obchod",
     "panelCatHappyNews": "Dobré zprávy",
     "panelCatHappyPlanet": "Planeta a dárcovství",
-    "embed": "Vložit"
+    "embed": "Vložit",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Živé zprávy",
@@ -498,7 +499,8 @@
     "fx": "Kurzy zahraniční měny",
     "ukmtoIncidents": "Incidenty UKMTO",
     "reservoirLevels": "Strategické vodní hladiny",
-    "gridDisruptionClock": "Časomíra výpadků elektřiny ve státech USA"
+    "gridDisruptionClock": "Časomíra výpadků elektřiny ve státech USA",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

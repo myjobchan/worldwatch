@@ -385,7 +385,8 @@
     "panelCatCommodityEcon": "Экономика и торговля",
     "panelCatHappyNews": "Хорошие новости",
     "panelCatHappyPlanet": "Планета и благотворительность",
-    "embed": "Встроить"
+    "embed": "Встроить",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Новости в реальном времени",
@@ -498,7 +499,8 @@
     "fx": "Валютные курсы",
     "ukmtoIncidents": "Инциденты UKMTO",
     "reservoirLevels": "Стратегические уровни воды",
-    "gridDisruptionClock": "Хроника отключений электроэнергии в штатах США"
+    "gridDisruptionClock": "Хроника отключений электроэнергии в штатах США",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

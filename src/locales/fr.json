@@ -383,7 +383,8 @@
     "panelCatCommodityEcon": "Économie & Commerce",
     "panelCatHappyNews": "Bonnes Nouvelles",
     "panelCatHappyPlanet": "Planète & Solidarité",
-    "embed": "Intégrer"
+    "embed": "Intégrer",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Actualités en direct",
@@ -496,7 +497,8 @@
     "fx": "Taux de change",
     "ukmtoIncidents": "Incidents UKMTO",
     "reservoirLevels": "Niveaux d’eau stratégiques",
-    "gridDisruptionClock": "Horloge des coupures de courant dans les États américains"
+    "gridDisruptionClock": "Horloge des coupures de courant dans les États américains",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {

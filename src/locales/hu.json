@@ -450,7 +450,8 @@
     "panelCatCommodityEcon": "Gazdaság & Kereskedelem",
     "panelCatHappyNews": "Jó Hírek",
     "panelCatHappyPlanet": "Bolygó & Adományozás",
-    "embed": "Beágyazás"
+    "embed": "Beágyazás",
+    "sourceRegionThailand": "Thailand & ASEAN"
   },
   "panels": {
     "liveNews": "Élő Hírek",
@@ -563,7 +564,8 @@
     "fx": "Devizaárfolyamok",
     "ukmtoIncidents": "UKMTO-események",
     "reservoirLevels": "Stratégiai vízszintek",
-    "gridDisruptionClock": "Áramkimaradások időmérője az USA államaiban"
+    "gridDisruptionClock": "Áramkimaradások időmérője az USA államaiban",
+    "thailand": "Thailand & ASEAN"
   },
   "commands": {
     "prefixes": {
