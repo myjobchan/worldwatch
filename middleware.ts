@@ -704,6 +704,12 @@ async function proxyDocsLocaleHtml(request: Request, url: URL, host: string): Pr
 }
 
 export const config = {
+  // Projects created after 2026-09-01 default middleware to the Node runtime.
+  // Node compiles each file on its own and rejects these extensionless imports
+  // (ERR_MODULE_NOT_FOUND from middleware.js). Upstream still runs this file
+  // as an Edge Function, which bundles the graph. Pin Edge so a Hobby deploy
+  // matches that. The bundle is far under the 1 MB Hobby Edge limit.
+  runtime: 'edge',
   matcher: [
     '/mcp',
     '/api/:path*',
